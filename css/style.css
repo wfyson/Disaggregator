@@ -1,0 +1,70 @@
+/* 
+    Document   : style
+    Created on : 05-June-2014, 16:10
+    Author     : William Fyson    
+*/
+
+body{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    width: 80%;
+}
+
+/*
+    The big divs
+*/
+
+#banner{
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    
+    border-bottom-style: outset;
+    
+    display: table;
+    table-layout: fixed;
+}
+
+#view ul{
+    list-style-type: none;   
+    padding: 0;
+}
+
+/*
+    Overview entries
+*/
+.entry{
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;       
+    max-height: 192px;
+    
+    cursor: pointer;
+    
+    display: block;
+    
+    text-align:left;
+    color: black;
+}
+
+.entry .thumb{
+    margin: 5px 10px 5px 5px;
+    vertical-align: middle;
+    display: inline-block;
+    background: white;  
+}
+
+.entry .meta{
+    vertical-align: middle;
+    display: inline-block; 
+    height: 100%;  
+    width: 190px;
+}
+
+.entry .meta div{
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
