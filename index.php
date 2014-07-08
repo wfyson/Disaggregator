@@ -1,7 +1,5 @@
 <?php
 
-include "debug/ChromePhp.php";
-
 require_once("libraries/password_compatibility_library.php");
 require("config.php");
 
@@ -98,7 +96,7 @@ function login() {
 }
 
 function logout() {
-    unset($_SESSION['user_id']);
+    unset($_SESSION['userid']);
     unset($_SESSION['username']);
     header("Location: index.php");
 }

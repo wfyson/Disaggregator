@@ -17,7 +17,6 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
 $results = array();
 $results['pageTitle'] = "Disaggregator - Extract";
 
-
 //read the document and output to results array
 
 

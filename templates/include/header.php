@@ -14,6 +14,9 @@
         <!-- JQuery -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         
+        <!-- My Stuff -->
+        <script src="js/filehandler.js"></script>
+        
         <!-- Bootstrap -->
         <script src="js/libs/bootstrap.min.js"></script>
         

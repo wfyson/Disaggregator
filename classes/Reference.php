@@ -8,12 +8,15 @@ class Reference {
     //Properties    
     public $id = null;
     public $refFile = null;
+    public $uploaderID = null;
 
     public function __construct($data = array()) {
         if (isset($data['ReferenceID']))
             $this->id = $data['ReferenceID'];
         if (isset($data['RefFile']))
             $this->refFile = $data['RefFile'];
+        if (isset($data['UploaderID']))
+            $this->uploaderID = $data['UploaderID'];
     }
 
     public function storeFormValues($params) {
@@ -35,7 +38,7 @@ class Reference {
 
     public static function getList($numRows = 1000000) {
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "SELECT SQL_CALC_FOUND_ROWS ReferenceID, RefFile FROM reference LIMIT :numRows";
+        $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM reference LIMIT :numRows";
         $st = $conn->prepare($sql);
         $st->bindValue(":numRows", $numRows, PDO::PARAM_INT);
         $st->execute();
@@ -54,15 +57,16 @@ class Reference {
     }
 
     public function insert() {
-        // Does the Reference object already have an ID?
+        // Does the Reference object already have an ID?    
         if (!is_null($this->id))
             trigger_error("Reference::insert(): Attempt to insert a Reference object that already has its ID property set (to $this->id).", E_USER_ERROR);
-
+        
         // Insert the Reference
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "INSERT INTO reference ( RefFile ) VALUES ( :refFile )";
+        $sql = "INSERT INTO reference ( RefFile, UploaderID ) VALUES ( :refFile,:uploaderID )";
         $st = $conn->prepare($sql);
         $st->bindValue(":refFile", $this->refFile, PDO::PARAM_STR);
+        $st->bindValue(":uploaderID", $this->uploaderID, PDO::PARAM_INT);
         $st->execute();
         $this->id = $conn->lastInsertId();
         $conn = null;
@@ -75,9 +79,10 @@ class Reference {
 
         // Update the Article
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "UPDATE reference SET RefFile=:refFile WHERE ReferenceID = :id";
+        $sql = "UPDATE reference SET RefFile=:refFile UploaderID=:uploaderID WHERE ReferenceID = :id";
         $st = $conn->prepare($sql);
         $st->bindValue(":refFile", $this->refFile, PDO::PARAM_STR);
+        $st->bindValue(":uploaderID", $this->uploaderID, PDO::PARAM_INT);
         $st->bindValue(":id", $this->id, PDO::PARAM_INT);
         $st->execute();
         $conn = null;

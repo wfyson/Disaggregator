@@ -17,6 +17,8 @@ require( CLASS_PATH . "/Reference.php" );
 require( CLASS_PATH . "/Reaction.php");
 require( CLASS_PATH . "/Compound.php");
 
+include "debug/ChromePhp.php";
+
 function handleException( $exception ) {
   echo "Sorry, a problem occurred. Please try later.";
   error_log( $exception->getMessage() );
