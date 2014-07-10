@@ -17,6 +17,8 @@ require( CLASS_PATH . "/Reference.php" );
 require( CLASS_PATH . "/Reaction.php");
 require( CLASS_PATH . "/Compound.php");
 
+require( CLASS_PATH . "/OpenXmlReader.php");
+
 include "debug/ChromePhp.php";
 
 function handleException( $exception ) {

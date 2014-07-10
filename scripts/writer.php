@@ -1,11 +1,19 @@
 <?php
 
+include '../debug/ChromePhp.php';
+
+ChromePhp::log("writing");
+
 session_start();
 $userid = $_SESSION['userid'];
 
-$path = '../uploads/' . $userid . '/'; //. str_replace('.', '_', $_REQUEST['name']) . '_';
+//generate path from userid and name of document
+$path = '../uploads/' . $userid . '/' . str_replace('.', '_', $_REQUEST['name']) . '/'; //. str_replace('.', '_', $_REQUEST['name']) . '_';
+
+ChromePhp::log($path);
 
 if (!file_exists($path)) {
+    ChromePhp::log("path does not exist");
     mkdir($path, 0777, true);
 }
 

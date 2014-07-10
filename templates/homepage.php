@@ -1,11 +1,5 @@
 <?php include "templates/include/header.php" ?>
 
-<!--logout button (should be in header perhaps...) -->
-<form action="index.php?action=logout" method="post" style="width: 50%;">
-    <input type="hidden" name="logout" value="true" />   
-    <input class="btn btn-default" type="submit" name="logout" value="Logout" />
-</form>
-
 
 <div id="view" class="col-md-8">
 
@@ -81,12 +75,21 @@
     
     window.onload = function() {  
         
-        if (window.location.href === "http://localhost/Disaggregator/index.php#documents")
-        {
-            //open the documents tab
-            console.log("documents");
-            $('.nav-tabs a[href=#documents]').tab('show') ;
+        var url = window.location.href;
+        var hash = url.split('#')[1];
+        
+        switch (hash){
+            case "documents":
+                $('.nav-tabs a[href=#documents]').tab('show') ;
+            break;
+            case "reactions":
+                $('.nav-tabs a[href=#reactions]').tab('show') ;
+            break;
+            case "compounds":
+                $('.nav-tabs a[href=#compounds]').tab('show') ;
+            break;                       
         }
+        
         
         // Setup the file input listener
         var input = document.getElementById('files');

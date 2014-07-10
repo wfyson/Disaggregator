@@ -10,6 +10,10 @@ class Reference {
     public $refFile = null;
     public $uploaderID = null;
 
+    /*
+     * Standard database-esque stuff
+     */
+    
     public function __construct($data = array()) {
         if (isset($data['ReferenceID']))
             $this->id = $data['ReferenceID'];
@@ -101,6 +105,14 @@ class Reference {
         $conn = null;
     }
 
+    /*
+     * Somewhat more bespoke stuff
+     */
+    
+    //return the file format of the reference
+    public function getFormat(){
+        return explode('.', $this->refFile)[1];        
+    }
 }
 
 ?>

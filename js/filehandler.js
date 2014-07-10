@@ -105,7 +105,7 @@ function mergeFile(fname) {
                 console.log(xhr);
             }
             console.log("success");
-            document.location.href = "http://localhost/Disaggregator/index.php#documents";
+            document.location.href = "index.php#documents";
             location.reload();
         }
     };
