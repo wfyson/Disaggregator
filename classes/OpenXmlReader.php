@@ -128,26 +128,26 @@ class WordReader extends OpenXmlReader {
     }
 
     public function readPara($para, $parent) {
-//check if there is a picture
+        //check if there is a picture
         $wordImage = $this->readParaImage($para);
 
-//check the style of the para 
+        //check the style of the para 
         $style = $para[0]->xpath('w:pPr/w:pStyle');
         if ($style[0] != null) { // a style is present
             $val = $style[0]->xpath('@w:val');
             $styleVal = $val[0];
 
-//if the style is a heading            
+            //if the style is a heading            
             if (strpos($styleVal, 'Heading') === 0) {
-//determine heading level
+                //determine heading level
                 $headingLevel = intval(substr($styleVal, 7));
 
-//read the text of the para
+                //read the text of the para
                 $text = $this->readParaText($para);
 
-//determine the new heading's parent
+                //determine the new heading's parent
                 if ($headingLevel > $parent->getLevel()) {
-//a level deeper
+                    //a level deeper
                     $newParent = $parent;
                 } else {
                     $difference = $parent->getLevel() - $headingLevel;
@@ -159,14 +159,14 @@ class WordReader extends OpenXmlReader {
                     }
                 }
 
-//create a new heading
+                //create a new heading
                 $heading = new WordHeading($this->id, $text, $headingLevel, $newParent);
                 return $heading;
             }
 
-//if the stye is a caption
+            //if the stye is a caption
             if (strpos($styleVal, "Caption") === 0) {
-//return a caption thing
+                //return a caption thing
                 $text = $this->readParaText($para);
 
                 if ($wordImage !== null) {
@@ -180,14 +180,14 @@ class WordReader extends OpenXmlReader {
                 }
             }
 
-//style present but we're not interested
+            //style present but we're not interested
             $text = $this->readParaText($para);
             return $text;
         }
         if ($wordImage !== null) {
             return $wordImage;
         } else {
-//else nothing interesting going on so just read text
+            //else nothing interesting going on so just read text
             $text = $this->readParaText($para);
             return $text;
         }
@@ -202,7 +202,7 @@ class WordReader extends OpenXmlReader {
             $graphicData[0]->registerXPathNamespace('pic', 'http://schemas.openxmlformats.org/drawingml/2006/picture');
             $pic = $graphicData[0]->xpath('pic:pic');
             if ($pic[0] != null) {
-//get the rel id
+                //get the rel id
                 $relTag = $pic[0]->xpath('pic:blipFill/a:blip');
                 $relID = $relTag[0]->xpath('@r:embed');
                 $this->id++;
@@ -213,17 +213,17 @@ class WordReader extends OpenXmlReader {
     }
 
     public function readTable($table) {
-//create a table object
+        //create a table object
         $this->id++;
         $wordTable = new WordTable($this->id);
 
-//cycle through each table row
+        //cycle through each table row
         $rows = $table[0]->xpath('w:tr');
         foreach ($rows as $row) {
             $this->id++;
             $wordRow = new WordRow($this->id);
 
-//get the cell for each row
+            //get the cell for each row
             $cells = $row[0]->xpath('w:tc');
             foreach ($cells as $cell) {
                 $this->id++;

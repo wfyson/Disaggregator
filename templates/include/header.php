@@ -19,16 +19,41 @@
 
         <!-- Bootstrap -->
         <script src="js/libs/bootstrap.min.js"></script>
+        
+        <!-- JSMol -->
+        <script type="text/javascript" src="js/libs/jsmol/JSmol.min.js"></script>
+        <script type="text/javascript" src="js/libs/jsmol/JSmol.lite.nojq.js"></script>
 
     </head>
     <body>
+        <div id="header">
+        <?php
+        $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
 
-        <!--log out button here?? -->
+        if (!$username) {
+            
+        } else {
+            //only provide log out link if user is logged in
+            ?>
+            <span>Logged in as <b><?php echo $username; ?></b></span>
 
-        <!--logout button (should be in header perhaps...) -->
-        <form action="index.php?action=logout" method="post" style="width: 50%;">
-            <input type="hidden" name="logout" value="true" />   
-            <input class="btn btn-default" type="submit" name="logout" value="Logout" />
-        </form>
-
+            <form action="index.php?action=logout" method="post" style="width: 50%;">
+                <input type="hidden" name="logout" value="true" />   
+                <input class="btn btn-default" type="submit" name="logout" value="Logout" />
+            </form>
+    <?php
+        }
+        //provide a link to homepage
+        $page = basename($_SERVER['PHP_SELF']);
+        if ($page != "index.php"){
+            ?>
+            <a class="btn btn-default" href="index.php">Return to Homepage</a>
+            <?php
+        }
+        
+        
+        
+        
+    ?>    
+        </div>
         <div id="container" class="row">

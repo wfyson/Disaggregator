@@ -114,6 +114,10 @@ class Compound
         $st->execute();
         $conn = null;
     }
+    
+    public function getMolPath(){
+        return "compounds/" . $this->id . '/' . $this->molFile;
+    }
 
 }
 

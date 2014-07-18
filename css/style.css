@@ -7,25 +7,66 @@
 body{
     margin-left: auto;
     margin-right: auto;
-    margin-top: 5%;
+    margin-top: 1%;
     width: 80%;
+}
+
+/*
+    Header
+*/
+
+#header{
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+#header form{
+    display: inline;
+}
+
+/*
+    Login
+*/
+
+#login {
+    margin-left:auto;
+    margin-right: auto;
+    margin-bottom: 15px;
+    width: 50%;
+    
+}
+
+#login ul{
+    padding-left: 0px;
+}
+
+#login ul li{
+    list-style-type: none;
+    
+    margin-top: 5px;
+}
+
+#login li label{
+    display: block;
+}
+
+#register{
+    border-top: 2px outset #aaa;
+    
+    padding-top: 20px;
+    margin-top: 40px;
+    
+}
+
+#register form, #register h4{
+    display: inline;
 }
 
 /*
     The big divs
 */
 
-#banner{
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-    
-    border-bottom-style: outset;
-    
-    display: table;
-    table-layout: fixed;
-}
-
-#view ul{
+#home-view ul{
     list-style-type: none;   
     padding: 0;
 }
@@ -37,7 +78,7 @@ body{
     width: 100%;
     margin-top: 5px;
     margin-bottom: 5px;       
-    max-height: 192px;
+    max-height: 110px;
     
     cursor: pointer;
     
@@ -47,24 +88,52 @@ body{
     color: black;
 }
 
-.entry .thumb{
-    margin: 5px 10px 5px 5px;
-    vertical-align: middle;
+.entry img{
+    max-height: 90px;
+} 
+
+.entry.doc-entry{
+    padding: 5px;
+    
+    background: #ddd;
+}
+
+/*
+    Extract
+*/
+
+#extract-view{
+    
+} 
+
+#extract-panel{
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px outset #aaa;
+}
+
+#extract-content p{    
+    vertical-align: top;
+    width: 95%;
     display: inline-block;
-    background: white;  
+    
+    padding-left: 5px;
 }
 
-.entry .meta{
-    vertical-align: middle;
-    display: inline-block; 
-    height: 100%;  
-    width: 190px;
+#extract-content table{
+    margin-left: 5%;
 }
 
-.entry .meta div{
-    display: block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+#extract-content td{
+    padding: 2px 2px 2px 2px;
+    border: thin solid black;    
 }
 
+#extract-content td:hover{    
+    cursor: pointer;
+    background: #e1e1e8;
+} 
+
+#extract-content td p{
+    border: none;
+}

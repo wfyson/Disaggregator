@@ -1,7 +1,7 @@
 <?php include "templates/include/header.php" ?>
 
 
-<div id="view" class="col-md-8">
+<div id="home-view" class="col-md-8">
 
     <!--Nav Tabs -->
     <ul class="nav nav-tabs" id="homepage-tabs">
@@ -16,10 +16,46 @@
             <ul>                    
                 <?php
                 foreach ($results['compounds'] as $compound) {
+                    $molPath = $compound->getMolPath();
                     ?>
                     <li>
-                        <div class="entry doc-entry">
-                            <b><?php echo htmlspecialchars($compound->name) ?></b>
+                        <div class="entry compound-entry">
+
+                            <script type="text/javascript">
+                                var Info;
+                                ;
+                                (function() {
+                                    Info = {
+                                        width: 100,
+                                        height: 100,
+                                        debug: false,
+                                        color: "0xC0C0C0",
+                                        addSelectionOptions: false,
+                                        serverURL: "http://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
+                                        use: "HTML5",
+                                        readyFunction: null,
+                                        src: "<?php echo $molPath; ?>",
+                                        bondWidth: 4,
+                                        zoomScaling: 1.5,
+                                        pinchScaling: 2.0,
+                                        mouseDragFactor: 0.5,
+                                        touchDragFactor: 0.15,
+                                        multipleBondSpacing: 4,
+                                        spinRateX: 0.2,
+                                        spinRateY: 0.5,
+                                        spinFPS: 20,
+                                        spin: true,
+                                        debug: false
+                                    }
+                                })();
+                            </script>
+
+                            <script>
+
+                                Jmol.getTMApplet("jmol", Info)
+
+                            </script>
+
                         </div>
                     </li>
                 <?php } ?>
@@ -53,6 +89,10 @@
                     ?>
                     <li>
                         <div class="entry doc-entry">
+
+                            <!--thumbnail -->
+                            <?php $format = $reference->getFormat(); ?>
+                            <img src="img/<?php echo $format ?>_thumb.png"/>                    
                             <b><?php echo htmlspecialchars($reference->refFile) ?></b>
                             <a class="btn btn-default" href="extract.php?docid=<?php echo $reference->id ?>">Extract</a>
                         </div>
@@ -72,29 +112,28 @@
 </div>  
 
 <script>
-    
-    window.onload = function() {  
-        
+
+    window.onload = function() {
+
         var url = window.location.href;
         var hash = url.split('#')[1];
-        
-        switch (hash){
+
+        switch (hash) {
             case "documents":
-                $('.nav-tabs a[href=#documents]').tab('show') ;
-            break;
+                $('.nav-tabs a[href=#documents]').tab('show');
+                break;
             case "reactions":
-                $('.nav-tabs a[href=#reactions]').tab('show') ;
-            break;
+                $('.nav-tabs a[href=#reactions]').tab('show');
+                break;
             case "compounds":
-                $('.nav-tabs a[href=#compounds]').tab('show') ;
-            break;                       
+                $('.nav-tabs a[href=#compounds]').tab('show');
+                break;
         }
-        
-        
+
         // Setup the file input listener
         var input = document.getElementById('files');
-        input.addEventListener('change', handleFileSelect, false); 
-    };                       
+        input.addEventListener('change', handleFileSelect, false);
+    };
 </script>
 
 

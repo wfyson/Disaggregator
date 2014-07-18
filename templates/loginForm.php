@@ -1,35 +1,46 @@
 <?php include "templates/include/header.php" ?>
 
-<form action="index.php?action=login" method="post" style="width: 50%;">
-    <input type="hidden" name="login" value="true" />
+<div id="login-form">
 
-    <?php if (isset($results['errorMessage'])) { ?>
-        <div class="errorMessage"><?php echo $results['errorMessage'] ?></div>
-    <?php } ?>
+    <div id="login">
 
-    <ul>
+        <h2>Login</h2>
 
-        <li>
-            <label for="username">Username</label>
-            <input type="text" name="username" id="username" placeholder="Your username" autofocus maxlength="20" />
-        </li>
+        <form action="index.php?action=login" method="post" style="width: 50%;">
+            <input type="hidden" name="login" value="true" />
 
-        <li>
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" placeholder="Your password" maxlength="20" />
-        </li>
+            <?php if (isset($results['errorMessage'])) { ?>
+                <div class="errorMessage"><?php echo $results['errorMessage'] ?></div>
+            <?php } ?>
 
-    </ul>
+            <ul>
+
+                <li>
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" placeholder="Your username" autofocus maxlength="20" />
+                </li>
+
+                <li>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" placeholder="Your password" maxlength="20" />
+                </li>
+
+            </ul>
+            <input class="btn btn-default" type="submit" name="login" value="Login" />
+        </form>
 
 
-    <input class="btn btn-default" type="submit" name="login" value="Login" />
+        <div id="register">
+            <h4>No account..?</h4> 
+            <form action="index.php?action=register" method="post" style="width: 50%;">
+                <input type="hidden" name="registerform" value="true" />
+                <input class="btn btn-default" type="submit" name="registerform" value="Register" />
+            </form>
+        </div>
 
+    </div>
 
-</form>
+</div>
 
-<form action="index.php?action=register" method="post" style="width: 50%;">
-    <input type="hidden" name="registerform" value="true" />
-    <input class="btn btn-default" type="submit" name="registerform" value="Register" />
-</form>
 
 <?php include "templates/include/footer.php" ?>
