@@ -13,9 +13,13 @@
     <!-- Tab Panes -->
     <div class="tab-content">
         <div class="tab-pane active" id="compounds">
-            <ul>                    
+            <ul>                
+                <script type="text/javascript">
+                    var molArray = new Array();
+                </script>
                 <?php
-                foreach ($results['compounds'] as $compound) {
+                foreach ($results['compounds'] as $compound) {                    
+                    $compoundID = $compound->id;
                     $molPath = $compound->getMolPath();
                     ?>
                     <li>
@@ -23,7 +27,8 @@
 
                             <script type="text/javascript">
                                 var Info;
-                                ;
+                                ;                                                              
+                                
                                 (function() {
                                     Info = {
                                         width: 100,
@@ -46,16 +51,17 @@
                                         spinFPS: 20,
                                         spin: true,
                                         debug: false
-                                    }
+                                    };
+                                    molArray[<?php echo $compoundID ?>] = Info;
                                 })();
                             </script>
 
-                            <script>
-
-                                Jmol.getTMApplet("jmol", Info)
-
-                            </script>
-
+                            <div id="compound-<?php echo $compoundID ?>-mol"></div>
+                            
+                            <div class="compound-data">
+                                <!-- Other info about the compound -->
+                                <b><?php echo htmlspecialchars($compound->name) ?></b>
+                            </div>                            
                         </div>
                     </li>
                 <?php } ?>
@@ -134,6 +140,14 @@
         var input = document.getElementById('files');
         input.addEventListener('change', handleFileSelect, false);
     };
+    
+    $(document).ready(function(){              
+        Jmol.setDocument(0);
+        for (var id in molArray){
+            Jmol.getTMApplet("mol" + id, molArray[id]);
+            $('#compound-' + id + '-mol').html(Jmol.getAppletHtml(window["mol" + id]));
+        }        
+    });
 </script>
 
 

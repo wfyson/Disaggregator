@@ -98,6 +98,16 @@ body{
     background: #ddd;
 }
 
+.entry.compound-entry{
+    padding: 5px;
+    
+    background: #ddd;
+}
+
+.entry.compound-entry .compound-data{
+    display:inline-block;
+}
+
 /*
     Extract
 */
