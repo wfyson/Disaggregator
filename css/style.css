@@ -108,12 +108,25 @@ body{
     display:inline-block;
 }
 
+#sidebar{
+    position:fixed;
+    
+    height: 85%;
+    
+    background-color: #f7f7f9;
+    
+    border: 1px solid #e1e1e8;
+    border-radius: 4px;   
+    
+    overflow: auto;
+}
+
 /*
     Extract
 */
 
 #extract-view{
-    
+    text-align: justify;
 } 
 
 #extract-panel{
@@ -146,4 +159,8 @@ body{
 
 #extract-content td p{
     border: none;
+}
+
+#sidebar.extract{    
+    padding-top: 5px;
 }

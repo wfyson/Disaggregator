@@ -100,7 +100,9 @@
                             <?php $format = $reference->getFormat(); ?>
                             <img src="img/<?php echo $format ?>_thumb.png"/>                    
                             <b><?php echo htmlspecialchars($reference->refFile) ?></b>
-                            <a class="btn btn-default" href="extract.php?docid=<?php echo $reference->id ?>">Extract</a>
+                            
+                            <a class="btn btn-success" href="extractCompound.php?docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Compound</a>
+                            <a class="btn btn-warning" href="extract.php?docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Reaction</a>
                         </div>
                     </li>
                 <?php } ?>

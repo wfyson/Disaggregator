@@ -50,10 +50,10 @@ class WordReader extends OpenXmlReader {
         $zipEntry = zip_read($this->zip);
 
         while ($zipEntry != false) {
-//read through all the files, call appropriate functions for each            
+            //read through all the files, call appropriate functions for each            
             $entryName = zip_entry_name($zipEntry);
 
-//for image files
+            //for image files
             if (strpos($entryName, 'word/media/') !== FALSE) {
                 $this->imageLinks[] = $this->readImage($entryName, $zipEntry);
             }

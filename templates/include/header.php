@@ -16,6 +16,7 @@
 
         <!-- My Stuff -->
         <script src="js/filehandler.js"></script>
+        <script src="js/builder.js"></script>
 
         <!-- Bootstrap -->
         <script src="js/libs/bootstrap.min.js"></script>
