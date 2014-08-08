@@ -3,9 +3,9 @@
 $tocLinks = array();
 $root = $results['text'];
 $content = $root->getParaArray();
-foreach ($content as $entry) {
+foreach ($content as $entry) {     
     switch ($entry->getType()) {
-        case "text":
+        case "text":            
             addPara($entry);
             break;
         case "heading":
@@ -23,16 +23,24 @@ foreach ($content as $entry) {
     }
 }
 
+function addCheckBox($id){
+    echo "<input class='selector' type='checkbox' data-id='" . $id . "'>";
+}
+
 function addPara($para) {
     if ($para->getText() != "") {
-        echo '<div><p>' . $para->getText() . '</p></div>';
+        echo '<div id="item-' . $para->getId() . '" class="para">';
+        addCheckBox($para->getId());
+        echo '<p class="value">' . $para->getText() . '</p></div>';
     }
 }
 
 function addHeading($heading, $tocLinks) {
+    echo '<div id="item-' . $heading->getId() . '"class="heading">';
+    addCheckBox($heading->getId());
     $htmlHeading = $heading->getLevel() + 1;
     $tocLinks[$heading->getId()] = $heading->getTitle()->getText();
-    echo '<div><h' . $htmlHeading . ' id=' . $heading->getId() . '>' . $heading->getTitle()->getText() . '</h' . $htmlHeading . '></div>';
+    echo '<h' . $htmlHeading . ' id=' . $heading->getId() . ' class="header value">' . $heading->getTitle()->getText() . '</h' . $htmlHeading . '></div>';
     return $tocLinks;
 }
 
@@ -45,22 +53,17 @@ function addCaption($caption) {
 }
 
 function addTable($table) {
-
-
-    $html = "<div><table>";
-
+    echo '<div class="table">';
+    $html = "<table>";
     $rows = $table->getContent();
     foreach ($rows as $row) {
         $html = $html . '<tr>';
-
         $cells = $row->getContent();
-
         foreach ($cells as $cell) {
-            $html = $html . '<td>';
-
+            $html = $html . '<td id="item-' . $cell->getId() . '" data-id="' . $cell->getId() . '">';
             $paras = $cell->getContent();
             foreach ($paras as $para) {
-                $html = $html . '<p>' . $para->getText() . '</p>';
+                $html = $html . '<p class="value">' . $para->getText() . '</p>';
             }
             $html = $html . '</td>';
         }
@@ -70,4 +73,3 @@ function addTable($table) {
     echo $html;
 }
 
-?>

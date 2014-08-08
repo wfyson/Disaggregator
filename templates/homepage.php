@@ -34,7 +34,7 @@
                                         width: 100,
                                         height: 100,
                                         debug: false,
-                                        color: "0xC0C0C0",
+                                        color: "#eee",
                                         addSelectionOptions: false,
                                         serverURL: "http://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
                                         use: "HTML5",
@@ -56,7 +56,7 @@
                                 })();
                             </script>
 
-                            <div id="compound-<?php echo $compoundID ?>-mol"></div>
+                            <div id="compound-<?php echo $compoundID ?>-mol" class="compound-jmol"></div>
                             
                             <div class="compound-data">
                                 <!-- Other info about the compound -->
@@ -86,7 +86,7 @@
                     <div class ="entry">
                         <a class='btn btn-primary' href='javascript:;'>                        
                             <input id='files' type="file" style='position:absolute;z-index:2;top:55px;left:25px;width:125px;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="file_source" size="40">
-                            Upload Document...
+                            <span class="glyphicon glyphicon-plus"></span> Upload Document...
                         </a>
                     </div>
                 </li>
@@ -94,15 +94,18 @@
                 foreach ($results['references'] as $reference) {
                     ?>
                     <li>
-                        <div class="entry doc-entry">
-
-                            <!--thumbnail -->
-                            <?php $format = $reference->getFormat(); ?>
-                            <img src="img/<?php echo $format ?>_thumb.png"/>                    
-                            <b><?php echo htmlspecialchars($reference->refFile) ?></b>
-                            
-                            <a class="btn btn-success" href="extractCompound.php?docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Compound</a>
-                            <a class="btn btn-warning" href="extract.php?docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Reaction</a>
+                        <div class="entry doc-entry" data-docid="<?php echo $reference->id ?>">                            
+                            <div class="doc-info">
+                                <!--thumbnail -->
+                                <?php $format = $reference->getFormat(); ?>
+                                <img src="img/<?php echo $format ?>_thumb.png"/>                                                                            
+                                <b><?php echo htmlspecialchars($reference->refFile) ?></b>
+                            </div>                           
+                            <!-- buttons -->
+                            <div class="doc-buttons">
+                                <a class="btn btn-success" href="extract.php?type=compound&docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Compound</a>
+                                <a class="btn btn-warning" href="extract.php?type=reaction&docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Reaction</a>
+                            </div>
                         </div>
                     </li>
                 <?php } ?>
@@ -148,7 +151,13 @@
         for (var id in molArray){
             Jmol.getTMApplet("mol" + id, molArray[id]);
             $('#compound-' + id + '-mol').html(Jmol.getAppletHtml(window["mol" + id]));
-        }        
+        }
+        
+        //set document on click functionality
+        $('.doc-entry').click(function(){
+            //get everything interesting relating to this document
+            //e.g it's reactions, compounds, whatever... presumably via a .json call of some sort...
+        });
     });
 </script>
 
