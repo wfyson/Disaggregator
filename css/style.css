@@ -14,10 +14,14 @@ body{
 /*
     Header
 */
-
 #header{
     width: 100%;
+    height: 34px;
     margin-bottom: 50px;
+}
+
+#header .login-status{
+    float:right;
 }
 
 #header form{
@@ -241,4 +245,26 @@ body{
 
 #sidebar.extract{    
     padding-top: 5px;
+}
+
+#sidebar.extract .stage-overview{
+    width: 100%;
+    margin-left:auto;
+    margin-right:auto;
+    margin-bottom: 10px;
+    
+    padding: 5px 5px 5px 5px;
+    
+    background: #eeeeee;
+    
+    border: 1px solid #e1e1e8;
+}
+
+#sidebar.extract .stage-overview.current-stage{
+    background: #e1e1e8;
+}
+
+#sidebar.extract .stage-overview .value-overview, #sidebar.extract .stage-overview .name-overview{
+    margin-right: 5px;
+    display: inline-block;
 }

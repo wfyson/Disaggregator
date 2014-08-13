@@ -6,10 +6,9 @@
  * ongoing overview - provided it is given two components of the page to display
  * these things in...
  */
-function Builder(stages, $stagingArea, $overviewArea){
+function Builder($stagingArea, $overviewArea){
     
     var self = this;
-    self.stages = stages;
     self.$stagingArea = $stagingArea;
     self.$overviewArea = $overviewArea;
     self.$input;
@@ -17,28 +16,31 @@ function Builder(stages, $stagingArea, $overviewArea){
     /*
      * overview area
      */
-    self.updateOverviewArea = function(){
-      
-        for(var i = 0; i < self.stages.length; i++){
-            var stage = self.stages[i];
+    self.updateOverviewArea = function(stages, stageNo){  
+        //first empty the overview area
+        self.$overviewArea.empty();
+                        
+        self.$overviewArea.append('<h3>New Compound</h3>');  
+        //loop through all the stages
+        for(var i = 0; i < stages.length; i++){
+            var stage = stages[i];
             $stageOverview = $('<div class="stage-overview"></div>');
+            if(i === stageNo){
+                $stageOverview.addClass("current-stage");
+            }
             
             $stageName = $('<div class="name-overview"></div>');
-            $stageName.append(stage.name);
+            $stageName.append(stage.name + ": ");
                                    
             $stageValue = $('<div class="value-overview"></div>');
             if (stage.value !== ""){
-                $stageValue.append(self.getData(stage.value));
+                $stageValue.append(stage["value"]);
             }
             
-            $stageOverview.append($stageName).append($stageValue);            
-        }
-        
+            $stageOverview.append($stageName).append($stageValue);    
+            self.$overviewArea.append($stageOverview);
+        }        
     };
-    
-    self.$overviewArea.append('<h3>New Compound</h3>');
-    
-    
     
     /*
      * staging area
@@ -125,9 +127,13 @@ function CompoundBuilder($stagingArea, $overviewArea){
         {name: "Description", type: "text", value: ""},
         {name: "MolFile", type: "file", value: ""}];    
     self.stage = 0;            
-    self.builder = new Builder(self.stages, $stagingArea, $overviewArea);
+    self.builder = new Builder($stagingArea, $overviewArea);
     
-    self.showStage = function(stageNo){        
+    self.showStage = function(stageNo){     
+        
+        //first update the overview area to represent current status
+        self.builder.updateOverviewArea(self.stages, stageNo);
+        
         var stage = self.stages[stageNo];
         
         //clear previous stage

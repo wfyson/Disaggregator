@@ -111,7 +111,8 @@ class Reference {
     
     //return the file format of the reference
     public function getFormat(){
-        return explode('.', $this->refFile)[1];        
+        $exploded = explode('.', $this->refFile);
+        return $exploded[1];        
     }
 }
 

@@ -29,32 +29,30 @@
     <body>
         <div id="header">
         <?php
-        $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
-
-        if (!$username) {
-            
-        } else {
-            //only provide log out link if user is logged in
+        //provide a link to homepage
+        $page = basename($_SERVER['PHP_SELF']);
+        if ($page != "index.php"){
             ?>
+            <span class="homepage"><a class="btn btn-default" href="index.php">Return to Homepage</a></span>
+            <?php
+        }       
+        
+        $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
+        ChromePhp::log($username);
+        if ($username) {
+            ChromePhp::log("logged in");
+            //only provide log out link if a user is logged in
+            ?>
+            <span class="login-status">
             <span>Logged in as <b><?php echo $username; ?></b></span>
 
             <form action="index.php?action=logout" method="post" style="width: 50%;">
                 <input type="hidden" name="logout" value="true" />   
                 <input class="btn btn-default" type="submit" name="logout" value="Logout" />
             </form>
+            </span>
     <?php
-        }
-        //provide a link to homepage
-        $page = basename($_SERVER['PHP_SELF']);
-        if ($page != "index.php"){
-            ?>
-            <a class="btn btn-default" href="index.php">Return to Homepage</a>
-            <?php
-        }
-        
-        
-        
-        
+        } 
     ?>    
         </div>
         <div id="container" class="row">
