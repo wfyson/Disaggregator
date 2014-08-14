@@ -8,7 +8,7 @@ session_start();
 $userid = $_SESSION['userid'];
 
 //generate path from userid and name of document
-$path = '../uploads/' . $userid . '/' . str_replace('.', '_', $_REQUEST['name']) . '/'; //. str_replace('.', '_', $_REQUEST['name']) . '_';
+$path = '../' . $_REQUEST['dir'] . '/' . $userid . '/' . str_replace('.', '_', $_REQUEST['name']) . '/'; //. str_replace('.', '_', $_REQUEST['name']) . '_';
 
 ChromePhp::log($path);
 

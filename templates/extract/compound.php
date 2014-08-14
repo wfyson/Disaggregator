@@ -17,11 +17,12 @@
 </div>  
 
 <script>
-    window.onload = function(){
-        var compoundBuilder = new CompoundBuilder($('#extract-panel'), $('#sidebar'));              
+    window.onload = function(){        
+        
+        var compoundBuilder = new CompoundBuilder($('#extract-panel'), $('#sidebar'), <?php echo $_GET['docid'] ?>);              
         compoundBuilder.showStage(0);
         
-        //hook up all the checkboxes nad table cells to the compound builder here
+        //hook up all the checkboxes and table cells to the compound builder here
         $('#extract-content .selector').change(function(){
            if($(this).is(":checked")){
                compoundBuilder.setChecked($(this).data("id"));

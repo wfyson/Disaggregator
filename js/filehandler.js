@@ -2,18 +2,14 @@
  * Javascript to handle file uploads
  */
 
-function test(){
-    console.log("test");
-}
-
 //trigger when a file is selected to upload
-function handleFileSelect(evt) {
-    console.log("handlefileselect");
+function handleFileSelect(evt, callback) {    
     var files = evt.target.files; // FileList object
+    var source = evt.currentTarget.name; 
     for (var i = 0, f; f = files[i]; i++) {        
         var name = f.name;        
         var newName = name.split(' ').join('_');        
-        sendRequest(f, newName);
+        sendRequest(f, newName, source, callback);
     }
 }
 
@@ -23,38 +19,48 @@ var slices;
 var slices2;
 
 //does the uploading of the file
-function sendRequest(blob, fname) {
+function sendRequest(blob, fname, source, callback) {
+
 
     var format = fname.split('.')[1];
-    var compatible = ['pptx', 'docx'];
+    //var compatible = ['pptx', 'docx'];
 
-    if ($.inArray(format, compatible) !== -1) {
-
-        var start = 0;
-        var end;
-        var index = 0;
-
-        // calculate the number of slices required
-        slices = Math.ceil(blob.size / BYTES_PER_CHUNK);
-        slices2 = slices;
-
-        while (start < blob.size) {
-            end = start + BYTES_PER_CHUNK;
-            if (end > blob.size) {
-                end = blob.size;
-            }
-
-            uploadFile(blob, index, start, end, fname);
-
-            start = end;
-            index++;
-        }
-    } else {
-        //invalid format
+   // if ($.inArray(format, compatible) !== -1) {
+    var dir = "";
+    switch(source){
+        case "doc_source":
+            dir = "uploads";
+            break;
+        case "temp_source":
+            dir = "temp";
     }
+
+    var start = 0;
+    var end;
+    var index = 0;
+
+    // calculate the number of slices required
+    slices = Math.ceil(blob.size / BYTES_PER_CHUNK);
+    slices2 = slices;
+
+    while (start < blob.size) {
+        end = start + BYTES_PER_CHUNK;
+        if (end > blob.size) {
+            end = blob.size;
+        }
+
+        uploadFile(blob, index, start, end, fname, dir, callback);
+
+        start = end;
+        index++;
+    }
+    //} else {
+        //invalid format
+    //    console.log("invalid format");
+    //}
 }
 
-function uploadFile(blob, index, start, end, fname) {
+function uploadFile(blob, index, start, end, fname, dir, callback) {
     var xhr;
     var end;
     var fd;
@@ -76,7 +82,7 @@ function uploadFile(blob, index, start, end, fname) {
 
             // if we have finished all slices
             if (slices == 0) {
-                mergeFile(fname);
+                mergeFile(fname, dir, callback);
             }
         }
     };
@@ -85,6 +91,7 @@ function uploadFile(blob, index, start, end, fname) {
 
     fd = new FormData();
     fd.append("file", chunk);
+    fd.append("dir", dir);
     fd.append("name", fname);
     fd.append("index", index);
 
@@ -93,7 +100,7 @@ function uploadFile(blob, index, start, end, fname) {
 }
 
 //reconstruct slices into original file
-function mergeFile(fname) {
+function mergeFile(fname, dir, callback) {
     
     var xhr;
 
@@ -105,12 +112,17 @@ function mergeFile(fname) {
                 console.log(xhr);
             }
             console.log("success");
-            document.location.href = "index.php#documents";
-            location.reload();
+            callback(fname);
+            //if (dir === "uploads"){
+                //show the new document            
+                //document.location.href = "index.php#documents";
+                //location.reload();
+            //}
         }
     };
     fd = new FormData();
     fd.append("name", fname);
+    fd.append("dir", dir);
     fd.append("index", slices2);
 
     xhr.open("POST", "./scripts/merge.php", true);

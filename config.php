@@ -16,6 +16,7 @@ define( "TEMPLATE_PATH", "templates" );
 require( CLASS_PATH . "/Reference.php" );
 require( CLASS_PATH . "/Reaction.php");
 require( CLASS_PATH . "/Compound.php");
+require( CLASS_PATH . "/CompoundReference.php");
 
 require( CLASS_PATH . "/OpenXmlReader.php");
 

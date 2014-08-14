@@ -81,6 +81,7 @@ class Compound
         $st->execute();
         $this->id = $conn->lastInsertId();
         $conn = null;
+        return $this->id;
     }
     
     public function update()

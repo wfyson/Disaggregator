@@ -9,7 +9,7 @@ require("../config.php");
 session_start();
 $userid = $_SESSION['userid'];
 
-$path = '../uploads/' . $userid . '/' . str_replace('.', '_', $_REQUEST['name']) . '/'; // . str_replace('.', '_', $_REQUEST['name']) . '_';
+$path = '../' . $_REQUEST['dir'] . '/' . $userid . '/' . str_replace('.', '_', $_REQUEST['name']) . '/'; // . str_replace('.', '_', $_REQUEST['name']) . '_';
 
 if (!isset($_REQUEST['name']))
     throw new Exception('Name required');
@@ -33,8 +33,11 @@ for ($i = 0; $i < $_REQUEST['index']; $i++) {
 }
 
 fclose($dst);
-//now add it to the database!
-$data = array("ReferenceID" => null, "RefFile" => $_REQUEST['name'], "UploaderID" => $userid);
-$reference = new Reference($data);
-$reference->insert();
+
+//if we are uploading a document then we can add this to the database
+if ($_REQUEST['dir'] == "uploads"){
+    $data = array("ReferenceID" => null, "RefFile" => $_REQUEST['name'], "UploaderID" => $userid);
+    $reference = new Reference($data);
+    $reference->insert();
+}
 ?>

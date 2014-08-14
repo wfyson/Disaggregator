@@ -99,7 +99,6 @@ body{
 /*
  * Doc entries
  */
-
 .entry.doc-entry{
     padding: 1%;    
     background: #eee;
@@ -187,8 +186,21 @@ body{
 
 #extract-panel .input input{
     display: inline-block;  
-    width: 50%;
-    
+    width: 50%;   
+    margin-right: 10px;
+}
+
+#extract-panel #file-upload{
+    position: absolute;
+    z-index: 2;
+    top:25px;
+    margin-left:5px;
+    width:135px;
+    filter: alpha(opacity=0);
+    -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    opacity:0;
+    background-color:transparent;
+    color:transparent;
 }
 
 #extract-panel .buttons{
