@@ -6,31 +6,41 @@
  * ongoing overview - provided it is given two components of the page to display
  * these things in...
  */
-function Builder($stagingArea, $overviewArea){
+function Builder(data, $stagingArea, $overviewArea){
     
-    var self = this;
+    var self = this;    
+    self.type = data.type;
+    self.docid = data.docid;
+    self.stages = data.stages;
+    self.stage = 0;        
+    
     self.$stagingArea = $stagingArea;
     self.$overviewArea = $overviewArea;
     self.$input;
+    self.missingStages = [];
     
     /*
      * overview area
      */
-    self.updateOverviewArea = function(stages, stageNo){  
+    self.updateOverviewArea = function(stageNo){  
         //first empty the overview area
         self.$overviewArea.empty();
                         
-        self.$overviewArea.append('<h3>New Compound</h3>');  
+        self.$overviewArea.append('<h3>New ' + self.type + '</h3>');  
         //loop through all the stages
-        for(var i = 0; i < stages.length; i++){
-            var stage = stages[i];
+        for(var i = 0; i < self.stages.length; i++){
+            var stage = self.stages[i];
             $stageOverview = $('<div class="stage-overview"></div>');
             if(i === stageNo){
-                $stageOverview.addClass("current-stage");
+                $stageOverview.addClass("current-stage");                
+            }
+            
+            if($.inArray(i, self.missingStages) > -1){
+                $stageOverview.addClass("missing-stage alert alert-danger");
             }
             
             $stageName = $('<div class="name-overview"></div>');
-            $stageName.append(stage.name + ": ");
+            $stageName.append("<b>" + stage.name + ": </b>");
                                    
             $stageValue = $('<div class="value-overview"></div>');
             if (stage.value !== ""){
@@ -44,12 +54,90 @@ function Builder($stagingArea, $overviewArea){
     
     /*
      * staging area
-     */
+     */    
     self.clearStagingArea = function(){
         self.$stagingArea.empty();
     };
     
-    self.showButtons = function(stage, limit){
+    //creates the interface and functionality for a stage
+    self.showStage = function(stageNo){     
+        
+        //first update the overview area to represent current status        
+        self.updateOverviewArea(stageNo);
+        
+        var stage = self.stages[stageNo];
+        
+        //clear previous stage
+        self.clearStagingArea();                    
+        
+        //show the input area
+        switch (stage.type){
+            case "text":                
+                var $input = self.showTextStage(stage);
+                break;
+            case "file":
+                //passed a callback for when the file has been uploaded
+                var $input = self.showFileStage(stage, self.setFile); 
+                break;
+        }
+        
+        //show previous and next buttons and add their functionality
+        buttons = self.showButtons(stageNo);  
+        if (typeof buttons.$prevBtn !== "undefined"){
+            buttons.$prevBtn.click(function(){
+                self.stages[stageNo].value = $input.val();
+                self.stage--;
+                self.showStage(self.stage);
+            });
+        }
+        
+        if (typeof buttons.$nextBtn !== "undefined"){
+            buttons.$nextBtn.click(function(){
+                if (stageNo === (self.stages.length - 1)){
+                    //we're on the final stage so submit the record                    
+                    var data = {};
+                    self.missingStages = [];
+                    for(var i = 0; i < self.stages.length; i++){                        
+                        var stage = self.stages[i];
+                        data[stage.name] = stage.value;
+                        if (stage.value === ""){
+                            //this stage needs an entry                            
+                            self.missingStages.push(i);
+                        }
+                    }
+                    //either submit the data or ask for more information                    
+                    if (self.missingStages.length === 0){
+                        //we successfully have everything
+                        data["docid"] = self.docid;
+                        
+                        //get the relevant php script for adding the record
+                        var script = "";
+                        switch (self.type){
+                            case "Compound":
+                                script = "./scripts/addCompound.php";
+                                break;
+                            case "Reaction":
+                                script = "./scripts/addReaction.php";
+                                break;                                
+                        }
+                        $.post(script, data, function(){
+                            console.log("new entry added to the database!");
+                            //should probably redirect to homepage here
+                        });
+                    }else{
+                        self.updateOverviewArea(stageNo);
+                    }                    
+                }else{
+                    //move on to the next stage
+                    self.stages[stageNo].value = $input.val();
+                    self.stage++;
+                    self.showStage(self.stage);
+                }
+            });
+        }                
+    };
+            
+    self.showButtons = function(stage){
                    
         var $prevBtn, $nextBtn;
         
@@ -64,14 +152,14 @@ function Builder($stagingArea, $overviewArea){
         }
         
         //next button
-        if (stage < limit-1){
+        if (stage < self.stages.length-1){
             $nextBtn = $('<button>Next</button>');
             $nextBtn.addClass('btn btn-default btn-next');
             $btnDiv.append($nextBtn);
         }
         
         //submit button
-        if (stage == limit-1){
+        if (stage === self.stages.length-1){
             $nextBtn = $('<button>Submit</button>');
             $nextBtn.addClass('btn btn-success btn-next');
             $btnDiv.append($nextBtn);
@@ -122,10 +210,9 @@ function Builder($stagingArea, $overviewArea){
             });
             self.$input = $input;
         
-            $inputContent = $("<span class='glyphicon glyphicon-plus'></span>");
-            $inputContent.append(" UploadFile...");
+            $inputContent = $("<span class='glyphicon glyphicon-plus'></span>");            
         
-            $uploadLink.append($inputContent);
+            $uploadLink.append($inputContent).append(" Upload File...");
             $inputDiv.append($input).append($uploadLink); 
         }else{
             //show the uploaded file
@@ -143,108 +230,20 @@ function Builder($stagingArea, $overviewArea){
         return self.$input;
     };        
     
-    self.updateStage = function(id){
-        self.$input.val(self.getData(id));
+    //set stage value from a checkbox
+    self.setChecked = function(id){
+        self.stages[self.stage].value = self.getData(id);
+        self.showStage(self.stage);
     };
     
+    //gets the actual value associated with an id from the view of the document
     self.getData = function(id){
         return $('#item-' + id + ' .value').text();        
-    };    
-}
-
-/*
- * The compoundBuilder works with the extract/compound.php template to allow
- * the user to gather all the parts of a compound together from a document
- * and then submit this to the server where it can be saved
- */
-function CompoundBuilder($stagingArea, $overviewArea, docid){
+    };   
     
-    var self = this;    
-    self.docid = docid;
-    self.stages = [
-        {name: "Name", type: "text", value: ""},
-        {name: "Description", type: "text", value: ""},
-        {name: "MolFile", type: "file", value: ""}];    
-    self.stage = 0;            
-    self.builder = new Builder($stagingArea, $overviewArea);
-    
-    self.showStage = function(stageNo){     
-        
-        //first update the overview area to represent current status        
-        self.builder.updateOverviewArea(self.stages, stageNo);
-        
-        var stage = self.stages[stageNo];
-        
-        //clear previous stage
-        self.builder.clearStagingArea();                    
-        
-        //show the input area
-        switch (stage.type){
-            case "text":                
-                var $input = self.builder.showTextStage(stage);
-                break;
-            case "file":
-                var $input = self.builder.showFileStage(stage, self.setFile);
-                break;
-        }
-        
-        //show previous and next buttons and add their functionality
-        buttons = self.builder.showButtons(self.stage, self.stages.length);  
-        if (typeof buttons.$prevBtn !== "undefined"){
-            buttons.$prevBtn.click(function(){
-                self.stages[self.stage].value = $input.val();
-                self.stage--;
-                self.showStage(self.stage);
-            });
-        }
-        
-        if (typeof buttons.$nextBtn !== "undefined"){
-            buttons.$nextBtn.click(function(){
-                if (self.stage == (self.stages.length - 1)){
-                    //we're on the final stage so submit the compound                    
-                    var data = {};
-                    var missingStages = [];
-                    for(var i = 0; i < self.stages.length; i++){                        
-                        var stage = self.stages[i];
-                        data[stage.name] = stage.value;
-                        if (stage.value == ""){
-                            //this stage needs an entry                            
-                            missingStages.push(i);
-                        }
-                    }
-                                        
-                    if (missingStages.length === 0){
-                        //we successfully have everything
-                        data["docid"] = self.docid;
-                        $.post('./scripts/addCompound.php', data, function(){
-                            console.log("new compound added to the database!");
-                            //should probably redirect to homepage here
-                        });
-                    }else{
-                        console.log("some items are missing!!!!");
-                    }
-                    
-                }else{
-                    //move on to the next stage
-                    self.stages[self.stage].value = $input.val();
-                    self.stage++;
-                    self.showStage(self.stage);
-                }
-            });
-        }                
-    };
-    
-    self.setChecked = function(id){
-        self.builder.updateStage(id);
-    };
-    
+    //set stage valur from a file
     self.setFile = function(path){
         self.stages[self.stage].value = path;
         self.showStage(self.stage);
     };
-    
-    //call a php script that saves this compound in the database
-    self.submit = function(){
-        //loop through stages, get the value for each and post it off to the server    
-    };
-}
+}          

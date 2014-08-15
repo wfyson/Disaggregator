@@ -124,6 +124,20 @@ body{
     display: block;
 }
 
+.entry.upload-entry{
+    height:34px;
+}
+
+.entry.upload-entry .progress-bar{
+   height: 20px;
+   margin-top: 7px;
+   margin-bottom: 7px;
+}
+
+#upload-progress{
+    display: none;
+}
+
 /*
  * Compound entries
  */
@@ -274,6 +288,18 @@ body{
 
 #sidebar.extract .stage-overview.current-stage{
     background: #e1e1e8;
+}
+
+#sidebar.extract .stage-overview.missing-stage.alert{
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    color: #a94442;
+}
+
+#sidebar.extract .stage-overview.current-stage.missing-stage.alert{
+    background-color: salmon;
+    border-color: #ebccd1;
+    color: #a94442;
 }
 
 #sidebar.extract .stage-overview .value-overview, #sidebar.extract .stage-overview .name-overview{

@@ -19,7 +19,17 @@
 <script>
     window.onload = function(){        
         
-        var compoundBuilder = new CompoundBuilder($('#extract-panel'), $('#sidebar'), <?php echo $_GET['docid'] ?>);              
+        var compoundData = {};
+        var compoundStages = [
+            {name: "Name", type: "text", value: ""},
+            {name: "Description", type: "text", value: ""},
+            {name: "MolFile", type: "file", value: ""}];  
+        
+        compoundData['type'] = "Compound";
+        compoundData['docid'] = <?php echo $_GET['docid'] ?>;
+        compoundData['stages'] = compoundStages;
+        
+        var compoundBuilder = new Builder(compoundData, $('#extract-panel'), $('#sidebar'));              
         compoundBuilder.showStage(0);
         
         //hook up all the checkboxes and table cells to the compound builder here
@@ -38,7 +48,8 @@
                 $this.removeClass("selected");  
             }else{
                 $this.addClass("selected");
-                compoundBuilder.setValue($(this).data("id"));
+                console.log("get cell data!!");
+                //compoundBuilder.setValue($(this).data("id"));
             }                        
         });
         

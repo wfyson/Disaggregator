@@ -19,7 +19,7 @@ class Compound
         if (isset($data['Name']))
             $this->name = $data['Name'];
         if (isset($data['Description']))
-            $this->description = (int) $data['Description'];
+            $this->description = $data['Description'];
         if (isset($data['MolFile']))
             $this->molFile = $data['MolFile'];
     }

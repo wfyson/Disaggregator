@@ -83,11 +83,16 @@
         <div class="tab-pane" id="documents">
             <ul>         
                 <li>
-                    <div class ="entry">
+                    <div id='file-upload' class ="entry">
                         <a class='btn btn-primary' href='javascript:;'>                        
                             <input id='files' type="file" style='position:absolute;z-index:2;top:55px;left:25px;width:125px;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="doc_source" size="40">
                             <span class="glyphicon glyphicon-plus"></span> Upload Document...
                         </a>
+                    </div>
+                    <div id="upload-progress" class="entry upload-entry">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                        Uploading...
+                        </div>
                     </div>
                 </li>
                 <?php
