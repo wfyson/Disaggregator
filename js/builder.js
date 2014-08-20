@@ -200,9 +200,10 @@ function Builder(data, $stagingArea, $overviewArea){
         
         if(stage.value == ""){
             //ask for file upload
+            $uploadDiv = $('<div id="file-upload"></div>');
             $uploadLink = $("<a class='btn btn-primary' href='javascript:;'></a>");
-        
-            $input = $("<input id='file-upload' type='file'>");
+                        
+            $input = $("<input id='files' type='file'>");
             $input.attr('name', 'temp_source');
             $input.attr('size', '40');   
             $input.on('change', function(event) {
@@ -212,8 +213,17 @@ function Builder(data, $stagingArea, $overviewArea){
         
             $inputContent = $("<span class='glyphicon glyphicon-plus'></span>");            
         
-            $uploadLink.append($inputContent).append(" Upload File...");
-            $inputDiv.append($input).append($uploadLink); 
+            $uploadLink.append($input).append($inputContent).append(" Upload File...");
+            $uploadDiv.append($uploadLink);
+            
+            //also create a div (initially hidden) for showing upload progress
+            $uploadProgress = $('<div id="upload-progress"></div>');
+            $progressBar = $('<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">');
+                    
+            $progressBar.append("Uploading...");                       
+            $uploadProgress.append($progressBar);
+            
+            $inputDiv.append($uploadDiv).append($uploadProgress); 
         }else{
             //show the uploaded file
             $input = $("<input id='uploaded-file' type='text' readonly>");            

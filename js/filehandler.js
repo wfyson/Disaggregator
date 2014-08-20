@@ -59,7 +59,7 @@ function sendRequest(blob, fname, source, callback) {
                 start = end;
                 index++;
             }
-        });
+        }).css("display","inline-block");
     });
 
 

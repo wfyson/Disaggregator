@@ -205,11 +205,19 @@ body{
 }
 
 #extract-panel #file-upload{
+    display: inline-block;
+}
+
+#extract-panel #upload-progress{
+    width: 75%;
+}
+
+#extract-panel #files{
     position: absolute;
     z-index: 2;
     top:25px;
     margin-left:5px;
-    width:135px;
+    width:110px;
     filter: alpha(opacity=0);
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     opacity:0;
