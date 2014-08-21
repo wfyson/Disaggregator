@@ -79,6 +79,10 @@ function Builder(data, $stagingArea, $overviewArea){
                 //passed a callback for when the file has been uploaded
                 var $input = self.showFileStage(stage, self.setFile); 
                 break;
+            case "image":
+                //passed a callback should a file be uploaded instead of selected
+                var $input = self.showImageStage(stage, self.setFile);
+                break;
         }
         
         //show previous and next buttons and add their functionality
@@ -190,6 +194,33 @@ function Builder(data, $stagingArea, $overviewArea){
         return self.$input;
     };
     
+    //create an image stage
+    self.showImageStage = function(stage, callback){
+        $inputDiv = $("<div class='input image-input'></div>");
+        
+        //name of the thing we're asking about
+        $name = $("<h3>" + stage.name + ": </h3>");
+        $inputDiv.append($name);
+        
+        if (stage.value == ""){
+            //option 1 - select an image
+            $selectImage = $("<div id='select-image'></div>");
+            $selectHeading = $("<p>Select an image from the document...</p>");
+            $selectImage.append($selectHeading);
+            $inputDiv.append($selectImage);
+
+            //option 2 - upload an image
+            self.generateFileUploadHtml($inputDiv, callback); 
+        }else{
+            //perhaps show a tumbnail too!            
+            //show the remove file option
+            self.generateFileRemoveHtml($inputDiv, stage.value);
+        }
+        
+        self.$stagingArea.append($inputDiv);
+        return self.$input;        
+    };
+    
     //create a file stage
     self.showFileStage = function(stage, callback){        
         $inputDiv = $("<div class='input'></div>");
@@ -199,46 +230,54 @@ function Builder(data, $stagingArea, $overviewArea){
         $inputDiv.append($name);        
         
         if(stage.value == ""){
-            //ask for file upload
-            $uploadDiv = $('<div id="file-upload"></div>');
-            $uploadLink = $("<a class='btn btn-primary' href='javascript:;'></a>");
-                        
-            $input = $("<input id='files' type='file'>");
-            $input.attr('name', 'temp_source');
-            $input.attr('size', '40');   
-            $input.on('change', function(event) {
-                handleFileSelect(event, callback);
-            });
-            self.$input = $input;
-        
-            $inputContent = $("<span class='glyphicon glyphicon-plus'></span>");            
-        
-            $uploadLink.append($input).append($inputContent).append(" Upload File...");
-            $uploadDiv.append($uploadLink);
-            
-            //also create a div (initially hidden) for showing upload progress
-            $uploadProgress = $('<div id="upload-progress"></div>');
-            $progressBar = $('<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">');
-                    
-            $progressBar.append("Uploading...");                       
-            $uploadProgress.append($progressBar);
-            
-            $inputDiv.append($uploadDiv).append($uploadProgress); 
+            self.generateFileUploadHtml($inputDiv, callback);              
         }else{
-            //show the uploaded file
-            $input = $("<input id='uploaded-file' type='text' readonly>");            
-            self.$input = $input;
-            self.$input.val(stage.value);
-        
-            $removeBtn = $("<button class='btn btn-primary'></button>");
-            $removeBtn.append("Remove File...");
-            
-            $inputDiv.append($input).append($removeBtn);
+            self.generateFileRemoveHtml($inputDiv, stage.value);
         }
         
         self.$stagingArea.append($inputDiv);
         return self.$input;
     };        
+    
+    self.generateFileUploadHtml = function($inputDiv, callback){
+        //ask for file upload
+        $uploadDiv = $('<div id="file-upload"></div>');
+        $uploadLink = $("<a class='btn btn-primary' href='javascript:;'></a>");
+
+        $input = $("<input id='files' type='file'>");
+        $input.attr('name', 'temp_source');
+        $input.attr('size', '40');
+        $input.on('change', function(event) {
+            handleFileSelect(event, callback);
+        });
+        self.$input = $input;
+
+        $inputContent = $("<span class='glyphicon glyphicon-plus'></span>");
+
+        $uploadLink.append($input).append($inputContent).append(" Upload File...");
+        $uploadDiv.append($uploadLink);
+
+        //also create a div (initially hidden) for showing upload progress
+        $uploadProgress = $('<div id="upload-progress"></div>');
+        $progressBar = $('<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">');
+
+        $progressBar.append("Uploading...");
+        $uploadProgress.append($progressBar);
+
+        $inputDiv.append($uploadDiv).append($uploadProgress); 
+    };
+    
+    self.generateFileRemoveHtml = function($inputDiv, value){
+        //show the uploaded file
+        $input = $("<input id='uploaded-file' type='text' readonly>");            
+        self.$input = $input;
+        self.$input.val(value);
+        
+        $removeBtn = $("<button class='btn btn-primary'></button>");
+        $removeBtn.append("Remove File...");
+            
+        $inputDiv.append($input).append($removeBtn);
+    };
     
     //set stage value from a checkbox
     self.setChecked = function(id){

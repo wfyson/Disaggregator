@@ -20,10 +20,13 @@
     window.onload = function(){        
         
         var compoundData = {};
+        
+        //each stage's value should be an array to make it easier for the cases where multi is true
         var compoundStages = [
-            {name: "Name", type: "text", value: ""},
-            {name: "Description", type: "text", value: ""},
-            {name: "MolFile", type: "file", value: ""}];  
+            {name: "Name", type: "text", value: "", multi: false},
+            {name: "Description", type: "text", value: "", multi: false},
+            {name: "MolFile", type: "file", value: "", multi: false},
+            {name: "Spectra", type: "image", value: "", multi: true}];   
         
         compoundData['type'] = "Compound";
         compoundData['docid'] = <?php echo $_GET['docid'] ?>;

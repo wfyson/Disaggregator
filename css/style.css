@@ -225,6 +225,28 @@ body{
     color:transparent;
 }
 
+#extract-panel .image-input #select-image{
+    width: 40%;
+    border-right: solid;
+    border-width: thin;
+    padding-left: 5px;  
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#extract-panel .image-input #file-upload{
+    margin-left: 5px;
+    width: 40%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#extract-panel .image-input #upload-progress{
+    margin-left: 5px;
+    width: 40%;
+    vertical-align: middle;
+}
+
 #extract-panel .buttons{
     height: 34px;
 }
