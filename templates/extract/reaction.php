@@ -11,7 +11,7 @@
 </div>
 
 <!-- Sidebar-->
-<!-- here the sidebar describes the compound being generated -->
+<!-- here the sidebar describes the reaction being generated -->
 <div id='sidebar' class='extract col-md-3 col-md-offset-7'>    
     
 </div>  
@@ -19,23 +19,23 @@
 <script>
     window.onload = function(){        
         
-        var compoundData = {};
-        var compoundStages = [
-            {name: "Name", type: "text", value: ""},
-            {name: "Description", type: "text", value: ""},
-            {name: "MolFile", type: "file", value: ""}];  
+        var reactionData = {};
+        var reactionStages = [
+            {name: "Transformation", type: "text", value: ""},
+            //{name: "Result", type: "compound", value: ""}, //this is going to require a load of work!!!
+            {name: "Procedure", type: "text", value: ""}];  
         
-        compoundData['type'] = "Compound";
-        compoundData['docid'] = <?php echo $_GET['docid'] ?>;
-        compoundData['stages'] = compoundStages;
+        reactionData['type'] = "Reaction";
+        reactionData['docid'] = <?php echo $_GET['docid'] ?>;
+        reactionData['stages'] = reactionStages;
         
-        var compoundBuilder = new Builder(compoundData, $('#extract-panel'), $('#sidebar'));              
-        compoundBuilder.showStage(0);
+        var reactionBuilder = new Builder(reactionData, $('#extract-panel'), $('#sidebar'));              
+        reactionBuilder.showStage(0);
         
-        //hook up all the checkboxes and table cells to the compound builder here
+        //hook up all the checkboxes and table cells to the reaction builder here
         $('#extract-content .selector').change(function(){
            if($(this).is(":checked")){
-               compoundBuilder.setChecked($(this).data("id"));
+               reactionBuilder.setChecked($(this).data("id"));
                console.log("checked");
            }else{
                console.log("unchecked");
@@ -48,7 +48,7 @@
                 $this.removeClass("selected");  
             }else{
                 $this.addClass("selected");
-                compoundBuilder.setCell($(this).data("id"));
+                reactionBuilder.setCell($(this).data("id"));
             }                        
         });
         

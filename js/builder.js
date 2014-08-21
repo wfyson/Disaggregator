@@ -246,6 +246,11 @@ function Builder(data, $stagingArea, $overviewArea){
         self.showStage(self.stage);
     };
     
+    //set stage value from a table cell
+    self.setCell = function(id){
+        console.log("get the cell value...");
+    };
+    
     //gets the actual value associated with an id from the view of the document
     self.getData = function(id){
         return $('#item-' + id + ' .value').text();        

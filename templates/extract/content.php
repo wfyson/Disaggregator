@@ -1,6 +1,7 @@
 <?php
 
 $tocLinks = array();
+$rels = $results['rels'];
 $root = $results['text'];
 $content = $root->getParaArray();
 foreach ($content as $entry) {     
@@ -14,11 +15,11 @@ foreach ($content as $entry) {
         case "caption":
             addCaption($entry);
             break;
-        case "image":
-            addImage($entry);
+        case "image":            
+            addImage($entry, $rels);
             break;
         case "table":
-            addTable($entry);
+            addTable($entry, $rels);
             break;
     }
 }
@@ -44,15 +45,23 @@ function addHeading($heading, $tocLinks) {
     return $tocLinks;
 }
 
-function addImage($image) {
+function addImage($image, $rels) {
+    echo '<div id="item-' . $image->getId() . '"class="image">'; 
+    addCheckBox($image->getId());
     
+    $relId = $image->getContent();    
+    $source = $rels[$relId];
+    
+    echo '<p><img src="' . $source . '"></p></div>';     
 }
 
 function addCaption($caption) {
-    
+   echo '<div id="item-' . $caption->getId() . '"class="caption">'; 
+   addCheckBox($caption->getId());
+   echo '<p><b>' . $caption->getContent() . '</b></p></div>';     
 }
 
-function addTable($table) {
+function addTable($table, $rels) {
     echo '<div class="table">';
     $html = "<table>";
     $rows = $table->getContent();
@@ -63,7 +72,13 @@ function addTable($table) {
             $html = $html . '<td id="item-' . $cell->getId() . '" data-id="' . $cell->getId() . '">';
             $paras = $cell->getContent();
             foreach ($paras as $para) {
-                $html = $html . '<p class="value">' . $para->getText() . '</p>';
+                if ($para->getType() == "text"){
+                    $html = $html . '<p class="value">' . $para->getText() . '</p>';
+                }elseif ($para->getType() == "image"){
+                    $relId = $para->getContent();    
+                    $source = $rels[$relId];
+                    $html = $html . '<img src="' . $source . '">'; 
+                }                             
             }
             $html = $html . '</td>';
         }

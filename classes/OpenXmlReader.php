@@ -5,33 +5,27 @@
  * XML format are implemented here
  */
 
+define("IMAGE_REL_TYPE", "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image");
+
 abstract class OpenXmlReader {
 
     protected $path;
     protected $zip;
     protected $imageLinks = array();
 
-//protected $docName;
-//protected $localPath;
-//protected $file;
-//protected $imagePath;
+    //protected $docName;
+    //protected $localPath;
+    //protected $file;
+    //protected $imagePath;
 
     public function __construct($reference) {
         $userid = $_SESSION['userid'];
 
-//set up things for reading the file
-//create directory for images        
-//$this->imagePath = '../uploads/' . $userid . '/' . $reference->refFile . '/';
-//ChromePhp::log($this->imagePath);
-//if (!file_exists($this->imagePath)) {
-//    ChromePhp::log("path does not exist!!!");
-//    mkdir($this->imagePath, 0777, true);
-//}      
-//set the readers reference to the file
+        //set the readers reference to the file
         $this->path = './uploads/' . $userid . '/' . str_replace('.', '_', $reference->refFile) . '/' . $reference->refFile;
     }
 
-//read the image from the powerpoint and write it to the server and return the link
+    //read the image from the powerpoint and write it to the server and return the link
     public function readImage($entryName, $zipEntry) {
         $img = zip_entry_read($zipEntry, zip_entry_filesize($zipEntry));
         if ($img !== null) {
@@ -57,18 +51,18 @@ class WordReader extends OpenXmlReader {
             if (strpos($entryName, 'word/media/') !== FALSE) {
                 $this->imageLinks[] = $this->readImage($entryName, $zipEntry);
             }
-            /*
-              //for image rels
-              if (strpos($entryName, 'word/_rels/document.xml.rels') !== FALSE)
-              {
-              $this->rels = $this->readRels($zipEntry);
-              }
-              */
-              //for document content
-              if (strpos($entryName, 'word/document.xml') !== FALSE)
-              {
-              $this->text = $this->readText($zipEntry);
-              }
+            
+            //for image rels
+            if (strpos($entryName, 'word/_rels/document.xml.rels') !== FALSE)
+            {
+                $this->rels = $this->readRels($zipEntry);
+            }
+              
+            //for document content
+            if (strpos($entryName, 'word/document.xml') !== FALSE)
+            {
+                $this->text = $this->readText($zipEntry);
+            }
              
             $zipEntry = zip_read($this->zip);
         }
@@ -76,8 +70,34 @@ class WordReader extends OpenXmlReader {
         $results = array();
         $results['images'] = $this->imageLinks;
         $results['text'] = $this->text;
+        $results['rels'] = $this->rels;
 
         return $results;
+    }
+    
+
+    /*
+     * Create an associative array to link rel ids to images
+     */    
+    public function readRels($zipEntry)
+    {        
+        $relList = array();                       
+
+        $rels = zip_entry_read($zipEntry, zip_entry_filesize($zipEntry));
+        $xml = simplexml_load_string($rels);
+        
+        for ($i = 0; $i < $xml->count(); $i++) {
+            $record = $xml->Relationship{$i};
+            $type = $record->attributes()->Type;
+            $cmp = strcmp($type, constant("IMAGE_REL_TYPE"));
+            if ($cmp == 0)
+            {
+                $id = $record->attributes()->Id;
+                $target = $this->path . basename($record->attributes()->Target);                   
+                $relList[(string)$id] = $target;           
+            }
+        }
+        return $relList;        
     }
 
     /*
@@ -85,7 +105,6 @@ class WordReader extends OpenXmlReader {
      * Includes reading of images within the text (represented by their relIDs)
      * and captions.
      */
-
     public function readText($zipEntry) {
         $doc = zip_entry_read($zipEntry, zip_entry_filesize($zipEntry));
         $xml = simplexml_load_string($doc);
@@ -130,7 +149,6 @@ class WordReader extends OpenXmlReader {
     public function readPara($para, $parent) {
         //check if there is a picture
         $wordImage = $this->readParaImage($para);
-
         //check the style of the para 
         $style = $para[0]->xpath('w:pPr/w:pStyle');
         if ($style[0] != null) { // a style is present
@@ -193,7 +211,7 @@ class WordReader extends OpenXmlReader {
         }
     }
 
-    public function readParaImage($para) {
+    public function readParaImage($para) {        
         $wordImage = null;
         $positioning = $para[0]->xpath('w:r/w:drawing/*');
         if ($positioning[0] != null) {
