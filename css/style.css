@@ -185,15 +185,44 @@ body{
     margin-bottom: 10px;
     padding-bottom: 10px;
     border-bottom: 2px outset #aaa;
+    position: fixed;
+    width: 53%;
+    height: 110px;
+}
+
+#extract-panel .title .title-left, #extract-panel .title .title-right{
+    width: 25%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#extract-panel .title h3{
+    width: 50%;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#extract-panel .title .title-right button{
+    float: right;
 }
 
 #extract-panel .input{
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
+    display: inline-block; 
+    width: 80%;
 }
 
-#extract-panel .input h3{
+#extract-panel .multi-stage{
+    vertical-align: middle;
+    display: inline-block; 
+    width: 20%;
+}
+
+#extract-panel .multi-stage .btn-group{
+    float: right;
+}
+
+#extract-panel .input h4{
     display: inline-block; 
     margin-right: 5px;
 }
@@ -210,13 +239,12 @@ body{
 
 #extract-panel #upload-progress{
     width: 75%;
+    vertical-align: middle;
 }
 
 #extract-panel #files{
     position: absolute;
     z-index: 2;
-    top:25px;
-    margin-left:5px;
     width:110px;
     filter: alpha(opacity=0);
     -ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
@@ -253,6 +281,14 @@ body{
 
 #extract-panel .buttons .btn-next{
     float: right;    
+}
+
+#extract-content{
+    height: 700px; 
+    margin-top: 120px;
+    padding-right: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #extract-content .selector{
@@ -339,4 +375,5 @@ body{
 #sidebar.extract .stage-overview .value-overview, #sidebar.extract .stage-overview .name-overview{
     margin-right: 5px;
     display: inline-block;
+    vertical-align: top;
 }
