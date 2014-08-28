@@ -1,26 +1,26 @@
 <?php
 
 /**
- * Class to handle CompoundReferences (used by database to link compounds to references)
+ * Class to handle CompoundTag (used by database to link compounds to tags)
  */
-class CompoundReference {
+class CompoundTag {
 
     //Properties    
     public $id = null;
     public $compoundID = null;
-    public $referenceID = null;
+    public $tagID = null;
 
     /*
      * Standard database-esque stuff
      */
     
     public function __construct($data = array()) {
-        if (isset($data['CompoundReferenceID']))
-            $this->id = $data['CompoundReferenceID'];
+        if (isset($data['CompoundTagID']))
+            $this->id = $data['CompoundTagID'];
         if (isset($data['CompoundID']))
             $this->compoundID = $data['CompoundID'];
-        if (isset($data['ReferenceID']))
-            $this->referenceID = $data['ReferenceID'];
+        if (isset($data['TagID']))
+            $this->tagID = $data['TagID'];
     }
 
     public function storeFormValues($params) {
@@ -30,30 +30,29 @@ class CompoundReference {
 
     public static function getById($id) {
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "SELECT * FROM compound_reference WHERE CompoundReferenceID = :id";
+        $sql = "SELECT * FROM compound_tag WHERE CompoundTagID = :id";
         $st = $conn->prepare($sql);
         $st->bindValue(":id", $id, PDO::PARAM_INT);
         $st->execute();
         $row = $st->fetch();
         $conn = null;
         if ($row)
-            return new CompoundReference($row);
+            return new CompoundTag($row);
     }
 
     public static function getList($numRows = 1000000) {
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM compound_reference LIMIT :numRows";
+        $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM compound_tag LIMIT :numRows";
         $st = $conn->prepare($sql);
         $st->bindValue(":numRows", $numRows, PDO::PARAM_INT);
         $st->execute();
         $list = array();
 
         while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
-            $compoundReference = new CompoundReference($row);
-            $list[] = $compoundReference;
+            $compoundTag = new CompoundTag($row);
+            $list[] = $compoundTag;
         }
-
-        // Now get the total number of articles that matched the criteria
+       
         $sql = "SELECT FOUND_ROWS() AS totalRows";
         $totalRows = $conn->query($sql)->fetch();
         $conn = null;
@@ -61,45 +60,45 @@ class CompoundReference {
     }
 
     public function insert() {
-        // Does the CompoundReference object already have an ID?    
+        // Does the CompoundTag object already have an ID?    
         if (!is_null($this->id))
-            trigger_error("CompoundReference::insert(): Attempt to insert a CompoundReference object that already has its ID property set (to $this->id).", E_USER_ERROR);
+            trigger_error("CompoundTag::insert(): Attempt to insert a CompoundTag object that already has its ID property set (to $this->id).", E_USER_ERROR);
         
-        // Insert the Reference
+        // Insert the Tag
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "INSERT INTO compound_reference ( CompoundID, ReferenceID ) VALUES ( :compoundID,:referenceID )";
+        $sql = "INSERT INTO compound_tag ( CompoundID, TagID ) VALUES ( :compoundID,:tagID )";
         $st = $conn->prepare($sql);
         $st->bindValue(":compoundID", $this->compoundID, PDO::PARAM_INT);
-        $st->bindValue(":referenceID", $this->referenceID, PDO::PARAM_INT);
+        $st->bindValue(":tagID", $this->tagID, PDO::PARAM_INT);
         $st->execute();
         $this->id = $conn->lastInsertId();
         $conn = null;
     }
 
     public function update() {
-        // Does the CompoundReference object have an ID?
+        // Does the CompoundTag object have an ID?
         if (is_null($this->id))
-            trigger_error("CompoundReference::update(): Attempt to update a CompoundReference object that does not have its ID property set.", E_USER_ERROR);
+            trigger_error("CompoundTag::update(): Attempt to update a CompoundTag object that does not have its ID property set.", E_USER_ERROR);
 
         // Update the Article
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "UPDATE compound_reference SET CompoundID=:compoundID ReferenceID=:referenceID WHERE CompoundReferenceID = :id";
+        $sql = "UPDATE compound_tag SET CompoundID=:compoundID TagID=:tagID WHERE CompoundTagID = :id";
         $st = $conn->prepare($sql);
         $st->bindValue(":compoundID", $this->compoundID, PDO::PARAM_INT);
-        $st->bindValue(":referenceID", $this->referenceID, PDO::PARAM_INT);
+        $st->bindValue(":tagID", $this->tagID, PDO::PARAM_INT);
         $st->bindValue(":id", $this->id, PDO::PARAM_INT);
         $st->execute();
         $conn = null;
     }
 
     public function delete() {
-        // Does the CompoundReference object have an ID?
+        // Does the CompoundTag object have an ID?
         if (is_null($this->id))
-            trigger_error("CompoundReference::delete(): Attempt to delete a CompoundReference object that does not have its ID property set.", E_USER_ERROR);
+            trigger_error("CompoundTag::delete(): Attempt to delete a CompoundTag object that does not have its ID property set.", E_USER_ERROR);
 
-        // Delete the CompoundReference
+        // Delete the CompoundTag
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $st = $conn->prepare("DELETE FROM compound_reference WHERE id = :id LIMIT 1");
+        $st = $conn->prepare("DELETE FROM compound_tag WHERE id = :id LIMIT 1");
         $st->bindValue(":id", $this->id, PDO::PARAM_INT);
         $st->execute();
         $conn = null;

@@ -360,13 +360,13 @@ body{
     background: #e1e1e8;
 }
 
-#sidebar.extract .stage-overview.missing-stage.alert{
+#sidebar.extract .stage-overview.invalid-stage.alert{
     background-color: #f2dede;
     border-color: #ebccd1;
     color: #a94442;
 }
 
-#sidebar.extract .stage-overview.current-stage.missing-stage.alert{
+#sidebar.extract .stage-overview.current-stage.invalid-stage.alert{
     background-color: salmon;
     border-color: #ebccd1;
     color: #a94442;

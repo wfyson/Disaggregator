@@ -17,7 +17,15 @@ function Builder(data, $stagingArea, $overviewArea){
     
     self.$stagingArea = $stagingArea;
     self.$overviewArea = $overviewArea;
-    self.missingStages = [];
+    self.invalidStages = [];       
+    
+    self.initialiseInvalidStages = function(){
+        for (var i = 0; i < self.stages.length; i++) {
+            var stage = self.stages[i];
+            self.invalidStages[i] = [];
+        }
+    };
+    self.initialiseInvalidStages();
     
     /*
      * overview area
@@ -33,11 +41,7 @@ function Builder(data, $stagingArea, $overviewArea){
             $stageOverview = $('<div class="stage-overview"></div>');
             if(i === stageNo){
                 $stageOverview.addClass("current-stage");                
-            }
-            
-            if($.inArray(i, self.missingStages) > -1){
-                $stageOverview.addClass("missing-stage alert alert-danger");
-            }
+            }                        
             
             $stageName = $('<div class="name-overview"></div>');
             $stageName.append("<b>" + stage.name + ": </b>");
@@ -45,20 +49,41 @@ function Builder(data, $stagingArea, $overviewArea){
             if(stage.multi){
                 $stageValue = $('<div class="value-overview"></div>');     
                 for(var j = 0; j < stage.value.length; j++){       
-                    $stageRecord = $('<div class="record-overview"></div>');
-                    $stageRecord.append(stage.value[j]);
-                    $stageValue.append($stageRecord);
+                    self.displayOverviewValue($stageValue, stage, j);
                 }
             }else{            
                 $stageValue = $('<div class="value-overview"></div>');
                 if (stage.value[stage.record] !== ""){
-                    $stageValue.append(stage.value[stage.record]);
-                }
+                    self.displayOverviewValue($stageValue, stage, 0);
+                }                                
             }            
+            
+            if (self.invalidStages[i].length > 0) {
+                $stageOverview.addClass("invalid-stage alert alert-danger");
+            }
+            
             $stageOverview.append($stageName).append($stageValue);    
             self.$overviewArea.append($stageOverview);
         }        
     };
+    
+    self.displayOverviewValue = function($div, stage, record){
+        
+        if(stage.type === "tags"){
+            var tags = stage.value[record].split(", ");
+            for(var i = 0; i < tags.length; i++){
+                $tagDiv = $('<div class="label label-default"></div>');
+                $tagDiv.append(tags[i]);
+                $div.append($tagDiv);
+            }
+            return $div;
+        }else{        
+            $stageRecord = $('<div class="record-overview"></div>');
+            $stageRecord.append(stage.value[record]);
+            $div.append($stageRecord);
+            return $div;
+        }
+    }; 
     
     /*
      * staging area
@@ -107,18 +132,21 @@ function Builder(data, $stagingArea, $overviewArea){
         //create an input area        
         $inputDiv = $("<div class='input'></div>");                
         //show the input area
-        var value
+        var input;
         switch (stage.type){
             case "text":                
-                value = self.showTextStage($inputDiv, stage);
+                input = self.showTextStage($inputDiv, stage);
+                break;
+            case "tags":                
+                input = self.showTextStage($inputDiv, stage);
                 break;
             case "file":
                 //passed a callback for when the file has been uploaded
-                value = self.showFileStage($inputDiv, stage, self.setFile); 
+                input = self.showFileStage($inputDiv, stage, self.setFile); 
                 break;
             case "image":
                 //passed a callback should a file be uploaded instead of selected
-                value = self.showImageStage($inputDiv, stage, self.setFile);
+                input = self.showImageStage($inputDiv, stage, self.setFile);
                 break;
         }
         $stageControlDiv.append($inputDiv);
@@ -134,18 +162,29 @@ function Builder(data, $stagingArea, $overviewArea){
         
         //add functionality to prev/next record buttons
         if (typeof $prevRecordBtn !== "undefined"){
-            $prevRecordBtn.click(function(){
-               var record = self.stages[stageNo].record;
-               self.stages[stageNo].record = record - 1;
-               self.showStage(stageNo);
+            $prevRecordBtn.click(function(){      
+                var record = self.stages[stageNo].record;                
+                //set the value for this record
+                if (input.val() !== "")
+                    self.stages[stageNo].value[record] = input.val();
+                
+                //move on to the previous record
+                self.stages[stageNo].record = record - 1;
+                self.showStage(stageNo);
             });
         }
         
         if (typeof $nextRecordBtn !== "undefined"){
             $nextRecordBtn.click(function(){
-               var record = self.stages[stageNo].record;
-               self.stages[stageNo].record = record + 1;
-               self.showStage(stageNo);
+                var record = self.stages[stageNo].record;                
+                //set the value for this record
+                if (input.val() !== ""){
+                    self.stages[stageNo].value[record] = input.val();                                                    
+                }
+                //move on to the next record and initialise its value
+                self.stages[stageNo].record = record + 1;
+                self.stages[stageNo].value[record + 1] = "";
+                self.showStage(stageNo);
             });
         }
         
@@ -153,7 +192,9 @@ function Builder(data, $stagingArea, $overviewArea){
         if (typeof $prevStageBtn !== "undefined"){
             $prevStageBtn.click(function(){
                 var record = self.stages[stageNo].record;
-                self.stages[self.stage].value[record] = value;
+                if (input.val() !== ""){
+                    self.stages[self.stage].value[record] = input.val();
+                }
                 self.stage--;
                 self.showStage(self.stage);
             });
@@ -164,20 +205,27 @@ function Builder(data, $stagingArea, $overviewArea){
                 if (stageNo === (self.stages.length - 1)){
                     //we're on the final stage so submit the record                    
                     var data = {};
-                    self.missingStages = [];
+                    var invalidData = false;
+                    self.invalidStages = [];                    
                     for(var i = 0; i < self.stages.length; i++){                        
                         var stage = self.stages[i];
-                        data[stage.name] = stage.value[stage.record];
-                        if (stage.value[stage.record] === ""){
-                            //this stage needs an entry                            
-                            self.missingStages.push(i);
-                        }
+                        self.invalidStages[i] = [];
+                        //loop through each record for the stage
+                        for(var j = 0; j < stage.value.length; j++){                            
+                            //validate the stage's record (this may need to be more precise in future (e.g. check a picture is a picture, etc.)
+                            var value = stage.value[j];
+                            
+                            if (value === ""){
+                                invalidData = true;
+                                self.invalidStages[i].push(j);
+                            }
+                        }                        
+                        data[stage.name] = stage.value;                        
                     }
-                    //either submit the data or ask for more information                    
-                    if (self.missingStages.length === 0){
+                    //either submit the data or ask for more information   
+                    if (!invalidData){
                         //we successfully have everything
-                        data["docid"] = self.docid;
-                        
+                        data["docid"] = self.docid;                        
                         //get the relevant php script for adding the record
                         var script = "";
                         switch (self.type){
@@ -198,7 +246,9 @@ function Builder(data, $stagingArea, $overviewArea){
                 }else{
                     //set value and move on to the next stage
                     var record = self.stages[stageNo].record;
-                    self.stages[stageNo].value[record] = value;
+                    if (input.val() !== ""){
+                        self.stages[stageNo].value[record] = input.val();
+                    }
                     self.stage++;
                     self.showStage(self.stage);
                 }
@@ -244,6 +294,10 @@ function Builder(data, $stagingArea, $overviewArea){
             $prevBtn.addClass("disabled");
         }
         
+        if (stage.value[stage.record] === ""){
+            $nextBtn.addClass("disabled");
+        }
+        
         $buttonGroup.append($prevBtn).append($nextBtn);
         $multiDiv.append($buttonGroup);
         $div.append($multiDiv);
@@ -253,26 +307,31 @@ function Builder(data, $stagingArea, $overviewArea){
     
     //create a text stage
     self.showTextStage = function($inputDiv, stage){      
-       
-        $helpText = $("<h4>Select/Enter Text: </h4>");
-       
+        
+        if (stage.type == "tags"){
+            $helpText = $("<h4>Enter Tags (comma separated): </h4>");
+        }else{
+            $helpText = $("<h4>Select/Enter Text: </h4>");
+        }
+        
         //text area
         $textInput = $("<input type='text'>");        
         $textInput.val(stage.value[stage.record]);
         
         $inputDiv.append($helpText).append($textInput);                
         
-        return $textInput.val(); //this won't reflect changes to the text box
-    };
+        return $textInput;
+    };   
     
     //create an image stage
-    self.showImageStage = function($inputDiv, stage, callback){                
-        
-        if (stage.value[stage.record] == null){            
+    self.showImageStage = function($inputDiv, stage, callback){                        
+        if (stage.value[stage.record] == ""){            
             $helpText =  $("<h4>Select an image from the document...</h4>");      
+            $helpText.val(null);
             $inputDiv.append($helpText);
+                                  
             self.$stagingArea.append($inputDiv);
-            return null;
+            return $helpText;
         }else{
             $helpText = $("<h4>Image selected: </h4>");
             $linkText = $("<a></a>");
@@ -282,23 +341,22 @@ function Builder(data, $stagingArea, $overviewArea){
             $linkText.val(stage.value[stage.record]);
             $inputDiv.append($helpText).append($linkText);  
             self.$stagingArea.append($inputDiv);
-            return stage.value[stage.record]; 
+            return $linkText; 
         }                              
     };
     
     //create a file stage
     self.showFileStage = function($inputDiv, stage, callback){         
-        console.log(stage);
-        if(stage.value[stage.record] == null){
+        if(stage.value[stage.record] == ""){
             $helpText = $("<h4>Upload a file: </h4>");
             $inputDiv.append($helpText);
             $input = self.generateFileUploadHtml($inputDiv, callback);  
-            return null;
+            return $input;
         }else{
             $helpText = $("<h4>File uploaded: </h4>");
             $inputDiv.append($helpText);
             $input = self.generateFileRemoveHtml($inputDiv, stage.value[stage.record]);
-            return $input.val();
+            return $input;
         }
                 
     };        

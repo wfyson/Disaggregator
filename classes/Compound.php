@@ -104,7 +104,7 @@ class Compound
     
     public function delete()
     {
-        // Does the Reaction object have an ID?
+        // Does the Compound object have an ID?
         if (is_null($this->id))
             trigger_error("Compound::delete(): Attempt to delete a Compound object that does not have its ID property set.", E_USER_ERROR);
 

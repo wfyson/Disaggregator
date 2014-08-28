@@ -23,10 +23,10 @@
         
         //each stage's value should be an array to make it easier for the cases where multi is true
         var compoundStages = [
-            {name: "Name", type: "text", value: [], multi: false, record: 0},
-            {name: "Description", type: "text", value: [], multi: false, record: 0},
-            {name: "MolFile", type: "file", value: [], multi: false, record: 0},
-            {name: "Spectra", type: "image", value: [], multi: true, record: 0}];   
+            {name: "Name", type: "text", value: [""], multi: false, record: 0},
+            {name: "Description", type: "text", value: [""], multi: false, record: 0},
+            {name: "MolFile", type: "file", value: [""], multi: false, record: 0},
+            {name: "Tags", type: "tags", value: [""], multi: false, record: 0}];   
         
         compoundData['type'] = "Compound";
         compoundData['docid'] = <?php echo $_GET['docid'] ?>;
