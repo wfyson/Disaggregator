@@ -11,24 +11,25 @@
         <link rel="stylesheet" type="text/css" href="css/style.css" />
 
         <!-- Javascript -->
+        <!-- JSMol -->
+        <script type="text/javascript" src="js/libs/jsmol/JSmol.min.js"></script>
+        <script type="text/javascript" src="js/libs/jsmol/JSmol.lite.nojq.js"></script>
+        
         <!-- JQuery -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-
-        <!-- My Stuff -->
-        <script src="js/filehandler.js"></script>
-        <script src="js/builder.js"></script>
 
         <!-- Bootstrap -->
         <script src="js/libs/bootstrap.min.js"></script>
         
-        <!-- JSMol -->
-        <script type="text/javascript" src="js/libs/jsmol/JSmol.min.js"></script>
-        <script type="text/javascript" src="js/libs/jsmol/JSmol.lite.nojq.js"></script>
+        <!-- My Stuff -->
+        <script src="js/filehandler.js"></script>
+        <script src="js/builder.js"></script>
 
     </head>
     <body>
+        
         <div id="header">
-        <?php
+        <?php 
         //provide a link to homepage
         $page = basename($_SERVER['PHP_SELF']);
         if ($page != "index.php"){

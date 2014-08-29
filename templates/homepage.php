@@ -61,7 +61,11 @@
                             <div class="compound-data">
                                 <!-- Other info about the compound -->
                                 <b><?php echo htmlspecialchars($compound->name) ?></b>
-                            </div>                            
+                            </div>      
+                            <!-- buttons -->
+                            <div class="compound-buttons">
+                                <a class="btn btn-primary" href="viewCompound.php?id=<?php echo $compound->id ?>">View</a>                               
+                            </div>
                         </div>
                     </li>
                 <?php } ?>

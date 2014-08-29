@@ -117,7 +117,7 @@ class Compound
     }
     
     public function getMolPath(){
-        return "compounds/" . $this->id . '/' . $this->molFile;
+        return "compounds/" . $this->id . '/mol/' . $this->molFile;
     }
 
 }

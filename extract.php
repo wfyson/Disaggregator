@@ -11,7 +11,6 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
 
 //TODO - check the the current use is allowed to read the document
 
-
 //read the content source
 //read the document and output to results array
 $reference = Reference::getById($docid);
@@ -33,6 +32,13 @@ switch($type){
         //display via a template
         require( TEMPLATE_PATH . "/extract/compound.php" );
      break;    
+    case "reaction":
+        $artefact = new Reaction();
+        $results['pageTitle'] = "Disaggregator - Extract Reaction";
+        
+        //display via a template
+        require( TEMPLATE_PATH . "/extract/reaction.php" );
+     break;   
 }
 
 

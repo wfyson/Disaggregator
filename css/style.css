@@ -158,6 +158,17 @@ body{
 .entry.compound-entry .compound-data{
     vertical-align: middle;
     display:inline-block;
+    width: 70%;
+}
+
+.entry.compound-entry .compound-buttons{
+    width: 10%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.entry.compound-entry .compound-buttons a{
+    width: 100%;
 }
 
 #sidebar{
@@ -376,4 +387,34 @@ body{
     margin-right: 5px;
     display: inline-block;
     vertical-align: top;
+}
+
+#sidebar.extract .stage-overview .value-overview .label{
+    margin-right: 5px;
+}
+
+/*
+    Extract - Complete Modal
+*/
+
+#complete-modal .left-panel{
+    width: 45%;
+    margin-right: 2.5%;
+    border-right: 1px solid #e1e1e8;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#complete-modal .right-panel{
+    width: 45%;
+    margin-left: 2.5%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#complete-modal .right-panel .button-panel a{
+    float: right;
+    margin-bottom: 10px;
+    display: block;
+    width: 60%;
 }

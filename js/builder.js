@@ -203,7 +203,15 @@ function Builder(data, $stagingArea, $overviewArea){
         if (typeof $nextStageBtn !== "undefined"){
             $nextStageBtn.click(function(){
                 if (stageNo === (self.stages.length - 1)){
-                    //we're on the final stage so submit the record                    
+                    
+                    //first submit the value
+                    var record = self.stages[stageNo].record;
+                    if (input.val() !== ""){
+                        self.stages[stageNo].value[record] = input.val();
+                        self.updateOverviewArea(stageNo);
+                    }
+                    
+                    //and now submit the record, but check to see if everything is in place                    
                     var data = {};
                     var invalidData = false;
                     self.invalidStages = [];                    
@@ -237,8 +245,12 @@ function Builder(data, $stagingArea, $overviewArea){
                                 break;                                
                         }
                         $.post(script, data, function(){
-                            console.log("new entry added to the database!");
-                            //should probably redirect to homepage here
+                            //now show a modal to indicate success and present options
+                            $('#complete-modal-title').append(self.type + " added!");  
+                            $('#complete-modal').modal({
+                                keyboard: false
+                            });
+                            
                         });
                     }else{
                         self.updateOverviewArea(stageNo);

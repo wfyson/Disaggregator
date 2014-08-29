@@ -1,24 +1,24 @@
 <?php include "templates/include/header.php" ?>
 
-<div id="extract-view" class="col-md-8">    
-
+<div id="extract-view" class="col-md-8">            
     <div id="extract-panel">      
     </div>
 
     <div id="extract-content">
         <?php include "content.php" ?>              
-    </div>
+    </div>             
 </div>
 
 <!-- Sidebar-->
 <!-- here the sidebar describes the compound being generated -->
-<div id='sidebar' class='extract col-md-3 col-md-offset-7'>    
-    
+<div id='sidebar' class='extract col-md-3 col-md-offset-7'>        
 </div>  
+
+<?php include "completeModal.php" ?>
 
 <script>
     window.onload = function(){        
-        
+                
         var compoundData = {};
         
         //each stage's value should be an array to make it easier for the cases where multi is true

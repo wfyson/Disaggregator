@@ -43,7 +43,7 @@ foreach($tags as $tag){
     }
     
     //make connection between the compound and the tag
-    $compoundTagData = array("CompoundReferenceID" => null, "CompoundID" => $compoundid, "TagID" => $tagid);
+    $compoundTagData = array("CompoundTagID" => null, "CompoundID" => $compoundid, "TagID" => $tagid);
     $compoundTag = new CompoundTag($compoundTagData);
     $compoundTagid = $compoundTag->insert();
 }
