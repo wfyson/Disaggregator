@@ -8,9 +8,12 @@ $userid = $_SESSION['userid'];
 //get the data
 $transformation = $_POST['Transformation'][0];
 $procedure = $_POST['Procedure'][0];
+$result = $_POST['Result'][0];
+
+$compoundid = json_decode($result)->id;
 
 //for one-to-one relationships get the first value and create a new reaction
-$data = array("ReactionID" => null, "Transformation" => $transformation, "Procedure" => $procedure);
+$data = array("ReactionID" => null, "Transformation" => $transformation, "Result" => $compoundid, "Procedure" => $procedure);
 $reaction = new Reaction($data);
 $reactionid = $reaction->insert();
 

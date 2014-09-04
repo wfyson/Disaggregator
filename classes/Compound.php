@@ -11,7 +11,9 @@ class Compound
     public $name = null;
     public $description = null;
     public $molFile = null;
-
+    public $referenceID = null;
+    public $userID = null;
+    
     public function __construct($data = array())
     {
         if (isset($data['CompoundID']))
@@ -22,6 +24,10 @@ class Compound
             $this->description = $data['Description'];
         if (isset($data['MolFile']))
             $this->molFile = $data['MolFile'];
+        if (isset($data['ReferenceID']))
+            $this->referenceID = $data['ReferenceID']; 
+        if (isset($data['UserID']))
+            $this->userID = $data['UserID']; 
     }
 
     public function storeFormValues($params)
@@ -73,11 +79,14 @@ class Compound
 
         // Insert the Compound
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "INSERT INTO compound ( Name, Description, MolFile ) VALUES ( :name , :description , :molfile )";
+        $sql = "INSERT INTO compound ( Name, Description, MolFile, ReferenceID, UserID ) VALUES ( :name , :description , :molfile, :referenceID, :userID )";
         $st = $conn->prepare($sql);
         $st->bindValue(":name", $this->name, PDO::PARAM_STR);
 	$st->bindValue(":description", $this->description, PDO::PARAM_STR);
 	$st->bindValue(":molfile", $this->molFile, PDO::PARAM_STR);
+        $st->bindValue(":referenceID", $this->referenceID, PDO::PARAM_INT);
+        $st->bindValue(":userID", $this->userID, PDO::PARAM_INT);
+        ChromePhp::log($st);
         $st->execute();
         $this->id = $conn->lastInsertId();
         $conn = null;
@@ -92,11 +101,13 @@ class Compound
 
         // Update the Reaction
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "UPDATE compound SET Name=:name , Description=:description , MolFile=:molfile WHERE CompoundID = :id";
+        $sql = "UPDATE compound SET Name=:name , Description=:description , MolFile=:molfile, ReferenceID=:referenceID, UserID=:userID WHERE CompoundID = :id";
         $st = $conn->prepare($sql);
         $st->bindValue(":name", $this->name, PDO::PARAM_STR);
 		$st->bindValue(":description", $this->description, PDO::PARAM_STR);
 		$st->bindValue(":molfile", $this->molFile, PDO::PARAM_STR);
+                $st->bindValue(":referenceID", $this->referenceID, PDO::PARAM_INT);
+                $st->bindValue(":userID", $this->userID, PDO::PARAM_INT);
         $st->bindValue(":id", $this->id, PDO::PARAM_INT);
         $st->execute();
         $conn = null;
@@ -118,6 +129,22 @@ class Compound
     
     public function getMolPath(){
         return "compounds/" . $this->id . '/mol/' . $this->molFile;
+    }
+    
+    public static function getByRef($referenceID)
+    {
+        $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
+        $sql = "SELECT * FROM compound WHERE ReferenceID = :referenceID";                
+        $st = $conn->prepare($sql);
+        $st->bindValue(":referenceID", $referenceID, PDO::PARAM_INT);
+        $st->execute();
+        $list = array();
+        while ($row = $st->fetch(PDO::FETCH_ASSOC))
+        {
+            $compound = new Compound($row);
+            $list[] = $compound;
+        }        
+        return ( array("results" => $list) );
     }
 
 }

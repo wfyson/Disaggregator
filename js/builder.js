@@ -67,21 +67,30 @@ function Builder(data, $stagingArea, $overviewArea){
         }        
     };
     
-    self.displayOverviewValue = function($div, stage, record){
+    self.displayOverviewValue = function($div, stage, record){       
         
-        if(stage.type === "tags"){
-            var tags = stage.value[record].split(", ");
-            for(var i = 0; i < tags.length; i++){
-                $tagDiv = $('<div class="label label-default"></div>');
-                $tagDiv.append(tags[i]);
-                $div.append($tagDiv);
-            }
+        switch (stage.type){
+            case "tags":
+                var tags = stage.value[record].split(", ");
+                for(var i = 0; i < tags.length; i++){
+                    $tagDiv = $('<div class="label label-default"></div>');
+                    $tagDiv.append(tags[i]);
+                    $div.append($tagDiv);
+                }
             return $div;
-        }else{        
-            $stageRecord = $('<div class="record-overview"></div>');
-            $stageRecord.append(stage.value[record]);
-            $div.append($stageRecord);
-            return $div;
+                break;
+            case "compound":
+                var compoundInfo = $.parseJSON(stage.value[record]);
+                $stageRecord = $('<div class="record-overview"></div>');
+                $stageRecord.append(compoundInfo.name);
+                $div.append($stageRecord);
+                return $div;   
+                break;
+            default:
+                $stageRecord = $('<div class="record-overview"></div>');
+                $stageRecord.append(stage.value[record]);
+                $div.append($stageRecord);
+                return $div;   
         }
     }; 
     
@@ -135,18 +144,21 @@ function Builder(data, $stagingArea, $overviewArea){
         var input;
         switch (stage.type){
             case "text":                
-                input = self.showTextStage($inputDiv, stage);
+                input = showTextStage($inputDiv, stage);
                 break;
             case "tags":                
-                input = self.showTextStage($inputDiv, stage);
+                input = showTextStage($inputDiv, stage);
                 break;
             case "file":
                 //passed a callback for when the file has been uploaded
-                input = self.showFileStage($inputDiv, stage, self.setFile); 
+                input = showFileStage($inputDiv, stage, self.setFile); 
                 break;
             case "image":
                 //passed a callback should a file be uploaded instead of selected
-                input = self.showImageStage($inputDiv, stage, self.setFile);
+                input = showImageStage($inputDiv, stage);
+                break;
+            case "compound":
+                input = showCompoundStage($inputDiv, stage, self.docid);
                 break;
         }
         $stageControlDiv.append($inputDiv);
@@ -233,7 +245,8 @@ function Builder(data, $stagingArea, $overviewArea){
                     //either submit the data or ask for more information   
                     if (!invalidData){
                         //we successfully have everything
-                        data["docid"] = self.docid;                        
+                        data["docid"] = self.docid;   
+                        console.log(data["docid"]);
                         //get the relevant php script for adding the record
                         var script = "";
                         switch (self.type){
@@ -315,105 +328,7 @@ function Builder(data, $stagingArea, $overviewArea){
         $div.append($multiDiv);
         
         return {prevRecordBtn: $prevBtn, nextRecordBtn: $nextBtn};
-    };
-    
-    //create a text stage
-    self.showTextStage = function($inputDiv, stage){      
-        
-        if (stage.type == "tags"){
-            $helpText = $("<h4>Enter Tags (comma separated): </h4>");
-        }else{
-            $helpText = $("<h4>Select/Enter Text: </h4>");
-        }
-        
-        //text area
-        $textInput = $("<input type='text'>");        
-        $textInput.val(stage.value[stage.record]);
-        
-        $inputDiv.append($helpText).append($textInput);                
-        
-        return $textInput;
-    };   
-    
-    //create an image stage
-    self.showImageStage = function($inputDiv, stage, callback){                        
-        if (stage.value[stage.record] == ""){            
-            $helpText =  $("<h4>Select an image from the document...</h4>");      
-            $helpText.val(null);
-            $inputDiv.append($helpText);
-                                  
-            self.$stagingArea.append($inputDiv);
-            return $helpText;
-        }else{
-            $helpText = $("<h4>Image selected: </h4>");
-            $linkText = $("<a></a>");
-            $linkText.attr('target', '_blank');
-            $linkText.attr('href', stage.value[stage.record]);
-            $linkText.append(stage.value[stage.record]);
-            $linkText.val(stage.value[stage.record]);
-            $inputDiv.append($helpText).append($linkText);  
-            self.$stagingArea.append($inputDiv);
-            return $linkText; 
-        }                              
-    };
-    
-    //create a file stage
-    self.showFileStage = function($inputDiv, stage, callback){         
-        if(stage.value[stage.record] == ""){
-            $helpText = $("<h4>Upload a file: </h4>");
-            $inputDiv.append($helpText);
-            $input = self.generateFileUploadHtml($inputDiv, callback);  
-            return $input;
-        }else{
-            $helpText = $("<h4>File uploaded: </h4>");
-            $inputDiv.append($helpText);
-            $input = self.generateFileRemoveHtml($inputDiv, stage.value[stage.record]);
-            return $input;
-        }
-                
     };        
-    
-    self.generateFileUploadHtml = function($inputDiv, callback){
-        //ask for file upload
-        $uploadDiv = $('<div id="file-upload"></div>');
-        $uploadLink = $("<a class='btn btn-primary' href='javascript:;'></a>");
-
-        $input = $("<input id='files' type='file'>");
-        $input.attr('name', 'temp_source');
-        $input.attr('size', '40');
-        $input.on('change', function(event) {
-            handleFileSelect(event, callback);
-        });
-
-        $inputContent = $("<span class='glyphicon glyphicon-plus'></span>");
-
-        $uploadLink.append($input).append($inputContent).append(" Upload File...");
-        $uploadDiv.append($uploadLink);
-
-        //also create a div (initially hidden) for showing upload progress
-        $uploadProgress = $('<div id="upload-progress"></div>');
-        $progressBar = $('<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">');
-
-        $progressBar.append("Uploading...");
-        $uploadProgress.append($progressBar);
-
-        $inputDiv.append($uploadDiv).append($uploadProgress); 
-        
-        return $input;
-    };
-    
-    self.generateFileRemoveHtml = function($inputDiv, value){
-        //show the uploaded file
-        $input = $("<input id='uploaded-file' type='text' readonly>");            
-        $input.val(value);
-        
-        $removeBtn = $("<button class='btn btn-primary'></button>");
-        $removeBtn.append("Remove File...");
-            
-        $inputDiv.append($input).append($removeBtn);
-        
-        return $input;
-    };
     
     //set stage value from a checkbox
     self.setChecked = function(id){

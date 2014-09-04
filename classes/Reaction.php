@@ -73,14 +73,17 @@ class Reaction
 
         // Insert the Reaction
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "INSERT INTO reaction ( Transformation, Result, Procedure ) VALUES ( :transformation , :result , :procedure )";
+        $sql = "INSERT INTO reaction ( Transformation, Result, `Procedure` ) VALUES ( :transformation, :result, :procedure )";
         $st = $conn->prepare($sql);
+        
         $st->bindValue(":transformation", $this->transformation, PDO::PARAM_STR);
-		$st->bindValue(":result", $this->result, PDO::PARAM_INT);
-		$st->bindValue(":procedure", $this->procedure, PDO::PARAM_STR);
-        $st->execute();
-        $this->id = $conn->lastInsertId();
+	$st->bindValue(":result", $this->result, PDO::PARAM_INT);
+	$st->bindValue(":procedure", $this->procedure, PDO::PARAM_LOB);        
+        $outcome = $st->execute();
+        
+        $this->id = $conn->lastInsertId();        
         $conn = null;
+        return $this->id;                
     }
     
     public function update()

@@ -26,6 +26,7 @@
         var reactionStages = [
             {name: "Transformation", type: "text", value: [""], multi: false, record: 0},
             {name: "Procedure", type: "text", value: [""], multi: false, record: 0},
+            {name: "Result", type: "compound", value: [""], multi: false, record: 0},   
             {name: "Tags", type: "tags", value: [""], multi: false, record: 0}];   
         
         reactionData['type'] = "Reaction";

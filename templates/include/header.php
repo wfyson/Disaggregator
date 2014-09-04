@@ -24,6 +24,10 @@
         <!-- My Stuff -->
         <script src="js/filehandler.js"></script>
         <script src="js/builder.js"></script>
+        <script src="js/stages/textStage.js"></script>
+        <script src="js/stages/imageStage.js"></script>
+        <script src="js/stages/fileStage.js"></script>
+        <script src="js/stages/compoundStage.js"></script>
 
     </head>
     <body>

@@ -9,9 +9,10 @@ $userid = $_SESSION['userid'];
 $name = $_POST['Name'][0];
 $desc = $_POST['Description'][0];
 $molFile = $_POST['MolFile'][0];
+$referenceID = $_POST['docid'];
 
 //for one-to-one relationships get the first value and create a new compound
-$data = array("CompoundID" => null, "Name" => $name, "Description" => $desc, "MolFile" => $molFile);
+$data = array("CompoundID" => null, "Name" => $name, "Description" => $desc, "MolFile" => $molFile, "ReferenceID" => $referenceID, "UserID" => $userid);
 $compound = new Compound($data);
 $compoundid = $compound->insert();
 
@@ -24,11 +25,6 @@ if (!file_exists($newPath)) {
 }
 
 rename($oldPath, $newPath . $molFile);
-
-//and add a new compound-reference entry to the database too
-$compoundReferenceData = array("CompoundReferenceID" => null, "CompoundID" => $compoundid, "ReferenceID" => $_POST['docid']);
-$compoundReference = new CompoundReference($compoundReferenceData);
-$compoundReferenceid = $compoundReference->insert();
 
 //and now add the tags
 $tags = explode(", ", $_POST['Tags'][0]);      

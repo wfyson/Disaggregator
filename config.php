@@ -17,7 +17,6 @@ require( CLASS_PATH . "/Reference.php" );
 require( CLASS_PATH . "/Reaction.php");
 require( CLASS_PATH . "/Compound.php");
 require( CLASS_PATH . "/Tag.php");
-require( CLASS_PATH . "/CompoundReference.php");
 require( CLASS_PATH . "/CompoundSpectra.php");
 require( CLASS_PATH . "/CompoundTag.php");
 
