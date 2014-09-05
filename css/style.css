@@ -307,7 +307,7 @@ body{
 
 #extract-panel .input .compound-list .subtitle{    
     padding: 5px 0 5px 5px;
-    background: #eeeeee
+    background: #eeeeee;
 }
 
 #extract-panel .input .compound-list .compound-item{    
@@ -444,4 +444,14 @@ body{
     margin-bottom: 10px;
     display: block;
     width: 60%;
+}
+
+/*
+    Views
+*/
+
+.view-title{
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 2px outset #aaa;
 }

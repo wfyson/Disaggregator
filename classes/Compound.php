@@ -146,7 +146,22 @@ class Compound
         }        
         return ( array("results" => $list) );
     }
-
+    
+    public static function getByUser($userID)
+    {
+        $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
+        $sql = "SELECT * FROM compound WHERE UserID = :userID";                
+        $st = $conn->prepare($sql);
+        $st->bindValue(":userID", $userID, PDO::PARAM_INT);
+        $st->execute();
+        $list = array();
+        while ($row = $st->fetch(PDO::FETCH_ASSOC))
+        {
+            $compound = new Compound($row);
+            $list[] = $compound;
+        }        
+        return ( array("results" => $list) );
+    }
+    
 }
-
 ?>

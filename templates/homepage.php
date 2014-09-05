@@ -26,8 +26,7 @@
                         <div class="entry compound-entry">
 
                             <script type="text/javascript">
-                                var Info;
-                                ;                                                              
+                                var Info;                                                                                           
                                 
                                 (function() {
                                     Info = {
@@ -64,7 +63,7 @@
                             </div>      
                             <!-- buttons -->
                             <div class="compound-buttons">
-                                <a class="btn btn-primary" href="viewCompound.php?id=<?php echo $compound->id ?>">View</a>                               
+                                <a class="btn btn-primary" href="view.php?type=compound&id=<?php echo $compound->id ?>">View</a>                               
                             </div>
                         </div>
                     </li>
