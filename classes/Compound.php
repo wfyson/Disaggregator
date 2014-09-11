@@ -163,5 +163,21 @@ class Compound
         return ( array("results" => $list) );
     }
     
+    public function getTags()
+    {
+        $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
+        $sql = "SELECT tag.Keyword FROM tag INNER JOIN compound_tag ON tag.TagID = compound_tag.TagID
+                WHERE compound_tag.CompoundID = :compoundID";                
+        $st = $conn->prepare($sql);
+        $st->bindValue(":compoundID", $this->id, PDO::PARAM_INT);
+        $result = $st->execute();
+        $list = array();
+        while ($row = $st->fetch(PDO::FETCH_ASSOC))
+        {         
+            $list[] = $row[Keyword];
+        }      
+        return $list;
+    }
+    
 }
 ?>

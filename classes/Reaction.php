@@ -118,6 +118,22 @@ class Reaction
         $conn = null;
     }
 
+    public static function getByResult($compoundID)
+    {
+        $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
+        $sql = "SELECT * FROM reaction WHERE result = :compoundID";                
+        $st = $conn->prepare($sql);
+        $st->bindValue(":compoundID", $compoundID, PDO::PARAM_INT);
+        $st->execute();
+        $list = array();
+        while ($row = $st->fetch(PDO::FETCH_ASSOC))
+        {
+            $reaction = new Reaction($row);
+            $list[] = $reaction;
+        }        
+        return ( array("results" => $list) );        
+    }
+    
 }
 
 ?>

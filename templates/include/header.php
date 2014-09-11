@@ -10,14 +10,14 @@
         <!-- Page Styling -->
         <link rel="stylesheet" type="text/css" href="css/style.css" />
 
-        <!-- Javascript -->
-        <!-- JSMol -->
-        <script type="text/javascript" src="js/libs/jsmol/JSmol.min.js"></script>
-        <script type="text/javascript" src="js/libs/jsmol/JSmol.lite.nojq.js"></script>
-        
+        <!-- Javascript -->  
         <!-- JQuery -->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
+         <!-- JSMol -->
+        <script type="text/javascript" src="js/libs/jsmol/JSmol.min.js"></script>
+        <script type="text/javascript" src="js/libs/jsmol/JSmol.lite.nojq.js"></script>
+        
         <!-- Bootstrap -->
         <script src="js/libs/bootstrap.min.js"></script>
         
