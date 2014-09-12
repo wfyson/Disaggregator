@@ -11,6 +11,7 @@ class Reaction
     public $transformation = null;
     public $result = null;
     public $procedure = null;
+    public $referenceID = null;
 
     public function __construct($data = array())
     {
@@ -22,6 +23,8 @@ class Reaction
             $this->result = (int) $data['Result'];
         if (isset($data['Procedure']))
             $this->procedure = $data['Procedure'];
+        if (isset($data['ReferenceID']))
+            $this->referenceID = $data['ReferenceID'];
     }
 
     public function storeFormValues($params)
@@ -73,12 +76,13 @@ class Reaction
 
         // Insert the Reaction
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "INSERT INTO reaction ( Transformation, Result, `Procedure` ) VALUES ( :transformation, :result, :procedure )";
+        $sql = "INSERT INTO reaction ( Transformation, Result, `Procedure`, ReferenceID ) VALUES ( :transformation, :result, :procedure, :referenceID )";
         $st = $conn->prepare($sql);
         
         $st->bindValue(":transformation", $this->transformation, PDO::PARAM_STR);
 	$st->bindValue(":result", $this->result, PDO::PARAM_INT);
-	$st->bindValue(":procedure", $this->procedure, PDO::PARAM_LOB);        
+	$st->bindValue(":procedure", $this->procedure, PDO::PARAM_LOB);  
+        $st->bindValue(":referenceID", $this->procedure, PDO::PARAM_INT);  
         $outcome = $st->execute();
         
         $this->id = $conn->lastInsertId();        
@@ -94,12 +98,13 @@ class Reaction
 
         // Update the Reaction
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "UPDATE reaction SET Transformation=:transformation , Result=:result , Procedure=:procedure WHERE ReferenceID = :id";
+        $sql = "UPDATE reaction SET Transformation=:transformation , Result=:result , Procedure=:procedure , ReferenceID=:referenceID WHERE ReferenceID = :id";
         $st = $conn->prepare($sql);
         $st->bindValue(":transformation", $this->transforamtion, PDO::PARAM_STR);
-		$st->bindValue(":result", $this->result, PDO::PARAM_INT);
-		$st->bindValue(":procedure", $this->refFile, PDO::PARAM_STR);
-        $st->bindValue(":id", $this->id, PDO::PARAM_INT);
+	$st->bindValue(":result", $this->result, PDO::PARAM_INT);
+	$st->bindValue(":procedure", $this->procedure, PDO::PARAM_STR);
+        $st->bindValue(":referenceID", $this->referenceID, PDO::PARAM_INT);
+        $st->bindValue(":id", $this->id, PDO::PARAM_INT);        
         $st->execute();
         $conn = null;
     }
@@ -132,6 +137,35 @@ class Reaction
             $list[] = $reaction;
         }        
         return $list;        
+    }
+    
+    public function getTags()
+    {
+        $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
+        $sql = "SELECT tag.Keyword FROM tag INNER JOIN reaction_tag ON tag.TagID = reaction_tag.TagID
+                WHERE reaction_tag.ReactionID = :reactionID";                
+        $st = $conn->prepare($sql);
+        $st->bindValue(":reactionID", $this->id, PDO::PARAM_INT);
+        $st->execute();
+        $list = array();
+        while ($row = $st->fetch(PDO::FETCH_ASSOC))
+        {         
+            $list[] = $row[Keyword];
+        }      
+        return $list;
+    }
+    
+    public function getReference()
+    {
+        $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
+        $sql = "SELECT * FROM reference WHERE ReferenceID = :referenceID";                
+        $st = $conn->prepare($sql);
+        $st->bindValue(":referenceID", $this->referenceID, PDO::PARAM_INT);
+        $st->execute();        
+        $row = $st->fetch();
+        $conn = null;
+        if ($row)
+            return new Reference($row);
     }
     
 }
