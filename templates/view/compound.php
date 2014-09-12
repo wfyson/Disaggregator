@@ -8,7 +8,7 @@ var Info = {
 	width: 300,
 	height: 300,
 	debug: false,
-	color: "0xFFFFFF",
+	color: "0xeeeeee",
 	addSelectionOptions: false,
 	use: "HTML5",   // JAVA HTML5 WEBGL are all options
 	j2sPath: "js/libs/jsmol/j2s", // this needs to point to where the j2s directory is.
@@ -38,17 +38,27 @@ $(document).ready(function() {
         <div class="main">        
             <div id="appdiv"></div>
         
-            <div id="desc">
-                <?php echo $compound->description ?>
+            <div class="view-details">
+                <div class="metadata">
+                    <div class="meta-title">
+                        <b>Reference: </b>
+                    </div>
+                    <div class="meta-value">
+                        <a href="<?php $reference = $compound->getReference(); echo $reference->getLink(); ?>"><?php echo $reference->refFile?></a>
+                    </div>
+                </div>
+                <div class="view-desc">
+                    <?php echo $compound->description ?>
+                </div>
             </div>
         </div>
         
         <div id="tags">
-                <?php $keywords = $compound->getTags(); ChromePhp::log($keywords);              
+                <?php $keywords = $compound->getTags();             
                 foreach ($keywords as $keyword){
                     ?>
                     <div class="keyword">
-                        <?php echo $keyword ?></b>
+                        <div class="label label-default"><?php echo $keyword ?></div>
                     </div>                    
                 <?php } ?>
         </div>
@@ -60,12 +70,15 @@ $(document).ready(function() {
 <div id='sidebar' class='extract col-md-3 col-md-offset-7'>     
     
     <div class="sidebar-title">
-        Related Reactions
+        <h4>Related Reactions</h4>
     </div>
-    <div class="sidebar-data">
-   
-    </div>
-    
+    <?php $reactions = Reaction::getByResult($compound->id);          
+        foreach ($reactions as $reaction){
+        ?>
+        <div class="sidebar-data">
+            <a href="view.php?type=reaction&id=<?php echo $reaction->id ?>"><?php echo $reaction->transformation ?></a>
+        </div>                    
+    <?php } ?>
 </div> 
 
 

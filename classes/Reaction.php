@@ -131,7 +131,7 @@ class Reaction
             $reaction = new Reaction($row);
             $list[] = $reaction;
         }        
-        return ( array("results" => $list) );        
+        return $list;        
     }
     
 }

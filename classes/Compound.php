@@ -86,7 +86,6 @@ class Compound
 	$st->bindValue(":molfile", $this->molFile, PDO::PARAM_STR);
         $st->bindValue(":referenceID", $this->referenceID, PDO::PARAM_INT);
         $st->bindValue(":userID", $this->userID, PDO::PARAM_INT);
-        ChromePhp::log($st);
         $st->execute();
         $this->id = $conn->lastInsertId();
         $conn = null;
@@ -170,13 +169,26 @@ class Compound
                 WHERE compound_tag.CompoundID = :compoundID";                
         $st = $conn->prepare($sql);
         $st->bindValue(":compoundID", $this->id, PDO::PARAM_INT);
-        $result = $st->execute();
+        $st->execute();
         $list = array();
         while ($row = $st->fetch(PDO::FETCH_ASSOC))
         {         
             $list[] = $row[Keyword];
         }      
         return $list;
+    }
+    
+    public function getReference()
+    {
+        $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
+        $sql = "SELECT * FROM reference WHERE ReferenceID = :referenceID";                
+        $st = $conn->prepare($sql);
+        $st->bindValue(":referenceID", $this->referenceID, PDO::PARAM_INT);
+        $st->execute();
+        $row = $st->fetch();
+        $conn = null;
+        if ($row)
+            return new Reference($row);
     }
     
 }

@@ -455,3 +455,34 @@ body{
     padding-bottom: 10px;
     border-bottom: 2px outset #aaa;
 }
+
+.view-content .view-details{
+    display: inline-block;
+    height: 300px;
+    vertical-align: top;    
+}
+
+.view-content .keyword{
+    display: inline-block;
+}
+
+.view-details .meta-title{    
+    display:inline-block;
+    margin-right: 5px;
+}
+
+.view-details .meta-value{
+    display:inline-block;
+}
+
+/*
+    Compound Views
+*/
+
+#compound-content #appdiv{
+    display: inline-block;
+    width: 300px;
+    margin-right: 10px;
+    border: 1px solid #e1e1e8;
+    border-radius: 4px; 
+}

@@ -114,6 +114,10 @@ class Reference {
         $exploded = explode('.', $this->refFile);
         return $exploded[1];        
     }
+    
+    public function getLink(){
+        return "uploads/" . $this->uploaderID . '/' . str_replace('.', '_', $this->refFile) . "/" . $this->refFile;
+    }
 }
 
 ?>
