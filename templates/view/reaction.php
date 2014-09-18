@@ -52,13 +52,11 @@
     <div class="sidebar-title">
         <h4>Resultant Compound</h4>
     </div>
-    <?php $reactions = Reaction::getByResult($compound->id);          
-        foreach ($reactions as $reaction){
-        ?>
         <div class="sidebar-data">
-            <a href="view.php?type=reaction&id=<?php echo $reaction->id ?>"><?php echo $reaction->transformation ?></a>
-        </div>                    
-    <?php } ?>
+            <a href="view.php?type=compound&id=<?php 
+            ChromePhp::log($reaction->result);
+                $compound = Compound::getById($reaction->result); echo $compound->id ?>"><?php echo $compound->name ?></a>
+        </div>   
 </div> 
 
 <?php include "templates/include/footer.php" ?>

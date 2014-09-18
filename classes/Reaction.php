@@ -20,7 +20,7 @@ class Reaction
         if (isset($data['Transformation']))
             $this->transformation = $data['Transformation'];
         if (isset($data['Result']))
-            $this->result = (int) $data['Result'];
+            $this->result = $data['Result'];
         if (isset($data['Procedure']))
             $this->procedure = $data['Procedure'];
         if (isset($data['ReferenceID']))

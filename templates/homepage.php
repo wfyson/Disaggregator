@@ -76,9 +76,15 @@
                 foreach ($results['reactions'] as $reaction) {
                     ?>
                     <li>
-                        <div class="entry doc-entry">
-                            <b><?php echo htmlspecialchars($reaction->transformation) ?></b>
-                        </div>
+                        <div class="entry reaction-entry">
+                            <div class="reaction-data">
+                                <b><?php echo htmlspecialchars($reaction->transformation) ?></b>
+                            </div>
+                            <!-- buttons -->
+                            <div class="reaction-buttons">
+                                <a class="btn btn-primary" href="view.php?type=reaction&id=<?php echo $reaction->id ?>">View</a>                               
+                            </div>
+                        </div>                        
                     </li>
                 <?php } ?>
             </ul>

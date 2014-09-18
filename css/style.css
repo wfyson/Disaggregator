@@ -90,6 +90,17 @@ body{
     
     text-align:left;
     color: black;
+    
+    
+}
+
+.doc-entry, .compound-entry, .reaction-entry{
+    padding: 1%;    
+    background: #eee;
+}
+
+.doc-entry:hover, .compound-entry:hover, .reaction-entry:hover{    
+    background: #ddd;
 }
 
 .entry img{
@@ -99,15 +110,6 @@ body{
 /*
  * Doc entries
  */
-.entry.doc-entry{
-    padding: 1%;    
-    background: #eee;
-}
-
-.entry.doc-entry:hover{
-    background: #ddd;
-}
-
 .entry.doc-entry .doc-info{
     display: inline-block;
     width: 79%;
@@ -168,6 +170,26 @@ body{
 }
 
 .entry.compound-entry .compound-buttons a{
+    width: 100%;
+}
+
+/*
+ * Reaction entries
+ *
+ */
+.entry.reaction-entry .reaction-data{
+    vertical-align: middle;
+    display:inline-block;
+    width: 85%;
+}
+
+.entry.reaction-entry .reaction-buttons{
+    width: 10%;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.entry.compound-entry .reaction-buttons a{
     width: 100%;
 }
 
