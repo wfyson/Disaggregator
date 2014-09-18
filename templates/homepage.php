@@ -63,7 +63,8 @@
                             </div>      
                             <!-- buttons -->
                             <div class="compound-buttons">
-                                <a class="btn btn-primary" href="view.php?type=compound&id=<?php echo $compound->id ?>">View</a>                               
+                                <a class="btn btn-primary" href="view.php?type=compound&id=<?php echo $compound->id ?>">View</a>                                            
+                                <a class="btn btn-success" href="extract.php?type=spectra&docid=<?php echo $compound->referenceID ?>"><span class="glyphicon glyphicon-plus"></span> Add Spectra</a> 
                             </div>
                         </div>
                     </li>
@@ -157,7 +158,14 @@
 
         // Setup the file input listener
         var input = document.getElementById('files');
-        input.addEventListener('change', handleFileSelect, false);
+        input.addEventListener('change', function(evt){
+            handleFileSelect(evt, function(){
+                var baseUrl = url.split('#')[0];
+                url = baseUrl + '#documents';                            
+                document.location.href = url;
+                location.reload();
+            });
+        }, false);
     };
     
     $(document).ready(function(){              

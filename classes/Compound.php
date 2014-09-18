@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class to handle reactions
+ * Class to handle compounds
  */
 class Compound
 {

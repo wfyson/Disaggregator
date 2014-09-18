@@ -160,17 +160,18 @@ body{
 .entry.compound-entry .compound-data{
     vertical-align: middle;
     display:inline-block;
-    width: 70%;
+    width: 60%;
 }
 
 .entry.compound-entry .compound-buttons{
-    width: 10%;
+    width: 20%;
     display: inline-block;
     vertical-align: middle;
 }
 
 .entry.compound-entry .compound-buttons a{
-    width: 100%;
+    margin-bottom: 5px;
+    display: block;
 }
 
 /*

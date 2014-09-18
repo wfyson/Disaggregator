@@ -255,7 +255,10 @@ function Builder(data, $stagingArea, $overviewArea){
                                 break;
                             case "Reaction":
                                 script = "./scripts/addReaction.php";
-                                break;                                
+                                break; 
+                            case "Spectra":
+                                script = "./scripts/addSpectra.php";
+                                break;  
                         }
                         $.post(script, data, function(){
                             //now show a modal to indicate success and present options

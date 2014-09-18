@@ -31,14 +31,22 @@ switch($type){
         
         //display via a template
         require( TEMPLATE_PATH . "/extract/compound.php" );
-     break;    
+        break;    
     case "reaction":
         $artefact = new Reaction();
         $results['pageTitle'] = "Disaggregator - Extract Reaction";
         
         //display via a template
-        require( TEMPLATE_PATH . "/extract/reaction.php" );
-     break;   
+        require(
+                TEMPLATE_PATH . "/extract/reaction.php" );
+        break;  
+    case "spectra":
+        $artefact = new Spectra();
+        $results['pageTitle'] = "Disaggregator - Extract Spectra";
+        
+        //display via a template
+        require( TEMPLATE_PATH . "/extract/spectra.php" );
+     break; 
 }
 
 
