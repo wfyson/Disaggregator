@@ -30,6 +30,7 @@
             {name: "Tags", type: "tags", value: [""], multi: false, record: 0}];   
         
         reactionData['type'] = "Reaction";
+        reactionData['title'] = "Reaction";
         reactionData['docid'] = <?php echo $_GET['docid'] ?>;
         reactionData['stages'] = reactionStages;
         

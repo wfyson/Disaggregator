@@ -5,7 +5,6 @@ function showImageStage($inputDiv, stage) {
         $helpText.val(null);
         $inputDiv.append($helpText);
 
-        self.$stagingArea.append($inputDiv);
         return $helpText;
     } else {
         $helpText = $("<h4>Image selected: </h4>");
@@ -15,7 +14,7 @@ function showImageStage($inputDiv, stage) {
         $linkText.append(stage.value[stage.record]);
         $linkText.val(stage.value[stage.record]);
         $inputDiv.append($helpText).append($linkText);
-        self.$stagingArea.append($inputDiv);
+        
         return $linkText;
     }
 }

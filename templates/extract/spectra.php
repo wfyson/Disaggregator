@@ -24,10 +24,12 @@
             {name: "Type", type: "text", value: [""], multi: false, record: 0},
             {name: "Comment", type: "text", value: [""], multi: false, record: 0},
             {name: "JCAMPFile", type: "file", value: [""], multi: false, record: 0},
-            {name: "Image", type: "text", value: [""], multi: false, record: 0}];   
+            {name: "Image", type: "image", value: [""], multi: false, record: 0}];   
         
         spectraData['type'] = "Spectra";
+        spectraData['title'] = "Spectrum";
         spectraData['docid'] = <?php echo $_GET['docid'] ?>;
+        spectraData['compoundid'] = <?php echo $_GET['compoundid'] ?>;
         spectraData['stages'] = spectraStages;
         
         var spectraBuilder = new Builder(spectraData, $('#extract-panel'), $('#sidebar'));              

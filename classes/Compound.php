@@ -16,6 +16,8 @@ class Compound
     
     public function __construct($data = array())
     {
+        ChromePhp::log("Creating a compound");
+        
         if (isset($data['CompoundID']))
             $this->id = (int) $data['CompoundID'];
         if (isset($data['Name']))

@@ -64,7 +64,7 @@
                             <!-- buttons -->
                             <div class="compound-buttons">
                                 <a class="btn btn-primary" href="view.php?type=compound&id=<?php echo $compound->id ?>">View</a>                                            
-                                <a class="btn btn-success" href="extract.php?type=spectra&docid=<?php echo $compound->referenceID ?>"><span class="glyphicon glyphicon-plus"></span> Add Spectra</a> 
+                                <a class="btn btn-success" href="extract.php?type=spectra&docid=<?php echo $compound->referenceID ?>&compoundid=<?php echo $compound->id ?>"><span class="glyphicon glyphicon-plus"></span> Add Spectrum</a> 
                             </div>
                         </div>
                     </li>

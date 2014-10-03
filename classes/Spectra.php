@@ -12,10 +12,10 @@ class Spectra
     public $comment = null;
     public $jcampFile = null;
     public $image = null;
-    //public $userID = null;
+    public $compoundID = null;
     
     public function __construct($data = array())
-    {
+    {                
         if (isset($data['SpectraID']))
             $this->id = (int) $data['SpectraID'];
         if (isset($data['Type']))
@@ -26,8 +26,8 @@ class Spectra
             $this->jcampFile = $data['JCAMPFile'];
         if (isset($data['Image']))
             $this->image = $data['Image']; 
-        //if (isset($data['UserID']))
-            //$this->userID = $data['UserID']; 
+        if (isset($data['CompoundID']))
+            $this->compoundID = $data['CompoundID']; 
     }
 
     public function storeFormValues($params)
@@ -72,20 +72,20 @@ class Spectra
     }
 
     public function insert()
-    {
+    {   
         // Does the Spectra object already have an ID?
         if (!is_null($this->id))
-            trigger_error("Spectra::insert(): Attempt to insert a Spectra object that already has its ID property set (to $this->id).", E_USER_ERROR);
+            trigger_error("Spectra::insert(): Attempt to insert a Spectrum object that already has its ID property set (to $this->id).", E_USER_ERROR);
 
         // Insert the Spectra
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "INSERT INTO spectra ( Type, Comment, JCAMPFile, Image) VALUES ( :type , :comment , :jcampfile, :image )";
+        $sql = "INSERT INTO spectra ( Type, Comment, JCAMPFile, Image, CompoundID) VALUES ( :type , :comment , :jcampfile, :image, :compoundID )";
         $st = $conn->prepare($sql);
         $st->bindValue(":type", $this->type, PDO::PARAM_STR);
 	$st->bindValue(":comment", $this->comment, PDO::PARAM_STR);
 	$st->bindValue(":jcampfile", $this->jcampFile, PDO::PARAM_STR);
         $st->bindValue(":image", $this->image, PDO::PARAM_STR);
-        //$st->bindValue(":userID", $this->userID, PDO::PARAM_INT);
+        $st->bindValue(":compoundID", $this->compoundID, PDO::PARAM_INT);
         $st->execute();
         $this->id = $conn->lastInsertId();
         $conn = null;
@@ -100,13 +100,13 @@ class Spectra
 
         // Update the Reaction
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "UPDATE spectra SET Type=:type , Comment=:comment , JCAMPFile=:jcampfile, Image=:image WHERE SpectraID = :id";
+        $sql = "UPDATE spectra SET Type=:type , Comment=:comment , JCAMPFile=:jcampfile, Image=:image, CompoundID=:compoundID WHERE SpectraID = :id";
         $st = $conn->prepare($sql);
         $st->bindValue(":type", $this->type, PDO::PARAM_STR);
 		$st->bindValue(":comment", $this->comment, PDO::PARAM_STR);
 		$st->bindValue(":jcampfile", $this->jcampFile, PDO::PARAM_STR);
                 $st->bindValue(":image", $this->image, PDO::PARAM_STR);
-                //$st->bindValue(":userID", $this->userID, PDO::PARAM_INT);
+                $st->bindValue(":compoundID", $this->compoundID, PDO::PARAM_INT);
         $st->bindValue(":id", $this->id, PDO::PARAM_INT);
         $st->execute();
         $conn = null;

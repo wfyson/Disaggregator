@@ -29,6 +29,7 @@
             {name: "Tags", type: "tags", value: [""], multi: false, record: 0}];   
         
         compoundData['type'] = "Compound";
+        compoundData['title'] = "Compound";
         compoundData['docid'] = <?php echo $_GET['docid'] ?>;
         compoundData['stages'] = compoundStages;
         

@@ -42,7 +42,7 @@ switch($type){
         break;  
     case "spectra":
         $artefact = new Spectra();
-        $results['pageTitle'] = "Disaggregator - Extract Spectra";
+        $results['pageTitle'] = "Disaggregator - Extract Spectrum";
         
         //display via a template
         require( TEMPLATE_PATH . "/extract/spectra.php" );

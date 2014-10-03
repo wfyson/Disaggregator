@@ -9,7 +9,9 @@
 function Builder(data, $stagingArea, $overviewArea){
     
     var self = this;    
+    self.data = data;
     self.type = data.type;
+    self.title = data.title;
     self.docid = data.docid;
     self.stages = data.stages;
     self.stage = 0;     
@@ -34,7 +36,7 @@ function Builder(data, $stagingArea, $overviewArea){
         //first empty the overview area
         self.$overviewArea.empty();
                         
-        self.$overviewArea.append('<h3>New ' + self.type + '</h3>');  
+        self.$overviewArea.append('<h3>New ' + self.title + '</h3>');  
         //loop through all the stages
         for(var i = 0; i < self.stages.length; i++){
             var stage = self.stages[i];
@@ -246,7 +248,6 @@ function Builder(data, $stagingArea, $overviewArea){
                     if (!invalidData){
                         //we successfully have everything
                         data["docid"] = self.docid;   
-                        console.log(data["docid"]);
                         //get the relevant php script for adding the record
                         var script = "";
                         switch (self.type){
@@ -257,6 +258,7 @@ function Builder(data, $stagingArea, $overviewArea){
                                 script = "./scripts/addReaction.php";
                                 break; 
                             case "Spectra":
+                                data["compoundid"] = self.data.compoundid;   
                                 script = "./scripts/addSpectra.php";
                                 break;  
                         }
