@@ -9,7 +9,7 @@ $docid = isset($_GET['docid']) ? $_GET['docid'] : "";
 $userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : "";
 $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
 
-//TODO - check the the current use is allowed to read the document
+//TODO - check the the current user is allowed to read the document
 
 //read the content source
 //read the document and output to results array

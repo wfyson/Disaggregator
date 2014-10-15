@@ -151,6 +151,9 @@ function Builder(data, $stagingArea, $overviewArea){
             case "tags":                
                 input = showTextStage($inputDiv, stage);
                 break;
+            case "select":                
+                input = showSelectStage($inputDiv, stage);
+                break;
             case "file":
                 //passed a callback for when the file has been uploaded
                 input = showFileStage($inputDiv, stage, self.setFile); 
@@ -262,9 +265,19 @@ function Builder(data, $stagingArea, $overviewArea){
                                 script = "./scripts/addSpectra.php";
                                 break;  
                         }
-                        $.post(script, data, function(){
+                        $.post(script, data, function(data){
                             //now show a modal to indicate success and present options
-                            $('#complete-modal-title').append(self.type + " added!");  
+                            $('#complete-modal-title').append(self.type + " added!");                                                                                  
+                            if (self.type == "Compound"){
+                                
+                                $heading = $('<h4>Add a spectrum for this compound...</h4>');
+                                
+                                $spectrumLink = $('<a><span class="glyphicon glyphicon-plus"></span> New Spectrum</a>');
+                                $spectrumLink.addClass("btn btn-info");
+                                $spectrumLink.attr("href", "extract.php?type=spectra&docid=" + self.docid + "&compoundid=" + data); 
+                                
+                                $('#complete-modal-options').append($heading).append($spectrumLink);
+                            }                            
                             $('#complete-modal').modal({
                                 keyboard: false
                             });

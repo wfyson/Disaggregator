@@ -1,27 +1,41 @@
-<?php include "templates/include/header.php" ?>
-
-<div id="extract-view" class="col-md-8">            
-    <div id="extract-panel">      
-    </div>
-
-    <div id="extract-content">
-        <?php include "content.php" ?>              
-    </div>             
-</div>
-
-<!-- Sidebar-->
-<!-- here the sidebar describes the spectra being generated -->
-<div id='sidebar' class='extract col-md-3 col-md-offset-7'>        
-</div>  
+<?php include "pageSetup.php" ?>
+<?php include "completeModal.php" ?>
 
 <script>
     window.onload = function(){        
                 
         var spectraData = {};
         
+        var types = [
+            "2D NMR 1H-13C Direct correlation",
+            "2D NMR 1H-13C Long-range correlation",
+            "2D NMR 1H-1H COSY",
+            "2D NMR 1H-1H Long-range correlation",
+            "2D NMR 1H-1H NOESY/ROESY",
+            "APCl+ Mass Spectrum",
+            "APCl- Mass Spectrum",
+            "APPl+ Mass Spectrum",
+            "APPl- Mass Spectrum",
+            "Chemical Ionization +ve",
+            "Chemical Ionization -ve",
+            "CNMR",
+            "Electron Impact",
+            "ESI+ Mass Spectrum",
+            "ESI- Mass Spectrum",
+            "FNMR",
+            "HNMR",
+            "Infrared",
+            "MALDI+ Mass Spectrum",
+            "MALDI- Mass Spectrum",
+            "Near Infrared",
+            "PNMR",
+            "Raman",
+            "UV-Vis"
+        ];
+        
         //each stage's value should be an array to make it easier for the cases where multi is true
         var spectraStages = [
-            {name: "Type", type: "text", value: [""], multi: false, record: 0},
+            {name: "Type", type: "select", value: [""], multi: false, record: 0, options: types},
             {name: "Comment", type: "text", value: [""], multi: false, record: 0},
             {name: "JCAMPFile", type: "file", value: [""], multi: false, record: 0},
             {name: "Image", type: "image", value: [""], multi: false, record: 0}];   
@@ -32,7 +46,7 @@
         spectraData['compoundid'] = <?php echo $_GET['compoundid'] ?>;
         spectraData['stages'] = spectraStages;
         
-        var spectraBuilder = new Builder(spectraData, $('#extract-panel'), $('#sidebar'));              
+        var spectraBuilder = new Builder(spectraData, $('#extract-panel'), $('#progress'));              
         spectraBuilder.showStage(0);
         
         //hook up all the checkboxes and table cells to the compound builder here

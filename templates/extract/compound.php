@@ -1,19 +1,4 @@
-<?php include "templates/include/header.php" ?>
-
-<div id="extract-view" class="col-md-8">            
-    <div id="extract-panel">      
-    </div>
-
-    <div id="extract-content">
-        <?php include "content.php" ?>              
-    </div>             
-</div>
-
-<!-- Sidebar-->
-<!-- here the sidebar describes the compound being generated -->
-<div id='sidebar' class='extract col-md-3 col-md-offset-7'>        
-</div>  
-
+<?php include "pageSetup.php" ?>
 <?php include "completeModal.php" ?>
 
 <script>
@@ -33,7 +18,7 @@
         compoundData['docid'] = <?php echo $_GET['docid'] ?>;
         compoundData['stages'] = compoundStages;
         
-        var compoundBuilder = new Builder(compoundData, $('#extract-panel'), $('#sidebar'));              
+        var compoundBuilder = new Builder(compoundData, $('#extract-panel'), $('#progress'));              
         compoundBuilder.showStage(0);
         
         //hook up all the checkboxes and table cells to the compound builder here

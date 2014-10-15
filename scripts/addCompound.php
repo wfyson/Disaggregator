@@ -44,5 +44,6 @@ foreach($tags as $tag){
     $compoundTagid = $compoundTag->insert();
 }
 
+echo $compoundid;
 
 ?>

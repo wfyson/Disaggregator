@@ -40,7 +40,7 @@ function addHeading($heading, $tocLinks) {
     echo '<div id="item-' . $heading->getId() . '"class="heading">';
     addCheckBox($heading->getId());
     $htmlHeading = $heading->getLevel() + 1;
-    $tocLinks[$heading->getId()] = $heading->getTitle()->getText();
+    $tocLinks[$heading->getId()] = array("text" => $heading->getTitle()->getText(), "level" => $heading->getLevel());
     echo '<h' . $htmlHeading . ' id=' . $heading->getId() . ' class="header value">' . $heading->getTitle()->getText() . '</h' . $htmlHeading . '></div>';
     return $tocLinks;
 }

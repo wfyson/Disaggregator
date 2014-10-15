@@ -1,20 +1,4 @@
-<?php include "templates/include/header.php" ?>
-
-<div id="extract-view" class="col-md-8">            
-    <div id="extract-panel">      
-    </div>
-
-    <div id="extract-content">
-        <?php include "content.php" ?>              
-    </div>             
-</div>
-
-<!-- Sidebar-->
-<!-- here the sidebar describes the compound being generated -->
-<div id='sidebar' class='extract col-md-3 col-md-offset-7'>        
-</div>  
-
-<!-- Modal to show when reaction extracted -->
+<?php include "pageSetup.php" ?>
 <?php include "completeModal.php" ?>
 
 <script>
@@ -34,7 +18,7 @@
         reactionData['docid'] = <?php echo $_GET['docid'] ?>;
         reactionData['stages'] = reactionStages;
         
-        var reactionBuilder = new Builder(reactionData, $('#extract-panel'), $('#sidebar'));              
+        var reactionBuilder = new Builder(reactionData, $('#extract-panel'), $('#progress'));              
         reactionBuilder.showStage(0);
         
         //hook up all the checkboxes and table cells to the compound builder here
