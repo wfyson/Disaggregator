@@ -22,13 +22,8 @@
         compoundBuilder.showStage(0);
         
         //hook up all the checkboxes and table cells to the compound builder here
-        $('#extract-content .selector').change(function(){
-           if($(this).is(":checked")){
-               compoundBuilder.setChecked($(this).data("id"));
-               console.log("checked");
-           }else{
-               console.log("unchecked");
-           } 
+        $('#extract-content .selector').change(function(){              
+               compoundBuilder.setChecked($(this));
         });
         
         $('#extract-content table td').click(function(){
@@ -39,10 +34,7 @@
                 $this.addClass("selected");
                 compoundBuilder.setCell($(this).data("id"));
             }                        
-        });
-        
-        
-        
+        });        
     };
 </script>
 

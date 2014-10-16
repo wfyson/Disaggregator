@@ -47,14 +47,14 @@
         ChromePhp::log($username);
         if ($username) {
             ChromePhp::log("logged in");
-            //only provide log out link if a user is logged in
+            //only provide log out and profile links if a user is logged in
             ?>
             <span class="login-status">
             <span>Logged in as <b><?php echo $username; ?></b></span>
-
-            <form action="index.php?action=logout" method="post" style="width: 50%;">
-                <input type="hidden" name="logout" value="true" />   
-                <input class="btn btn-default" type="submit" name="logout" value="Logout" />
+            <a class="btn btn-default" href=""><span class="glyphicon glyphicon-user"></span> Profile</a>
+            <form action="index.php?action=logout" method="post" style="width: 50%;">                
+                <input type="hidden" name="logout" value="true" />                   
+                <input class="btn btn-default" type="submit" name="logout" value="Logout" />                                  
             </form>
             </span>
     <?php

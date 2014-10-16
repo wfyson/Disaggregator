@@ -50,13 +50,8 @@
         spectraBuilder.showStage(0);
         
         //hook up all the checkboxes and table cells to the compound builder here
-        $('#extract-content .selector').change(function(){
-           if($(this).is(":checked")){
-               spectraBuilder.setChecked($(this).data("id"));
-               console.log("checked");
-           }else{
-               console.log("unchecked");
-           } 
+        $('#extract-content .selector').change(function(){              
+               spectraBuilder.setChecked($(this));
         });
         
         $('#extract-content table td').click(function(){

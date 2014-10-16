@@ -12,6 +12,11 @@ if ($action == "register") {
     exit;
 }
 
+if ($action == "registerOrcid") {
+    registerOrcid();
+    exit;
+}
+
 
 if ($action != "login" && $action != "logout" && !$username) {
     login();
@@ -129,10 +134,6 @@ function register() {
             $results['errorMessage'] = "Username does not fit the name scheme: only a-Z and numbers are allowed, 2 to 64 characters";
             require( TEMPLATE_PATH . "/register.php" );
             exit;
-        } elseif (empty($_POST['user_email'])) {
-            $results['errorMessage'] = "Email cannot be empty";
-            require( TEMPLATE_PATH . "/register.php" );
-            exit;
         } elseif (strlen($_POST['user_email']) > 64) {
             $results['errorMessage'] = "Email cannot be longer than 64 characters";
             require( TEMPLATE_PATH . "/register.php" );
@@ -191,4 +192,33 @@ function register() {
         // User has not posted the login form yet: display the form
         require( TEMPLATE_PATH . "/register.php" );
     }
+}
+
+function registerOrcid(){
+    
+    //useful php curl orcid link: https://gist.github.com/hubgit/46a868b912ccd65e4a6b
+    
+    
+    $orcid = $_POST['orcid'];
+    $url = "http://pub.orcid.org/v1.1/" . $orcid . "/orcid-bio";
+   
+    $ch = curl_init();
+    
+    $options = array(
+      CURLOPT_URL => $url,  
+      CURLOPT_HTTPHEADER => array('Accept: application/orcid+json'),
+      CURLOPT_RETURNTRANSFER => true
+    );
+    
+    curl_setopt_array($ch, $options);
+       
+    $result = curl_exec($ch);
+       
+    $response = json_decode($result, true);
+    
+    $given = $response['orcid-profile']['orcid-bio']['personal-details']['given-names']['value'];
+    $family = $response['orcid-profile']['orcid-bio']['personal-details']['family-name']['value'];
+    $email = $response['orcid-profile']['orcid-bio']['contact-details']['email'][0]['value'];
+        
+    print_r($response);
 }

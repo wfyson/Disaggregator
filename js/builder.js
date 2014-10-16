@@ -349,11 +349,21 @@ function Builder(data, $stagingArea, $overviewArea){
     };        
     
     //set stage value from a checkbox
-    self.setChecked = function(id){
+    self.setChecked = function($checkbox){
         var record = self.stages[self.stage].record;
-        self.stages[self.stage].value[record] = self.getData(id);
+        if($checkbox.is(":checked")){          
+            
+            //uncheck prevosuly selected box if present
+            $(".selector.selected").removeClass("selected").prop('checked', false);
+            
+            $checkbox.addClass("selected");
+            self.stages[self.stage].value[record] = self.getData($checkbox.data("id"));            
+        }else{
+            $checkbox.removeClass("selected");
+            self.stages[self.stage].value[record] = "";            
+        }
         self.showStage(self.stage);
-    };
+    };       
     
     //set stage value from a table cell
     self.setCell = function(id){
@@ -364,11 +374,13 @@ function Builder(data, $stagingArea, $overviewArea){
     self.getData = function(id){
         if ($('#item-' + id).hasClass("para")){
             return $('#item-' + id + ' .value').text();        
-        }
-        
+        }                
         if ($('#item-' + id).hasClass("image")){
             return $('#item-' + id + ' img').attr('src');        
         }   
+        if ($('#item-' + id).hasClass("heading")){            
+            return $('#item-' + id + ' .value').text();        
+        }
     };   
     
     //set stage value from a file

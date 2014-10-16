@@ -25,5 +25,20 @@
     <input class="btn btn-default" type="submit"  name="register" value="Register" />
 </form>
 
+<form action="index.php?action=registerOrcid" method="post" style="width: 50%;">
+    <input type="hidden" name="registerForm" value="true" />
+
+    <?php if (isset($results['errorMessage'])) { ?>
+        <div class="errorMessage"><?php echo $results['errorMessage'] ?></div>
+    <?php } ?>
+
+    <!-- the user name input field uses a HTML5 pattern check -->
+    <label for="orcid">Orcid</label>
+    <input id="orcid" class="login_input" type="text" name="orcid" required />
+    
+    <input class="btn btn-default" type="submit"  name="register" value="Register with Orcid" />
+</form>
+
+
 <?php include "templates/include/footer.php" ?>
 
