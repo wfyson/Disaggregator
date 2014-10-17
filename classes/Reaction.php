@@ -69,7 +69,7 @@ class Reaction
     }
 
     public function insert()
-    {
+    {        
         // Does the Reaction object already have an ID?
         if (!is_null($this->id))
             trigger_error("Reaction::insert(): Attempt to insert a Reaction object that already has its ID property set (to $this->id).", E_USER_ERROR);
@@ -83,8 +83,8 @@ class Reaction
 	$st->bindValue(":result", $this->result, PDO::PARAM_INT);
 	$st->bindValue(":procedure", $this->procedure, PDO::PARAM_LOB);  
         $st->bindValue(":referenceID", $this->procedure, PDO::PARAM_INT);  
-        $outcome = $st->execute();
-        
+          
+        $st->execute();        
         $this->id = $conn->lastInsertId();        
         $conn = null;
         return $this->id;                

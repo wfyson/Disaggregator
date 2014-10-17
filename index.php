@@ -197,8 +197,6 @@ function register() {
 function registerOrcid(){
     
     //useful php curl orcid link: https://gist.github.com/hubgit/46a868b912ccd65e4a6b
-    
-    
     $orcid = $_POST['orcid'];
     $url = "http://pub.orcid.org/v1.1/" . $orcid . "/orcid-bio";
    

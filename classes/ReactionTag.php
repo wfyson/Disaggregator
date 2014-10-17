@@ -14,7 +14,7 @@ class ReactionTag {
      * Standard database-esque stuff
      */
     
-    public function __construct($data = array()) {
+    public function __construct($data = array()) {        
         if (isset($data['ReactionTagID']))
             $this->id = $data['ReactionTagID'];
         if (isset($data['ReactionID']))
@@ -60,9 +60,9 @@ class ReactionTag {
     }
 
     public function insert() {
-        // Does the ReactionTag object already have an ID?    
+        // Does the ReactionTag object already have an ID?                            
         if (!is_null($this->id))
-            trigger_error("ReactionTag::insert(): Attempt to insert a ReactionTag object that already has its ID property set (to $this->id).", E_USER_ERROR);
+            trigger_error("ReactionTag::insert(): Attempt to insert a ReactionTag object that already has its ID property set (to $this->id).", E_USER_ERROR);                
         
         // Insert the Tag
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);

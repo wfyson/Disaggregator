@@ -18,6 +18,7 @@ require( CLASS_PATH . "/Reaction.php");
 require( CLASS_PATH . "/Compound.php");
 require( CLASS_PATH . "/Tag.php");
 require( CLASS_PATH . "/CompoundTag.php");
+require( CLASS_PATH . "/ReactionTag.php");
 require( CLASS_PATH . "/Spectra.php");
 require( CLASS_PATH . "/User.php");
 

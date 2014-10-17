@@ -16,12 +16,18 @@ switch($type){
        
         //display via a template
         require( TEMPLATE_PATH . "/view/compound.php" );
-     break;    
+        break;    
     case "reaction":
         $results['pageTitle'] = "Disaggregator - View Reaction";
         
         //display via a template
         require( TEMPLATE_PATH . "/view/reaction.php" );
+        break;
+    case "user":
+        $results['pageTitle'] = "Disaggregator - View Profile";
+        
+        //display via a template
+        require( TEMPLATE_PATH . "/view/user.php" );
      break;   
 }
 

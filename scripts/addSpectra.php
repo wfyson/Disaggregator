@@ -39,6 +39,4 @@ if (!file_exists($newPath)) {
 
 $result = copy($oldPath, $newPath . $imageFile);
 
-ChromePhp::log($result);
-
 ?>

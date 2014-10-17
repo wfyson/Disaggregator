@@ -72,8 +72,7 @@ class User
     {
         // Does the User object already have an ID?
         if (!is_null($this->id))
-            trigger_error("User::insert(): Attempt to insert a USer object that already has its ID property set (to $this->id).", E_USER_ERROR);
-
+            trigger_error("User::insert(): Attempt to insert a USer object that already has its ID property set (to $this->id).", E_USER_ERROR);       
         // Insert the User
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
         $sql = "INSERT INTO users ( user_name, user_password_hash, user_email, orcid ) VALUES ( :user_name , :user_password_hash , :user_email, :orcid)";
@@ -81,7 +80,7 @@ class User
         $st->bindValue(":user_name", $this->userName, PDO::PARAM_STR);
 	$st->bindValue(":user_password_hash", $this->userPasswordHash, PDO::PARAM_STR);
 	$st->bindValue(":user_email", $this->userEmail, PDO::PARAM_STR);
-        $st->bindValue(":orcid", $this->orcid, PDO::PARAM_STR);
+        $st->bindValue(":orcid", $this->orcid, PDO::PARAM_STR);        
         $st->execute();
         $this->id = $conn->lastInsertId();
         $conn = null;
@@ -89,14 +88,15 @@ class User
     }
     
     public function update()
-    {
+    {                  
         // Does the User object have an ID?
         if (is_null($this->id))
             trigger_error("User::update(): Attempt to update a User object that does not have its ID property set.", E_USER_ERROR);
-
+        
+      
         // Update the User
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "UPDATE user SET user_name=:user_name , user_password_hash=:user_password_hash , user_email=:user_email, orcid=:orcid WHERE user_id = :id";
+        $sql = "UPDATE users SET user_name=:user_name, user_password_hash=:user_password_hash, user_email=:user_email, orcid=:orcid WHERE user_id = :id";
         $st = $conn->prepare($sql);
         $st->bindValue(":user_name", $this->userName, PDO::PARAM_STR);
         $st->bindValue(":user_password_hash", $this->userPasswordHash, PDO::PARAM_STR);
@@ -108,16 +108,17 @@ class User
     }
     
     public function delete()
-    {
+    {               
         // Does the User object have an ID?
         if (is_null($this->id))
             trigger_error("User::delete(): Attempt to delete a User object that does not have its ID property set.", E_USER_ERROR);
 
         // Delete the User
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $st = $conn->prepare("DELETE FROM user WHERE id = :id LIMIT 1");
-        $st->bindValue(":id", $this->id, PDO::PARAM_INT);
+        $st = $conn->prepare("DELETE FROM users WHERE id = :id LIMIT 1");
+        $st->bindValue(":id", $this->id, PDO::PARAM_INT);        
         $st->execute();
+        
         $conn = null;
     }    
 }

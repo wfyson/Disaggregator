@@ -18,13 +18,9 @@ $reaction = new Reaction($data);
 $reactionid = $reaction->insert();
 
 //and the reaction tags
-ChromePhp::log("ReactionID..." . $reactionid);
-
-$tags = explode(", ", $_POST['Tags'][0]);      
-
-ChromePhp::log("Tags..." . $tags);
-
+$tags = explode(", ", $_POST['Tags'][0]);   
 foreach($tags as $tag){
+    
     //see if the tag already exists and get its id/insert it if not existing
     $tagEntry = Tag::getByKeyword($tag);
     if ($tagEntry){
