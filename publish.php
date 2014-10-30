@@ -21,7 +21,7 @@ switch($platform){
         $results['pageTitle'] = "Disaggregator - Publish to ORCID";
         
         //display via a template
-        require( TEMPLATE_PATH . "/publish/orcid.php" );
+        require( TEMPLATE_PATH . "/publish/orcid/orcid.php" );
         break;    
 }
 

@@ -21,7 +21,9 @@ if(isset($_GET['code'])) {
  
     // build a new HTTP POST request
     $request = new HttpPost($url);
+            
     $request->setPostData($params);
+    $request->setCurlHeader('Accept: application/json');    
     $request->send();
 
 	// decode the incoming string as JSON

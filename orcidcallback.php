@@ -11,9 +11,9 @@ $user = User::getById($userid);
 if (isset($_GET['code'])){
     $user->orcidCode = $_GET['code'];
     $user->update();
-    echo "code updated!";    
+    header('Location: ' . 'disaggregator.asdf.ecs.soton.ac.uk?authorise=orcid&success=true');
 }else{
-    echo "No code to set";
+    header('Location: ' . '?authorise=orcid&success=false');
 }
 
 

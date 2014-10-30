@@ -13,9 +13,10 @@ class User
     public $userEmail = null;
     public $orcid = null;    
     public $orcidCode = null;    
+    public $orcidAccessToken = null;    
     
     public function __construct($data = array())
-    {                
+    {                    
         if (isset($data['user_id']))
             $this->id = (int) $data['user_id'];
         if (isset($data['user_name']))
@@ -28,6 +29,8 @@ class User
             $this->orcid = $data['orcid']; 
         if (isset($data['orcid_code']))
             $this->orcidCode = $data['orcid_code']; 
+        if (isset($data['orcid_access_token']))
+            $this->orcidAccessToken = $data['orcid_access_token']; 
     }
 
     public function storeFormValues($params)
@@ -78,13 +81,14 @@ class User
             trigger_error("User::insert(): Attempt to insert a User object that already has its ID property set (to $this->id).", E_USER_ERROR);       
         // Insert the User
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "INSERT INTO users ( user_name, user_password_hash, user_email, orcid, orcid_code ) VALUES ( :user_name , :user_password_hash , :user_email, :orcid, :orcid_code)";
+        $sql = "INSERT INTO users ( user_name, user_password_hash, user_email, orcid, orcid_code, orcid_access_token ) VALUES ( :user_name , :user_password_hash , :user_email, :orcid, :orcid_code, :orcid_access_token)";
         $st = $conn->prepare($sql);
         $st->bindValue(":user_name", $this->userName, PDO::PARAM_STR);
 	$st->bindValue(":user_password_hash", $this->userPasswordHash, PDO::PARAM_STR);
 	$st->bindValue(":user_email", $this->userEmail, PDO::PARAM_STR);
         $st->bindValue(":orcid", $this->orcid, PDO::PARAM_STR); 
         $st->bindValue(":orcid_code", $this->orcidCode, PDO::PARAM_STR); 
+        $st->bindValue(":orcid_access_token", $this->orcidAccessToken, PDO::PARAM_STR); 
         $st->execute();
         $this->id = $conn->lastInsertId();
         $conn = null;
@@ -99,13 +103,14 @@ class User
         
         // Update the User
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "UPDATE users SET user_name=:user_name, user_password_hash=:user_password_hash, user_email=:user_email, orcid=:orcid, orcid_code=:orcid_code WHERE user_id = :id";
+        $sql = "UPDATE users SET user_name=:user_name, user_password_hash=:user_password_hash, user_email=:user_email, orcid=:orcid, orcid_code=:orcid_code, orcid_access_token=:orcid_access_token WHERE user_id = :id";
         $st = $conn->prepare($sql);
         $st->bindValue(":user_name", $this->userName, PDO::PARAM_STR);
         $st->bindValue(":user_password_hash", $this->userPasswordHash, PDO::PARAM_STR);
 	$st->bindValue(":user_email", $this->userEmail, PDO::PARAM_STR);
         $st->bindValue(":orcid", $this->orcid, PDO::PARAM_STR);
         $st->bindValue(":orcid_code", $this->orcidCode, PDO::PARAM_STR);
+        $st->bindValue(":orcid_access_token", $this->orcidAccessToken, PDO::PARAM_STR);
         $st->bindValue(":id", $this->id, PDO::PARAM_INT);
         $st->execute();
         $conn = null;

@@ -191,5 +191,79 @@ class Compound
             return new Reference($row);
     }
     
+    public function getOrcidXml()
+    {
+        $xml = new DOMDocument();
+        
+        $xml->appendChild($xmlOrcidMessage = $xml->createElement("orcid-message"));
+
+        //attributes
+        $xmlOrcidMessage->setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        $xmlOrcidMessage->setAttribute("xsi:schemaLocation", "http://www.orcid.org/ns/orcid https://raw.github.com/ORCID/ORCID-Source/master/orcid-model/src/main/resources/orcid-message-1.1.xsd");
+        $xmlOrcidMessage->setAttribute("xmlns", "http://www.orcid.org/ns/orcid");
+        
+        //message version
+        $xmlOrcidMessage->appendChild($xmlMessageVersion = $xml->createElement("message-version"));        
+        $xmlMessageVersion->nodeValue = "1.1";
+        
+        //works
+        $xmlOrcidMessage->appendChild($xmlOrcidProfile = $xml->createElement("orcid-profile"));
+        $xmlOrcidProfile->appendChild($xmlOrcidActivities = $xml->createElement("orcid-activities"));
+        $xmlOrcidActivities->appendChild($xmlOrcidWorks = $xml->createElement("orcid-works"));
+        
+        //work
+        $xmlOrcidWork = $xml->createElement("orcid-work");    
+        $xmlOrcidWork->setAttribute("visibility", "public");
+        
+        //title
+        $xmlOrcidWork->appendChild($xmlWorkTitle = $xml->createElement("work-title"));
+        $xmlWorkTitle->appendChild($xmlTitle = $xml->createElement("title"));
+        $xmlTitle->nodeValue = "New Title 2";
+        
+        //type
+        $xmlOrcidWork->appendChild($xmlWorkType = $xml->createElement("work-type"));
+        $xmlWorkType->nodeValue = "book";
+        
+        $xmlOrcidWorks->appendChild($xmlOrcidWork);
+        
+        
+        //write to file
+        $path = "compounds/" . $this->id . "/xml/"; //orcid.xml";                 
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        $filepath = $path . "orcid.xml";
+        $xml->save($filepath);
+        
+        return $filepath;
+    }
+        //work category = 'Other'
+        
+        //work type = 'Other'
+        
+        //title
+        
+        //subtitle
+        
+        //journal title ?
+        
+        //publication date ?
+        
+        //citation type = UNSPECIFIED
+        
+        //citation = ?
+        
+        //description
+        
+       //identifier type
+        
+        //identifier value
+        
+        //url
+        
+        //language
+        
+        //country
+        
 }
 ?>
