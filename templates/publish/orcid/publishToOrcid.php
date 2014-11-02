@@ -3,24 +3,21 @@
     //publish an artefact using an accesstoken
     $url = ORCID_OAUTH_API . $user->orcid . '/orcid-works';
     
-    $xmlPath = $artefact->getOrcidXml();
+    $xmlString = $artefact->getOrcidXml();
     
-    // build a new HTTP POST request        
+    // build a new HTTP POST request      
+    $contentHeader = "Content-Type: application/orcid+xml";
+    $authorizationHeader = "Authorization: Bearer " . $user->orcidAccessToken;
+    
+    
     $request = new HttpPost($url);
-    $request->setCurlHeader('Content-Type: application/orcid+xml');
-    $request->setCurlHeader("Authorization: Bearer " . $user->orcidAccessToken);
+    $request->setCurlHeader(array($contentHeader, $authorizationHeader));
         
-    $args['file'] = curl_file_create($xmlPath);   
-    $request->setPostFile($args);
+    $request->setPostField($xmlString);
 
-
-//$request->setPostField($xmlPath);
     $request->send();
 
     $responseObj = json_decode($request->getHttpResponse());
-    
-    ChromePhp::log("all done here!!!");
-    ChromePhp::log($responseObj);
     
 
 

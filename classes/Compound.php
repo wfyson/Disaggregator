@@ -218,7 +218,7 @@ class Compound
         //title
         $xmlOrcidWork->appendChild($xmlWorkTitle = $xml->createElement("work-title"));
         $xmlWorkTitle->appendChild($xmlTitle = $xml->createElement("title"));
-        $xmlTitle->nodeValue = "New Title 2";
+        $xmlTitle->nodeValue = "New Title 7";
         
         //type
         $xmlOrcidWork->appendChild($xmlWorkType = $xml->createElement("work-type"));
@@ -233,9 +233,9 @@ class Compound
             mkdir($path, 0777, true);
         }
         $filepath = $path . "orcid.xml";
-        $xml->save($filepath);
+        $resultString = $xml->saveXml();
         
-        return $filepath;
+        return $resultString;
     }
         //work category = 'Other'
         

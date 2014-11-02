@@ -15,7 +15,7 @@ if (isset($user->orcidCode)) {
 
     // build a new HTTP POST request
     $request = new HttpPost($url);
-    $request->setCurlHeader('Accept: application/json');
+    $request->setCurlHeader(array('Accept: application/json'));
     $request->setPostData($params);
     $request->send();
 

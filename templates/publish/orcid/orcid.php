@@ -24,9 +24,6 @@ class HttpPost {
                 $this->ch = curl_init( $this->url );
                 curl_setopt( $this->ch, CURLOPT_FOLLOWLOCATION, false );                
                 curl_setopt( $this->ch, CURLOPT_RETURNTRANSFER, true );
-                curl_setopt( $this->ch, CURLINFO_HEADER_OUT, true );
-                curl_setopt( $this->ch, CURLOPT_SAFE_UPLOAD, true );
-                curl_setopt( $this->ch, CURLOPT_VERBOSE, true );
           }
 
           public function __destruct() {
@@ -34,7 +31,7 @@ class HttpPost {
           }    
           
           public function setCurlHeader($header){
-              curl_setopt($this->ch, CURLOPT_HEADER, $header);              
+              curl_setopt($this->ch, CURLOPT_HTTPHEADER, $header);              
           }
           
           public function setPostField( $field ){
