@@ -7,13 +7,17 @@ session_start();
  * get the user
  */
 $userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : "";
+
 $user = User::getById($userid);
+
 if (isset($_GET['code'])){
     $user->orcidCode = $_GET['code'];
     $user->update();
-    header('Location: ' . 'disaggregator.asdf.ecs.soton.ac.uk?authorise=orcid&success=true');
+    header('Location: ' . 'index.php?authorise=orcid&success=true');
+    exit;
 }else{
-    header('Location: ' . '?authorise=orcid&success=false');
+    header('Location: ' . 'index.php?authorise=orcid&success=false');
+    exit;
 }
 
 

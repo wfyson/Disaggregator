@@ -157,43 +157,33 @@ body{
     vertical-align: middle;
 }
 
-.entry.compound-entry .compound-data{
+.entry.compound-entry .compound-data, .entry.reaction-entry .reaction-data{
     vertical-align: middle;
     display:inline-block;
     width: 60%;
 }
 
-.entry.compound-entry .compound-buttons{
+.entry.compound-entry .compound-buttons, .entry.reaction-entry .reaction-buttons{
     width: 20%;
     display: inline-block;
     vertical-align: middle;
 }
 
-.entry.compound-entry .compound-buttons a{
+.entry.compound-entry .compound-buttons a, .entry.reaction-entry .reaction-buttons a{
     margin-bottom: 5px;
     display: block;
 }
 
 /*
- * Reaction entries
- *
+    Reaction entries
  */
-.entry.reaction-entry .reaction-data{
-    vertical-align: middle;
-    display:inline-block;
-    width: 85%;
-}
+ .entry.reaction-entry .reaction-data span{
+     display: block;
+ }
 
-.entry.reaction-entry .reaction-buttons{
-    width: 10%;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.entry.compound-entry .reaction-buttons a{
-    width: 100%;
-}
-
+/*
+    Sidebar
+*/
 #sidebar{
     position:fixed;
     
@@ -533,4 +523,28 @@ body{
     display: inline-block;
     width: 300px;
     margin-right: 10px;
+}
+
+/*
+    User View
+*/
+
+.user-view{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.form-row{
+    margin-top: 5px;
+    display: block;
+}
+
+.form-row label{
+    width: 150px;
+}
+
+.form-buttons{
+    margin-left: 100px;
+    margin-top: 50px;
 }

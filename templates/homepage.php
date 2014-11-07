@@ -1,5 +1,9 @@
 <?php include "templates/include/header.php" ?>
 
+<?php if (isset($_GET['authorise'])){ 
+    include "homepage/registerModal.php";
+}
+?>
 
 <div id="home-view" class="col-md-8">
 
@@ -63,9 +67,9 @@
                             </div>      
                             <!-- buttons -->
                             <div class="compound-buttons">
-                                <a class="btn btn-primary btn-sm" href="view.php?type=compound&id=<?php echo $compound->id ?>">View</a>     
-                                <a class="btn btn-primary btn-sm" href="publish.php?type=compound&id=<?php echo $compound->id ?>&platform=orcid">Publish</a>
-                                <a class="btn btn-success btn-sm" href="extract.php?type=spectra&docid=<?php echo $compound->referenceID ?>&compoundid=<?php echo $compound->id ?>"><span class="glyphicon glyphicon-plus"></span> Add Spectrum</a> 
+                                <a class="btn btn-primary btn-xs" href="view.php?type=compound&id=<?php echo $compound->id ?>">View</a>     
+                                <a class="btn btn-primary btn-xs" href="publish.php?type=Compound&id=<?php echo $compound->id ?>&platform=orcid">Publish</a>
+                                <a class="btn btn-success btn-xs" href="extract.php?type=spectra&docid=<?php echo $compound->referenceID ?>&compoundid=<?php echo $compound->id ?>"><span class="glyphicon glyphicon-plus"></span> Add Spectrum</a> 
                             </div>
                         </div>
                     </li>
@@ -80,11 +84,13 @@
                     <li>
                         <div class="entry reaction-entry">
                             <div class="reaction-data">
-                                <b><?php echo htmlspecialchars($reaction->transformation) ?></b>
+                                <span><b><?php echo htmlspecialchars($reaction->transformation) ?></b></span>
+                                <span><b>Result: <?php echo htmlspecialchars(Compound::getById($reaction->result)->name) ?></b></span>
                             </div>
                             <!-- buttons -->
                             <div class="reaction-buttons">
-                                <a class="btn btn-primary" href="view.php?type=reaction&id=<?php echo $reaction->id ?>">View</a>                               
+                                <a class="btn btn-primary btn-xs" href="view.php?type=reaction&id=<?php echo $reaction->id ?>">View</a>     
+                                <a class="btn btn-primary btn-xs" href="publish.php?type=Reaction&id=<?php echo $reaction->id ?>&platform=orcid">Publish</a>
                             </div>
                         </div>                        
                     </li>
@@ -167,6 +173,14 @@
                 location.reload();
             });
         }, false);
+        
+        <?php if(isset($_GET['authorise'])){
+            ?>               
+                $('#register-modal').modal({
+                    keyboard: false
+                });
+        <?php } ?>
+        
     };
     
     $(document).ready(function(){              
@@ -177,7 +191,7 @@
         }
         
         //set document on click functionality
-        $('.doc-entry').click(function(){
+        $('.doc-entry').click(function(){           
             //get everything interesting relating to this document
             //e.g it's reactions, compounds, whatever... presumably via a .json call of some sort...
         });

@@ -35,6 +35,10 @@ class Compound
         //Store all the parameters
         $this->__construct($params);
     }
+    
+    public function getTitle(){
+        return $this->name;
+    }
 
     public static function getById($id)
     {
@@ -191,13 +195,19 @@ class Compound
             return new Reference($row);
     }
     
+    public function getUrl()
+    {
+        $url = "disagregator.asdf.ecs.soton.ac.uk/view.php?type=compound&id=" . $this->id;
+        return $url;
+    }
+    
     public function getOrcidXml()
     {
         $xml = new DOMDocument();
         
         $xml->appendChild($xmlOrcidMessage = $xml->createElement("orcid-message"));
 
-        //attributes
+        //orcid-message
         $xmlOrcidMessage->setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
         $xmlOrcidMessage->setAttribute("xsi:schemaLocation", "http://www.orcid.org/ns/orcid https://raw.github.com/ORCID/ORCID-Source/master/orcid-model/src/main/resources/orcid-message-1.1.xsd");
         $xmlOrcidMessage->setAttribute("xmlns", "http://www.orcid.org/ns/orcid");
@@ -206,64 +216,48 @@ class Compound
         $xmlOrcidMessage->appendChild($xmlMessageVersion = $xml->createElement("message-version"));        
         $xmlMessageVersion->nodeValue = "1.1";
         
-        //works
+        //orcid-profile, orcid-activities, orcid-works
         $xmlOrcidMessage->appendChild($xmlOrcidProfile = $xml->createElement("orcid-profile"));
         $xmlOrcidProfile->appendChild($xmlOrcidActivities = $xml->createElement("orcid-activities"));
         $xmlOrcidActivities->appendChild($xmlOrcidWorks = $xml->createElement("orcid-works"));
         
-        //work
+        //orcid-work
         $xmlOrcidWork = $xml->createElement("orcid-work");    
         $xmlOrcidWork->setAttribute("visibility", "public");
         
         //title
         $xmlOrcidWork->appendChild($xmlWorkTitle = $xml->createElement("work-title"));
         $xmlWorkTitle->appendChild($xmlTitle = $xml->createElement("title"));
-        $xmlTitle->nodeValue = "New Title 7";
+        $xmlTitle->nodeValue = $this->name;
+        
+        //description
+        $xmlOrcidWork->appendChild($xmlDesc = $xml->createElement("short-description"));
+        $xmlDesc->nodeValue = $this->description;
         
         //type
         $xmlOrcidWork->appendChild($xmlWorkType = $xml->createElement("work-type"));
-        $xmlWorkType->nodeValue = "book";
+        $xmlWorkType->nodeValue = "other";
+        
+        //publication date
+        $xmlOrcidWork->appendChild($xmlPubDate = $xml->createElement("publication-date"));
+        $xmlPubDate->appendChild($xmlYear = $xml->createElement("year"));
+        $xmlYear->nodeValue = date("Y");
+        $xmlPubDate->appendChild($xmlMonth = $xml->createElement("month"));
+        $xmlMonth->nodeValue = date("m");  
+        
+        //url
+        $xmlOrcidWork->appendChild($xmlUrl = $xml->createElement("url"));
+        $xmlUrl->appendChild($xml->createTextNode($this->getUrl()));
+        
+        //language
+        $xmlOrcidWork->appendChild($xmlLang = $xml->createElement('language-code'));
+        $xmlLang->nodeValue = "en";
         
         $xmlOrcidWorks->appendChild($xmlOrcidWork);
-        
-        
-        //write to file
-        $path = "compounds/" . $this->id . "/xml/"; //orcid.xml";                 
-        if (!file_exists($path)) {
-            mkdir($path, 0777, true);
-        }
-        $filepath = $path . "orcid.xml";
+
         $resultString = $xml->saveXml();
         
         return $resultString;
-    }
-        //work category = 'Other'
-        
-        //work type = 'Other'
-        
-        //title
-        
-        //subtitle
-        
-        //journal title ?
-        
-        //publication date ?
-        
-        //citation type = UNSPECIFIED
-        
-        //citation = ?
-        
-        //description
-        
-       //identifier type
-        
-        //identifier value
-        
-        //url
-        
-        //language
-        
-        //country
-        
+    }                
 }
 ?>

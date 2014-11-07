@@ -201,13 +201,16 @@ function Builder(data, $stagingArea, $overviewArea){
                 //move on to the next record and initialise its value
                 self.stages[stageNo].record = record + 1;
                 self.stages[stageNo].value[record + 1] = "";
-                self.showStage(stageNo);
+                self.showStage(stageNo);                
             });
         }
         
         //add functionality to prev/next stage buttons
-        if (typeof $prevStageBtn !== "undefined"){
+        if (typeof $prevStageBtn !== "undefined"){                                    
             $prevStageBtn.click(function(){
+                
+                $('#progress-tab').tab('show');
+                
                 var record = self.stages[stageNo].record;
                 if (input.val() !== ""){
                     self.stages[self.stage].value[record] = input.val();
@@ -219,6 +222,9 @@ function Builder(data, $stagingArea, $overviewArea){
         
         if (typeof $nextStageBtn !== "undefined"){
             $nextStageBtn.click(function(){
+
+                $('#progress-tab').tab('show');
+                
                 if (stageNo === (self.stages.length - 1)){
                     
                     //first submit the value

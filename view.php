@@ -19,7 +19,6 @@ switch($type){
         break;    
     case "reaction":
         $results['pageTitle'] = "Disaggregator - View Reaction";
-        
         //display via a template
         require( TEMPLATE_PATH . "/view/reaction.php" );
         break;

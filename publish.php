@@ -11,7 +11,11 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
 //get the artefact we are after
 $type = isset($_GET['type']) ? $_GET['type'] : "";
 
-$artefact = Compound::getById($_GET['id']);
+$artefactid = isset($_GET['id']) ? $_GET['id'] : null;
+
+if(isset($artefactid)){
+    $artefact = $type::getById($artefactid);
+}
 
 //get the platform we wish to publish to
 $platform = isset($_GET['platform']) ? $_GET['platform'] : "";

@@ -19,16 +19,13 @@
 
     $responseObj = json_decode($request->getHttpResponse());
     
+    if($responseObj == null)
+    {
+        ?>
+<h2><?php echo get_class($artefact); ?> Published</h2>
 
+<p>The <?php echo $type . ', "' . $artefact->getTitle() . '"'; ?> has been successfully added to your ORCID profile.</p>
 
+<a class='btn btn-primary' href='index.php'>Return</a>
 
-
-
-
-
-
-
-
-
-
-
+  <?php  } ?>

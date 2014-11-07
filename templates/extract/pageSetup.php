@@ -11,7 +11,7 @@
 <!-- Sidebar-->
 <div id="sidebar" class ="extract col-md-3 col-md-offset-7">
     <ul class="nav nav-tabs" id="sidebar-tabs">
-        <li class="active"><a href="#progress" data-toggle="tab">Progress</a></li>
+        <li class="active"><a id='progress-tab' href="#progress" data-toggle="tab">Progress</a></li>
         <li><a href="#navigation" data-toggle="tab">Navigation</a></li>
     </ul>
 

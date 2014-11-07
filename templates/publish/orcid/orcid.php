@@ -1,17 +1,24 @@
 <?php include "templates/include/header.php" ?>
 
 <?php    
-    $user = User::getById($userid);    
-    //does the user have an access token?
-    if(isset($user->orcidAccessToken)){        
-        //publish the artefact
-        include "publishToOrcid.php";         
+
+    if(isset($artefact))
+    {
+
+        $user = User::getById($userid);    
+        //does the user have an access token?
+        if(isset($user->orcidAccessToken)){        
+            //publish the artefact
+            include "publishToOrcid.php";         
+        }else{
+            include "getOrcidAccessToken.php";
+        }
     }else{
-        include "getOrcidAccessToken.php";
+        include "getOrcidCode.php";
     }
         
     
-    // HttpPost.class.php
+// HttpPost.class.php
 class HttpPost {
           public $url;
           public $postString;

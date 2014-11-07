@@ -1,3 +1,13 @@
+//create a person stage
+function showPersonStage($inputDiv, stage, docid)
+{
+    //help text
+    $helpText = $("<h4>Contributor: </h4>");
+    
+    //input
+    $personInput = 
+}
+
 
 //create a compound stage
 function showCompoundStage($inputDiv, stage, docid)
@@ -8,7 +18,7 @@ function showCompoundStage($inputDiv, stage, docid)
     //text area
     $textInput = $("<input type='text' readonly>");    
     
-    $compoundInput = $("<input type='hidden'>");
+    $compoundInput = $("<input type='hidden'>")
 
     $inputDiv.append($helpText).append($textInput);
     $compoundList = $("<div class='compound-list'></div>");
