@@ -26,6 +26,19 @@ if (!file_exists($newPath)) {
 
 rename($oldPath, $newPath . $molFile);
 
+//add the contributors
+$contributors = $_POST['Contributors'];
+foreach($contributors as $contributor){
+    $contributorInfo = json_decode($contributor);        
+    $contributorEntry = new CompoundContributor(array("CompoundContributorID" => null,
+        "CompoundID" => $compoundid,
+        "ContributorID" => $contributorInfo->id,
+        "Role" => $contributorInfo->role
+        ));
+    $contributorEntry->insert();
+}
+
+
 //and now add the tags
 $tags = explode(", ", $_POST['Tags'][0]);      
 foreach($tags as $tag){

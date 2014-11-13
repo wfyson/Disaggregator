@@ -11,7 +11,7 @@ function showCompoundStage($inputDiv, stage, docid)
     $compoundInput = $("<input type='hidden'>");
 
     $inputDiv.append($helpText).append($textInput);
-    $compoundList = $("<div class='compound-list'></div>");
+    $compoundList = $("<div class='custom-list compound-list'></div>");
 
     var url = "././scripts/getCompoundList.php?docid=" + docid;
     if (stage.value[stage.record] !== ""){
@@ -20,7 +20,6 @@ function showCompoundStage($inputDiv, stage, docid)
     }
     
     //get a list of available compounds and details on the current compound
-
     $.getJSON(url, function(data){    
         //display current compound
         if (data.current){
@@ -33,7 +32,7 @@ function showCompoundStage($inputDiv, stage, docid)
         var refCompounds = data.refCompounds;
         for(var i = 0; i < refCompounds.length; i++){            
             var compound = refCompounds[i];
-            $compoundItem = $("<div class='compound-item'></div>");            
+            $compoundItem = $("<div class='list-item compound-item'></div>");            
             $compoundItem.append(compound.name);            
             $compoundItem.click({id: compound.id, name: compound.name}, function(event){                             
                 $compoundInput.val('{"id": ' + event.data.id + ', "name": "' + event.data.name + '"}');
@@ -49,7 +48,7 @@ function showCompoundStage($inputDiv, stage, docid)
         var userCompounds = data.userCompounds;
         for(var i = 0; i < userCompounds.length; i++){            
             var compound = userCompounds[i];
-            $compoundItem = $("<div class='compound-item'></div>");            
+            $compoundItem = $("<div class='list-item compound-item'></div>");            
             $compoundItem.append(compound.name);            
             $compoundItem.click({id: compound.id, name: compound.name}, function(event){                             
                 $compoundInput.val('{"id": ' + event.data.id + ', "name": "' + event.data.name + '"}');
@@ -65,7 +64,7 @@ function showCompoundStage($inputDiv, stage, docid)
         var otherCompounds = data.otherCompounds;
         for(var i = 0; i < otherCompounds.length; i++){            
             var compound = otherCompounds[i];
-            $compoundItem = $("<div class='compound-item'></div>");            
+            $compoundItem = $("<div class='list-item compound-item'></div>");            
             $compoundItem.append(compound.name);            
             $compoundItem.click({id: compound.id, name: compound.name}, function(event){                             
                 $compoundInput.val('{"id": ' + event.data.id + ', "name": "' + event.data.name + '"}');

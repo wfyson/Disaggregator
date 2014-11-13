@@ -114,6 +114,9 @@ function register() {
             $results['errorMessage'] = "Empty Username";
             require( TEMPLATE_PATH . "/register.php" );
             exit;
+        } elseif (empty($_POST['name'])){
+            $results['errorMessage'] = "Empty Name";
+            require( TEMPLATE_PATH . "/register.php" );
         } elseif (empty($_POST['user_password_new']) || empty($_POST['user_password_repeat'])) {
             $results['errorMessage'] = "Empty Password";
             require( TEMPLATE_PATH . "/register.php" );
@@ -144,12 +147,12 @@ function register() {
             exit;
         } elseif (!empty($_POST['user_name']) && strlen($_POST['user_name']) <= 64 && strlen($_POST['user_name']) >= 2 && preg_match('/^[a-z\d]{2,64}$/i', $_POST['user_name']) && !empty($_POST['user_email']) && strlen($_POST['user_email']) <= 64 && filter_var($_POST['user_email'], FILTER_VALIDATE_EMAIL) && !empty($_POST['user_password_new']) && !empty($_POST['user_password_repeat']) && ($_POST['user_password_new'] === $_POST['user_password_repeat'])
         ) {
-            ChromePhp::log("everything checks out");
             //create database connection
             $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
 
             $username = $_POST['user_name'];
             $useremail = $_POST['user_email'];
+            $name = $_POST['name'];
 
             // check if user or email address already exists
             $sql = "SELECT * FROM users WHERE user_name = :username OR user_email = :useremail";
@@ -175,7 +178,18 @@ function register() {
                 $st->bindValue(":useremail", $useremail, PDO::PARAM_STR);
 
                 $insert = $st->execute();
-                if ($insert) {
+                $newUserId = $conn->lastInsertId();                
+                
+                //and now add them to the contributor table too
+                $contribSql = "INSERT INTO contributor (Name, UserID) VALUES(:name, :userid);";
+                $st = $conn->prepare($contribSql);
+                $st->bindValue(":name", $name, PDO::PARAM_STR);
+                $st->bindValue(":userid", $newUserId, PDO::PARAM_INT);
+                $contribInsert = $st->execute();
+                
+                $conn = null;
+                
+                if (($insert) && ($contribInsert)) {
                     $results['errorMessage'] = "Your account has been created successfully. You can now log in.";
                     require( TEMPLATE_PATH . "/loginForm.php" );
                     exit;
@@ -187,36 +201,11 @@ function register() {
                 require( TEMPLATE_PATH . "/register.php" );
                 exit;
             }
+            
+            
         }
     } else {
         // User has not posted the login form yet: display the form
         require( TEMPLATE_PATH . "/register.php" );
     }
-}
-
-function registerOrcid(){
-    
-    //useful php curl orcid link: https://gist.github.com/hubgit/46a868b912ccd65e4a6b
-    $orcid = $_POST['orcid'];
-    $url = "http://pub.orcid.org/v1.1/" . $orcid . "/orcid-bio";
-   
-    $ch = curl_init();
-    
-    $options = array(
-      CURLOPT_URL => $url,  
-      CURLOPT_HTTPHEADER => array('Accept: application/orcid+json'),
-      CURLOPT_RETURNTRANSFER => true
-    );
-    
-    curl_setopt_array($ch, $options);
-       
-    $result = curl_exec($ch);
-       
-    $response = json_decode($result, true);
-    
-    $given = $response['orcid-profile']['orcid-bio']['personal-details']['given-names']['value'];
-    $family = $response['orcid-profile']['orcid-bio']['personal-details']['family-name']['value'];
-    $email = $response['orcid-profile']['orcid-bio']['contact-details']['email'][0]['value'];
-        
-    print_r($response);
 }

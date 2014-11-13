@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Class to handle authors
+ * Class to handle contributors
  */
-class Author
+class Contributor
 {
 
     //Properties    
@@ -13,8 +13,8 @@ class Author
 
     public function __construct($data = array())
     {
-        if (isset($data['AuthorID']))
-            $this->id = (int) $data['AuthorID'];
+        if (isset($data['ContributorID']))
+            $this->id = (int) $data['ContributorID'];
         if (isset($data['Name']))
             $this->name = $data['Name'];
         if (isset($data['UserID']))
@@ -30,20 +30,20 @@ class Author
     public static function getById($id)
     {
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "SELECT * FROM author WHERE AuthorID = :id";
+        $sql = "SELECT * FROM contributor WHERE ContributorID = :id";
         $st = $conn->prepare($sql);
         $st->bindValue(":id", $id, PDO::PARAM_INT);
         $st->execute();
         $row = $st->fetch();
         $conn = null;
         if ($row)
-            return new Tag($row);
+            return new Contributor($row);
     }
     
     public static function getList($numRows = 1000000)
     {
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM author LIMIT :numRows";
+        $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM contributor LIMIT :numRows";
         $st = $conn->prepare($sql);
         $st->bindValue(":numRows", $numRows, PDO::PARAM_INT);
         $st->execute();
@@ -51,11 +51,11 @@ class Author
 
         while ($row = $st->fetch(PDO::FETCH_ASSOC))
         {
-            $author = new Author($row);
-            $list[] = $author;
+            $contributor = new Contributor($row);
+            $list[] = $contributor;
         }
 
-        // Now get the total number of authors that matched the criteria
+        // Now get the total number of contributors that matched the criteria
         $sql = "SELECT FOUND_ROWS() AS totalRows";
         $totalRows = $conn->query($sql)->fetch();
         $conn = null;
@@ -66,11 +66,11 @@ class Author
     {
         // Does the Tag object already have an ID?
         if (!is_null($this->id))
-            trigger_error("Author::insert(): Attempt to insert an Author object that already has its ID property set (to $this->id).", E_USER_ERROR);
+            trigger_error("Contributor::insert(): Attempt to insert an Contributor object that already has its ID property set (to $this->id).", E_USER_ERROR);
 
         // Insert the Compound
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "INSERT INTO author (Name) VALUES ( :name, :userID )";
+        $sql = "INSERT INTO contributor (Name) VALUES ( :name, :userID )";
         $st = $conn->prepare($sql);
         $st->bindValue(":name", $this->name, PDO::PARAM_STR);
         $st->bindValue(":userid", $this->userID, PDO::PARAM_INT);
@@ -82,13 +82,13 @@ class Author
     
     public function update()
     {
-        // Does the Author object have an ID?
+        // Does the Contributor object have an ID?
         if (is_null($this->id))
-            trigger_error("Author::update(): Attempt to update a Author object that does not have its ID property set.", E_USER_ERROR);
+            trigger_error("Contributor::update(): Attempt to update a Contributor object that does not have its ID property set.", E_USER_ERROR);
 
-        // Update the Author
+        // Update the Contributor
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "UPDATE tag SET Name=:name, UserID=:userID WHERE AuthorID = :id";
+        $sql = "UPDATE tag SET Name=:name, UserID=:userID WHERE ContributorID = :id";
         $st = $conn->prepare($sql);
         $st->bindValue(":name", $this->name, PDO::PARAM_STR);
         $st->bindValue(":userID", $this->userID, PDO::PARAM_INT);
@@ -101,11 +101,11 @@ class Author
     {
         // Does the Tag object have an ID?
         if (is_null($this->id))
-            trigger_error("Author::delete(): Attempt to delete a Author object that does not have its ID property set.", E_USER_ERROR);
+            trigger_error("Contributor::delete(): Attempt to delete a Contributor object that does not have its ID property set.", E_USER_ERROR);
 
         // Delete the Reaction
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $st = $conn->prepare("DELETE FROM author WHERE id = :id LIMIT 1");
+        $st = $conn->prepare("DELETE FROM contributor WHERE id = :id LIMIT 1");
         $st->bindValue(":id", $this->id, PDO::PARAM_INT);
         $st->execute();
         $conn = null;

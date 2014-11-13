@@ -29,6 +29,7 @@
         <script src="js/stages/fileStage.js"></script>
         <script src="js/stages/compoundStage.js"></script>
         <script src="js/stages/selectStage.js"></script>
+        <script src="js/stages/contributorStage.js"></script>
 
     </head>
     <body>

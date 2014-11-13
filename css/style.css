@@ -307,29 +307,29 @@ body{
     float: right;    
 }
 
-#extract-panel .input .compound-list{
+#extract-panel .input .custom-list{
     display: none;
     z-index: 100;
     background: white;
     box-shadow: 10px 10px 5px #888888;
     width: 400px;
     
-    position: relative;
+    position: absolute;
     left: 170px;
 }
 
-#extract-panel .input .compound-list .subtitle{    
+#extract-panel .input .custom-list .subtitle{    
     padding: 5px 0 5px 5px;
     background: #eeeeee;
 }
 
-#extract-panel .input .compound-list .compound-item{    
+#extract-panel .input .custom-list .list-item{    
     padding: 10px 0 10px 5px;
     border-bottom: 1px solid black;
     background: #eeeeee
 }
 
-#extract-panel .input .compound-list .compound-item:hover{
+#extract-panel .input .custom-list .list-item:hover{
     cursor: pointer;
     background: #e1e1e8;
 }

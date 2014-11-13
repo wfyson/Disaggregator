@@ -29,6 +29,8 @@ require( CLASS_PATH . "/CompoundTag.php");
 require( CLASS_PATH . "/ReactionTag.php");
 require( CLASS_PATH . "/Spectra.php");
 require( CLASS_PATH . "/User.php");
+require( CLASS_PATH . "/Contributor.php");
+require( CLASS_PATH . "/CompoundContributor.php");
 
 require( CLASS_PATH . "/OpenXmlReader.php");
 

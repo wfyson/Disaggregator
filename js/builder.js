@@ -79,14 +79,25 @@ function Builder(data, $stagingArea, $overviewArea){
                     $tagDiv.append(tags[i]);
                     $div.append($tagDiv);
                 }
-            return $div;
+                return $div;
                 break;
             case "compound":
-                var compoundInfo = $.parseJSON(stage.value[record]);
-                $stageRecord = $('<div class="record-overview"></div>');
-                $stageRecord.append(compoundInfo.name);
-                $div.append($stageRecord);
-                return $div;   
+                if (stage.value[record] !== ""){
+                    var compoundInfo = $.parseJSON(stage.value[record]);
+                    $stageRecord = $('<div class="record-overview"></div>');
+                    $stageRecord.append(compoundInfo.name);
+                    $div.append($stageRecord);
+                    return $div;   
+                }
+                break;
+            case "contributor":
+                if (stage.value[record] !== ""){
+                    var contributorInfo = $.parseJSON(stage.value[record]);
+                    $stageRecord = $('<div class="record-overview"></div>');
+                    $stageRecord.append(contributorInfo.name + ' - ' + contributorInfo.role);
+                    $div.append($stageRecord);
+                    return $div;   
+                }
                 break;
             default:
                 $stageRecord = $('<div class="record-overview"></div>');
@@ -165,6 +176,9 @@ function Builder(data, $stagingArea, $overviewArea){
             case "compound":
                 input = showCompoundStage($inputDiv, stage, self.docid);
                 break;
+            case "contributor":
+                input = showContributorStage($inputDiv, stage, self);
+                break;
         }
         $stageControlDiv.append($inputDiv);
         
@@ -200,7 +214,9 @@ function Builder(data, $stagingArea, $overviewArea){
                 }
                 //move on to the next record and initialise its value
                 self.stages[stageNo].record = record + 1;
-                self.stages[stageNo].value[record + 1] = "";
+                if (self.stages[stageNo].value[record + 1] == null){
+                    self.stages[stageNo].value[record + 1] = "";
+                }
                 self.showStage(stageNo);                
             });
         }
@@ -369,7 +385,13 @@ function Builder(data, $stagingArea, $overviewArea){
             self.stages[self.stage].value[record] = "";            
         }
         self.showStage(self.stage);
-    };       
+    };   
+    
+    self.setCustom = function(value){
+        var record = self.stages[self.stage].record;
+        self.stages[self.stage].value[record] = value;
+        self.showStage(self.stage);
+    }
     
     //set stage value from a table cell
     self.setCell = function(id){

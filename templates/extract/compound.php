@@ -11,6 +11,7 @@
             {name: "Name", type: "text", value: [""], multi: false, record: 0},
             {name: "Description", type: "text", value: [""], multi: false, record: 0},
             {name: "MolFile", type: "file", value: [""], multi: false, record: 0},
+            {name: "Contributors", type: "contributor", value: [""], multi: true, record: 0},
             {name: "Tags", type: "tags", value: [""], multi: false, record: 0}];   
         
         compoundData['type'] = "Compound";
