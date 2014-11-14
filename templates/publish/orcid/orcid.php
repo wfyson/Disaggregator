@@ -4,10 +4,11 @@
 
     if(isset($artefact))
     {
+        $user = User::getById($userid); 
+        $contributor = $user->getContributor();
 
-        $user = User::getById($userid);    
         //does the user have an access token?
-        if(isset($user->orcidAccessToken)){        
+        if(isset($contributor->orcidAccessToken)){
             //publish the artefact
             include "publishToOrcid.php";         
         }else{

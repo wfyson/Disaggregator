@@ -31,45 +31,23 @@ body{
 /*
     Login
 */
-
-#login {
+#login-form, #register-form {
     margin-left:auto;
     margin-right: auto;
     margin-bottom: 15px;
-    width: 50%;
-    
-}
-
-#login ul{
-    padding-left: 0px;
-}
-
-#login ul li{
-    list-style-type: none;
-    
-    margin-top: 5px;
-}
-
-#login li label{
-    display: block;
+    width: 50%;    
 }
 
 #register{
     border-top: 2px outset #aaa;
     
     padding-top: 20px;
-    margin-top: 40px;
-    
-}
-
-#register form, #register h4{
-    display: inline;
+    margin-top: 40px;    
 }
 
 /*
     The big divs
 */
-
 #home-view ul{
     list-style-type: none;   
     padding: 0;
@@ -91,11 +69,6 @@ body{
     text-align:left;
     color: black;
     
-    
-}
-
-.doc-entry, .compound-entry, .reaction-entry{
-    padding: 1%;    
     background: #eee;
 }
 
@@ -110,19 +83,14 @@ body{
 /*
  * Doc entries
  */
-.entry.doc-entry .doc-info{
-    display: inline-block;
-    width: 79%;
-}
 
 .entry.doc-entry .doc-buttons{
-    width: 20%;
-    display: inline-block;
-    vertical-align: middle;
+    padding-top: 10px;
 }
 
 .entry.doc-entry a{
-    margin-bottom: 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
     display: block;
 }
 
@@ -140,45 +108,39 @@ body{
     display: none;
 }
 
-/*
- * Compound entries
- */
-.entry.compound-entry{
-    padding: 5px;    
-    background: #eee;
+#file-upload{
+    background: none;
 }
 
-.entry.compound-entry:hover{
-    background: #ddd;
+
+.entry.compound-entry .compound-data{
+    padding-top: 30px;
+    text-overflow: ellipsis;
+    max-height: 70px;
+    overflow: hidden;
 }
 
-.entry.compound-entry .compound-jmol{
-    display: inline-block;
-    vertical-align: middle;
-}
-
-.entry.compound-entry .compound-data, .entry.reaction-entry .reaction-data{
-    vertical-align: middle;
-    display:inline-block;
-    width: 60%;
-}
-
-.entry.compound-entry .compound-buttons, .entry.reaction-entry .reaction-buttons{
-    width: 20%;
-    display: inline-block;
-    vertical-align: middle;
+.entry.compound-entry .compound-buttons{
+    padding-top: 10px;
 }
 
 .entry.compound-entry .compound-buttons a, .entry.reaction-entry .reaction-buttons a{
-    margin-bottom: 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
     display: block;
 }
 
 /*
     Reaction entries
  */
+ .entry.reaction-entry .reaction-data{
+     padding-top:5px;
+ }
+ 
  .entry.reaction-entry .reaction-data span{
      display: block;
+     text-overflow: ellipsis;
+     overflow: hidden;
  }
 
 /*
@@ -234,6 +196,10 @@ body{
 #extract-panel .input{
     display: inline-block; 
     width: 80%;
+}
+
+#extract-panel .input .form-control[readonly]{
+    cursor: pointer;
 }
 
 #extract-panel .multi-stage{
@@ -346,6 +312,10 @@ body{
     vertical-align: top;
     display: inline-block;
     width: 5%;
+}
+
+#extract-content h2{
+    width: 95%;
 }
 
 #extract-content p{    
@@ -533,18 +503,4 @@ body{
     width: 80%;
     margin-left: auto;
     margin-right: auto;
-}
-
-.form-row{
-    margin-top: 5px;
-    display: block;
-}
-
-.form-row label{
-    width: 150px;
-}
-
-.form-buttons{
-    margin-left: 100px;
-    margin-top: 50px;
 }

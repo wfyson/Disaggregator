@@ -1,13 +1,14 @@
 <?php
 
     //publish an artefact using an accesstoken
-    $url = ORCID_OAUTH_API . $user->orcid . '/orcid-works';
+
+    $url = ORCID_OAUTH_API . $contributor->orcid . '/orcid-works';
     
     $xmlString = $artefact->getOrcidXml();
     
     // build a new HTTP POST request      
     $contentHeader = "Content-Type: application/orcid+xml";
-    $authorizationHeader = "Authorization: Bearer " . $user->orcidAccessToken;
+    $authorizationHeader = "Authorization: Bearer " . $contributor->orcidAccessToken;
     
     
     $request = new HttpPost($url);

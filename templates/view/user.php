@@ -3,15 +3,18 @@
 <?php 
 
 $user = User::getById($_SESSION['userid']);
+$contributor = $user->getContributor();
+
 $action = $_POST['action'];
 
 if ($action == "Save"){
     
     $user->userName = $_POST['username'];
-    $user->userEmail = $_POST['email'];
-    $user->orcid = $_POST['orcid'];
-       
+    $user->userEmail = $_POST['email'];               
     $user->update();
+    
+    $contributor->orcid = $_POST['orcid'];
+    $contributor->update();
 }
     
 ?>
@@ -20,25 +23,26 @@ if ($action == "Save"){
 
     <h2>Account</h2>
 
-    <form class='user-form' action="view.php?type=user" method="post" style="width: 50%;">
+    <form role="form" action="view.php?type=user" method="post" style="width: 50%;">
         <input type="hidden" name="userForm" value="true" />
 
-        <div class='form-row'>
+        <div class='form-group'>
             <label for="username">Username: </label>
-            <input id="username" type="text" name="username" readonly value="<?php echo $user->userName ?>" />
+            <input id="username" class="form-control" type="text" name="username" readonly value="<?php echo $user->userName ?>" />
         </div>
 
-        <div class='form-row'>
+        <div class='form-group'>
             <label for="email">Email address: </label>
-            <input id="email" type="email" name="email" value="<?php echo $user->userEmail ?>" />
+            <input id="email" class="form-control" type="email" name="email" value="<?php echo $user->userEmail ?>" />
         </div>
 
-        <div class='form-row'>
+        <!--orcid -->  
+        <div class='form-group'>
             <label for="orcid">Orcid: </label>
-            <input id="orcid" type="text" name="orcid" value="<?php echo $user->orcid ?>"/>
+            <input id="orcid" class="form-control" type="text" name="orcid" value="<?php echo $contributor->orcid ?>"/>
             
-            <?php if(isset($user->orcid)){
-                if(!isset($user->orcidCode)){ ?>
+            <?php if(isset($contributor->orcid)){
+                if(!isset($contributor->orcidCode)){ ?>
                     <a class='btn btn-primary btn-xs' href='publish.php?platform=orcid'>Authorise Access</a>
                 <?php }else{ ?>
                     <span class='label label-primary'>Access Authorised</span>

@@ -152,7 +152,7 @@ function Builder(data, $stagingArea, $overviewArea){
         //stage value area (for inputting and selecting within a stage)   
         $stageControlDiv = $("<div class ='stage-control'></div>");     
         //create an input area        
-        $inputDiv = $("<div class='input'></div>");                
+        $inputDiv = $("<div class='input form-inline'></div>");                
         //show the input area
         var input;
         switch (stage.type){

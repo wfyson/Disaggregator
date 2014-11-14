@@ -182,6 +182,24 @@ class Compound
         return $list;
     }
     
+    public function getCompoundContributors()
+    {
+        $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
+        $sql = "SELECT * FROM compound_contributor WHERE CompoundID = :compoundID";
+        $st = $conn->prepare($sql);
+        $st->execute();
+        $list = array();
+
+        while ($row = $st->fetch(PDO::FETCH_ASSOC))
+        {
+            $contributor = new CompoundContributor($row);
+            $list[] = $contributor;
+        }
+
+        $conn = null;
+        return $list;
+    }
+    
     public function getReference()
     {
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
@@ -249,6 +267,17 @@ class Compound
         $xmlOrcidWork->appendChild($xmlUrl = $xml->createElement("url"));
         $xmlUrl->appendChild($xml->createTextNode($this->getUrl()));
         
+        //contributors
+        /*
+        $xmlOrcidWork->appendChild($xmlWorkContributors = $xml->createElement("work-contributors"));
+        
+        $compoundContributors = $this->getCompoundContributors();
+        foreach ($compoundContributors as $compoundContributor)
+        {
+            $contributor = $compoundContributor->getContributor();                                                
+            $xmlWorkContributors->appendChild($xmlContributor = $xml->createElement("contributor"));    
+        }
+        */
         //language
         $xmlOrcidWork->appendChild($xmlLang = $xml->createElement('language-code'));
         $xmlLang->nodeValue = "en";

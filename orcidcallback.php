@@ -9,10 +9,11 @@ session_start();
 $userid = isset($_SESSION['userid']) ? $_SESSION['userid'] : "";
 
 $user = User::getById($userid);
+$contributor = $user->getContributor();
 
 if (isset($_GET['code'])){
-    $user->orcidCode = $_GET['code'];
-    $user->update();
+    $contributor->orcidCode = $_GET['code'];
+    $contributor->update();
     header('Location: ' . 'index.php?authorise=orcid&success=true');
     exit;
 }else{

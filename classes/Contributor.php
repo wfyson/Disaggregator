@@ -5,20 +5,32 @@
  */
 class Contributor
 {
-
     //Properties    
     public $id = null;
-    public $name = null;
+    public $firstName = null;
+    public $familyName = null;
     public $userID = null;
+    public $orcid = null;    
+    public $orcidCode = null;    
+    public $orcidAccessToken = null;   
+    
 
     public function __construct($data = array())
     {
         if (isset($data['ContributorID']))
             $this->id = (int) $data['ContributorID'];
-        if (isset($data['Name']))
-            $this->name = $data['Name'];
+        if (isset($data['FirstName']))
+            $this->firstName = $data['FirstName'];
+        if (isset($data['FamilyName']))
+            $this->familyName = $data['FamilyName'];        
         if (isset($data['UserID']))
             $this->userID = $data['UserID'];
+        if (isset($data['Orcid']))
+            $this->orcid = $data['Orcid'];
+        if (isset($data['OrcidCode']))
+            $this->orcidCode = $data['OrcidCode'];
+        if (isset($data['OrcidAccessToken']))
+            $this->orcidAccessToken = $data['OrcidAccessToken'];
     }
 
     public function storeFormValues($params)
@@ -70,10 +82,14 @@ class Contributor
 
         // Insert the Compound
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "INSERT INTO contributor (Name) VALUES ( :name, :userID )";
+        $sql = "INSERT INTO contributor (FirstName, FamilyName, UserID, Orcid, OrcidCode, OrcidAccessToken) VALUES ( :firstname, :familyname, :userid, :orcid, :orcidcode, :orcidaccesstoken  )";
         $st = $conn->prepare($sql);
-        $st->bindValue(":name", $this->name, PDO::PARAM_STR);
+        $st->bindValue(":firstname", $this->firstName, PDO::PARAM_STR);
+        $st->bindValue(":familyname", $this->familyName, PDO::PARAM_STR);        
         $st->bindValue(":userid", $this->userID, PDO::PARAM_INT);
+        $st->bindValue(":orcid", $this->orcid, PDO::PARAM_STR);
+        $st->bindValue(":orcidcode", $this->orcidCode, PDO::PARAM_STR);
+        $st->bindValue(":orcidacesstoken", $this->orcidAcessToken, PDO::PARAM_STR);
         $st->execute();
         $this->id = $conn->lastInsertId();
         $conn = null;
@@ -88,10 +104,16 @@ class Contributor
 
         // Update the Contributor
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "UPDATE tag SET Name=:name, UserID=:userID WHERE ContributorID = :id";
+        $sql = "UPDATE contributor SET FirstName=:firstname, FamilyName=:familyname, UserID=:userID, Orcid=:orcid, OrcidCode=:orcidcode, OrcidAccessToken=:orcidaccesstoken WHERE ContributorID = :id";
         $st = $conn->prepare($sql);
-        $st->bindValue(":name", $this->name, PDO::PARAM_STR);
+        
+        
+        $st->bindValue(":firstname", $this->firstName, PDO::PARAM_STR);
+        $st->bindValue(":familyname", $this->familyName, PDO::PARAM_STR);       
         $st->bindValue(":userID", $this->userID, PDO::PARAM_INT);
+        $st->bindValue(":orcid", $this->orcid, PDO::PARAM_STR);
+        $st->bindValue(":orcidcode", $this->orcidCode, PDO::PARAM_STR);
+        $st->bindValue(":orcidaccesstoken", $this->orcidAccessToken, PDO::PARAM_STR);
         $st->bindValue(":id", $this->id, PDO::PARAM_INT);
         $st->execute();
         $conn = null;
@@ -109,6 +131,14 @@ class Contributor
         $st->bindValue(":id", $this->id, PDO::PARAM_INT);
         $st->execute();
         $conn = null;
+    }
+    
+    public function getName(){
+        return $this->firstName . " " . $this->familyName;
+    }
+    
+    public function getOrcidName(){
+        return $this->familyName . ", " . $this->firstName;
     }
 }
 

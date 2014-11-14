@@ -6,7 +6,7 @@ function showCompoundStage($inputDiv, stage, docid)
      $helpText = $("<h4>Select a Compound: </h4>");
     
     //text area
-    $textInput = $("<input type='text' readonly>");    
+    $textInput = $("<input type='text' readonly class='form-control'>");    
     
     $compoundInput = $("<input type='hidden'>");
 

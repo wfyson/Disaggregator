@@ -7,7 +7,6 @@ $userid = $_SESSION['userid'];
 
 $json = array();
 $json['current'] = false;
-ChromePhp::log($_GET['contributorid']);
 if(isset($_GET['contributorid'])){
     $current = Contributor::getById($_GET['contributorid']);
     $json['current'] = $current->name;

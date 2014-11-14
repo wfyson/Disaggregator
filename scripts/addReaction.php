@@ -17,6 +17,18 @@ $data = array("ReactionID" => null, "Transformation" => $transformation, "Result
 $reaction = new Reaction($data);
 $reactionid = $reaction->insert();
 
+//add the contributors
+$contributors = $_POST['Contributors'];
+foreach($contributors as $contributor){
+    $contributorInfo = json_decode($contributor);        
+    $contributorEntry = new CompoundContributor(array("ReactionContributorID" => null,
+        "ReactionID" => $reactionid,
+        "ContributorID" => $contributorInfo->id,
+        "Role" => $contributorInfo->role
+        ));
+    $contributorEntry->insert();
+}
+
 //and the reaction tags
 $tags = explode(", ", $_POST['Tags'][0]);   
 foreach($tags as $tag){

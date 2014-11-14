@@ -10,10 +10,7 @@ class User
     public $id = null;
     public $userName = null;
     public $userPasswordHash = null;
-    public $userEmail = null;
-    public $orcid = null;    
-    public $orcidCode = null;    
-    public $orcidAccessToken = null;    
+    public $userEmail = null;     
     
     public function __construct($data = array())
     {                    
@@ -129,6 +126,19 @@ class User
         $st->execute();
         
         $conn = null;
-    }    
+    }  
+    
+    public function getContributor()
+    {
+        $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
+        $sql = "SELECT * FROM contributor WHERE UserID = :userid";                
+        $st = $conn->prepare($sql);
+        $st->bindValue(":userid", $this->id, PDO::PARAM_INT);
+        $st->execute();
+        $row = $st->fetch();
+        $conn = null;
+        if ($row)
+            return new Contributor($row);
+    }   
 }
 ?>

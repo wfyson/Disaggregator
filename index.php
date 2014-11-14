@@ -12,11 +12,6 @@ if ($action == "register") {
     exit;
 }
 
-if ($action == "registerOrcid") {
-    registerOrcid();
-    exit;
-}
-
 
 if ($action != "login" && $action != "logout" && !$username) {
     login();
@@ -114,8 +109,11 @@ function register() {
             $results['errorMessage'] = "Empty Username";
             require( TEMPLATE_PATH . "/register.php" );
             exit;
-        } elseif (empty($_POST['name'])){
-            $results['errorMessage'] = "Empty Name";
+        } elseif (empty($_POST['first_name'])){
+            $results['errorMessage'] = "Empty First Name";
+            require( TEMPLATE_PATH . "/register.php" );
+        } elseif (empty($_POST['family_name'])){
+            $results['errorMessage'] = "Empty Family Name";
             require( TEMPLATE_PATH . "/register.php" );
         } elseif (empty($_POST['user_password_new']) || empty($_POST['user_password_repeat'])) {
             $results['errorMessage'] = "Empty Password";
@@ -152,7 +150,12 @@ function register() {
 
             $username = $_POST['user_name'];
             $useremail = $_POST['user_email'];
-            $name = $_POST['name'];
+            $firstName = $_POST['first_name'];
+            $familyName = $_POST['family_name'];
+            $orcid = null;
+            if (!empty($_POST['orcid'])) {
+                $orcid = $_POST['orcid'];
+            }
 
             // check if user or email address already exists
             $sql = "SELECT * FROM users WHERE user_name = :username OR user_email = :useremail";
@@ -176,15 +179,18 @@ function register() {
                 $st->bindValue(":username", $username, PDO::PARAM_STR);
                 $st->bindValue(":userpassword", $user_password_hash, PDO::PARAM_STR);
                 $st->bindValue(":useremail", $useremail, PDO::PARAM_STR);
+                $st->bindValue(":orcid", $orcid, PDO::PARAM_STR);
 
                 $insert = $st->execute();
                 $newUserId = $conn->lastInsertId();                
                 
                 //and now add them to the contributor table too
-                $contribSql = "INSERT INTO contributor (Name, UserID) VALUES(:name, :userid);";
+                $contribSql = "INSERT INTO contributor (FirstName, FamilyName, UserID, Orcid) VALUES(:firstname, :familyname, :userid, :orcid);";
                 $st = $conn->prepare($contribSql);
-                $st->bindValue(":name", $name, PDO::PARAM_STR);
+                $st->bindValue(":firstname", $firstName, PDO::PARAM_STR);
+                $st->bindValue(":familyname", $familyName, PDO::PARAM_STR);               
                 $st->bindValue(":userid", $newUserId, PDO::PARAM_INT);
+                $st->bindValue(":orcid", $orcid, PDO::PARAM_STR);
                 $contribInsert = $st->execute();
                 
                 $conn = null;

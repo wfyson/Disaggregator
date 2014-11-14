@@ -27,7 +27,7 @@
                     $molPath = $compound->getMolPath();
                     ?>
                     <li>
-                        <div class="entry compound-entry">
+                        <div class="entry compound-entry row">
 
                             <script type="text/javascript">
                                 var Info;                                                                                           
@@ -59,14 +59,14 @@
                                 })();
                             </script>
 
-                            <div id="compound-<?php echo $compoundID ?>-mol" class="compound-jmol"></div>
+                            <div id="compound-<?php echo $compoundID ?>-mol" class="compound-jmol col-md-2"></div>
                             
-                            <div class="compound-data">
+                            <div class="compound-data col-md-7">
                                 <!-- Other info about the compound -->
                                 <b><?php echo htmlspecialchars($compound->name) ?></b>
                             </div>      
                             <!-- buttons -->
-                            <div class="compound-buttons">
+                            <div class="compound-buttons col-md-3">
                                 <a class="btn btn-primary btn-xs" href="view.php?type=compound&id=<?php echo $compound->id ?>">View</a>     
                                 <a class="btn btn-primary btn-xs" href="publish.php?type=Compound&id=<?php echo $compound->id ?>&platform=orcid">Publish</a>
                                 <a class="btn btn-success btn-xs" href="extract.php?type=spectra&docid=<?php echo $compound->referenceID ?>&compoundid=<?php echo $compound->id ?>"><span class="glyphicon glyphicon-plus"></span> Add Spectrum</a> 
@@ -82,13 +82,13 @@
                 foreach ($results['reactions'] as $reaction) {
                     ?>
                     <li>
-                        <div class="entry reaction-entry">
-                            <div class="reaction-data">
+                        <div class="entry reaction-entry row">
+                            <div class="reaction-data col-md-9">
                                 <span><b><?php echo htmlspecialchars($reaction->transformation) ?></b></span>
                                 <span><b>Result: <?php echo htmlspecialchars(Compound::getById($reaction->result)->name) ?></b></span>
                             </div>
                             <!-- buttons -->
-                            <div class="reaction-buttons">
+                            <div class="reaction-buttons col-md-3">
                                 <a class="btn btn-primary btn-xs" href="view.php?type=reaction&id=<?php echo $reaction->id ?>">View</a>     
                                 <a class="btn btn-primary btn-xs" href="publish.php?type=Reaction&id=<?php echo $reaction->id ?>&platform=orcid">Publish</a>
                             </div>
@@ -116,17 +116,17 @@
                 foreach ($results['references'] as $reference) {
                     ?>
                     <li>
-                        <div class="entry doc-entry" data-docid="<?php echo $reference->id ?>">                            
-                            <div class="doc-info">
+                        <div class="entry doc-entry row" data-docid="<?php echo $reference->id ?>">                            
+                            <div class="doc-info col-md-9">
                                 <!--thumbnail -->
                                 <?php $format = $reference->getFormat(); ?>
                                 <img src="img/<?php echo $format ?>_thumb.png"/>                                                                            
                                 <b><?php echo htmlspecialchars($reference->refFile) ?></b>
                             </div>                           
                             <!-- buttons -->
-                            <div class="doc-buttons">
-                                <a class="btn btn-success" href="extract.php?type=compound&docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Compound</a>
-                                <a class="btn btn-warning" href="extract.php?type=reaction&docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Reaction</a>
+                            <div class="doc-buttons col-md-3">
+                                <a class="btn btn-success btn-sm" href="extract.php?type=compound&docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Compound</a>
+                                <a class="btn btn-warning btn-sm" href="extract.php?type=reaction&docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Reaction</a>
                             </div>
                         </div>
                     </li>

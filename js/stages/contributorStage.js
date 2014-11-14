@@ -2,18 +2,18 @@
 function showContributorStage($inputDiv, stage, builder)
 {    
     var role;
-    
+        
     //help text
     $helpText = $("<h4>Contributor: </h4>");
     
     //input
-    $textInput = $("<input type='text' readonly>");    
+    $textInput = $("<input type='text' readonly class='form-control'>");    
     
     $contributorInput = $("<input type='hidden'>");
     
     //roles
     var roles = ["Doer", "Conceiver", "Supervisor"];
-    $roleInput = $("<select name='dropdown'>");
+    $roleInput = $("<select name='dropdown' class='form-control'>");
     for(var i = 0; i < roles.length; i++){
         $option = $('<option value="' + roles[i] + '"></option>');
         $option.append(roles[i]);
@@ -45,10 +45,12 @@ function showContributorStage($inputDiv, stage, builder)
         var contributors = data.contributors.results;
         for(var i = 0; i < contributors.length; i++){ 
             var contributor = contributors[i];
+            var contributorName = contributor.firstName + " " + contributor.familyName;            
             $contributorItem = $("<div class='list-item contributor-item'></div>");            
-            $contributorItem.append(contributor.name);    
+                       
+            $contributorItem.append(contributorName);    
             //select an item in the list
-            $contributorItem.click({id: contributor.id, name: contributor.name}, function(event){                                      
+            $contributorItem.click({id: contributor.id, name: contributorName}, function(event){                                      
                 
                 var role = $roleInput.val();
                 

@@ -4,7 +4,7 @@ function showSelectStage($inputDiv, stage) {
     $helpText = $("<h4>Select an option: </h4>");
         
     //text area
-    $selectInput = $("<select name='dropdown'>");
+    $selectInput = $("<select name='dropdown' class='form-control'>");
     console.log(stage.options);
     for(var i = 0; i < stage.options.length; i++){
         console.log(i);
