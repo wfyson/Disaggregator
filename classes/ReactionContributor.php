@@ -113,6 +113,30 @@ class ReactionContributor {
         $st->execute();
         $conn = null;
     }
+    
+    public function getContributor()
+    {
+        $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
+        $sql = "SELECT * FROM contributor WHERE ContributorID = :contributorID";                
+        $st = $conn->prepare($sql);
+        $st->bindValue(":contributorID", $this->contributorID, PDO::PARAM_INT);
+        $st->execute();
+        $row = $st->fetch();
+        $conn = null;
+        if ($row)
+            return new Contributor($row);
+    }
+    
+    public function getOrcidRole(){
+        switch ($this->role){
+            case "Doer":
+                return "co-investigator";
+            case "Conceiver":
+                return "co-inventor";
+            case "Supervisor":
+                return "principal-investigator";            
+        }
+    }
 }
 
 ?>

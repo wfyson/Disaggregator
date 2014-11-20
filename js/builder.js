@@ -174,7 +174,7 @@ function Builder(data, $stagingArea, $overviewArea){
                 input = showImageStage($inputDiv, stage);
                 break;
             case "compound":
-                input = showCompoundStage($inputDiv, stage, self.docid);
+                input = showCompoundStage($inputDiv, stage, self, self.docid);
                 break;
             case "contributor":
                 input = showContributorStage($inputDiv, stage, self);
@@ -391,7 +391,7 @@ function Builder(data, $stagingArea, $overviewArea){
         var record = self.stages[self.stage].record;
         self.stages[self.stage].value[record] = value;
         self.showStage(self.stage);
-    }
+    };
     
     //set stage value from a table cell
     self.setCell = function(id){

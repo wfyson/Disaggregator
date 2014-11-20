@@ -185,8 +185,9 @@ class Compound
     public function getCompoundContributors()
     {
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "SELECT * FROM compound_contributor WHERE CompoundID = :compoundID";
+        $sql = "SELECT * FROM compound_contributor WHERE CompoundID = :compoundID";        
         $st = $conn->prepare($sql);
+        $st->bindValue(":compoundID", $this->id, PDO::PARAM_INT);
         $st->execute();
         $list = array();
 
@@ -215,7 +216,7 @@ class Compound
     
     public function getUrl()
     {
-        $url = "disagregator.asdf.ecs.soton.ac.uk/view.php?type=compound&id=" . $this->id;
+        $url = "disaggregator.asdf.ecs.soton.ac.uk/view.php?type=compound&id=" . $this->id;
         return $url;
     }
     
@@ -267,8 +268,8 @@ class Compound
         $xmlOrcidWork->appendChild($xmlUrl = $xml->createElement("url"));
         $xmlUrl->appendChild($xml->createTextNode($this->getUrl()));
         
+        
         //contributors
-        /*
         $xmlOrcidWork->appendChild($xmlWorkContributors = $xml->createElement("work-contributors"));
         
         $compoundContributors = $this->getCompoundContributors();
@@ -276,8 +277,31 @@ class Compound
         {
             $contributor = $compoundContributor->getContributor();                                                
             $xmlWorkContributors->appendChild($xmlContributor = $xml->createElement("contributor"));    
+            
+            $xmlContributor->appendChild($xmlCreditName = $xml->createElement("credit-name"));
+            $xmlCreditName->appendChild($xml->createTextNode($contributor->getOrcidName()));          
+            
+            if($contributor->orcid){
+                $xmlContributor->appendChild($xmlContributorOrcid = $xml->createElement("contributor-orcid"));
+                
+                $xmlContributorOrcid->appendChild($xmlUri = $xml->createElement("uri"));
+                $xmlUri->appendChild($xml->createTextNode("http://sandbox.orcid.org/" . $contributor->orcid));
+                
+                $xmlContributorOrcid->appendChild($xmlPath = $xml->createElement("path"));
+                $xmlPath->appendChild($xml->createTextNode($contributor->orcid));
+                
+                $xmlContributorOrcid->appendChild($xmlHost = $xml->createElement("host"));
+                $xmlHost->appendChild($xml->createTextNode("orcid.org"));
+            }                        
+            
+            $xmlContributor->appendChild($xmlContributorAttributes = $xml->createElement("contributor-attributes"));
+            $xmlContributorAttributes->appendChild($xmlContributorRole = $xml->createElement("contributor-role"));
+            $xmlContributorRole->appendChild($xml->createTextNode($compoundContributor->getOrcidRole()));                        
+            
+            $xmlContributorAttributes->appendChild($xmlContributorSequence = $xml->createElement("contributor-sequence"));
+            $xmlContributorSequence->appendChild($xml->createTextNode("additional"));                        
         }
-        */
+        
         //language
         $xmlOrcidWork->appendChild($xmlLang = $xml->createElement('language-code'));
         $xmlLang->nodeValue = "en";
@@ -286,7 +310,9 @@ class Compound
 
         $resultString = $xml->saveXml();
         
+        ChromePhp::log($resultString);
+        
         return $resultString;
-    }                
+    }                            
 }
 ?>

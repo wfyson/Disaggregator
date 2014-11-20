@@ -1,6 +1,6 @@
 
 //create a compound stage
-function showCompoundStage($inputDiv, stage, docid)
+function showCompoundStage($inputDiv, stage, builder, docid)
 {
     //help text
      $helpText = $("<h4>Select a Compound: </h4>");
@@ -34,10 +34,8 @@ function showCompoundStage($inputDiv, stage, docid)
             var compound = refCompounds[i];
             $compoundItem = $("<div class='list-item compound-item'></div>");            
             $compoundItem.append(compound.name);            
-            $compoundItem.click({id: compound.id, name: compound.name}, function(event){                             
-                $compoundInput.val('{"id": ' + event.data.id + ', "name": "' + event.data.name + '"}');
-                $textInput.val(event.data.name);
-                $compoundList.hide();
+            $compoundItem.click({id: compound.id, name: compound.name}, function(event){
+                compoundSelect(event);
             });            
             $compoundList.append($compoundItem);
         }
@@ -50,10 +48,8 @@ function showCompoundStage($inputDiv, stage, docid)
             var compound = userCompounds[i];
             $compoundItem = $("<div class='list-item compound-item'></div>");            
             $compoundItem.append(compound.name);            
-            $compoundItem.click({id: compound.id, name: compound.name}, function(event){                             
-                $compoundInput.val('{"id": ' + event.data.id + ', "name": "' + event.data.name + '"}');
-                $textInput.val(event.data.name);
-                $compoundList.hide();
+            $compoundItem.click({id: compound.id, name: compound.name}, function(event){
+                compoundSelect(event);
             });            
             $compoundList.append($compoundItem);
         }
@@ -66,10 +62,8 @@ function showCompoundStage($inputDiv, stage, docid)
             var compound = otherCompounds[i];
             $compoundItem = $("<div class='list-item compound-item'></div>");            
             $compoundItem.append(compound.name);            
-            $compoundItem.click({id: compound.id, name: compound.name}, function(event){                             
-                $compoundInput.val('{"id": ' + event.data.id + ', "name": "' + event.data.name + '"}');
-                $textInput.val(event.data.name);
-                $compoundList.hide();
+            $compoundItem.click({id: compound.id, name: compound.name}, function(event){
+                compoundSelect(event);
             });            
             $compoundList.append($compoundItem);
         }
@@ -79,7 +73,17 @@ function showCompoundStage($inputDiv, stage, docid)
     
     $textInput.click(function(){    
         $compoundList.show();
-    });
+    });      
+    
+    function compoundSelect(event){  
+        
+        $compoundInput.val('{"id": ' + event.data.id + ', "name": "' + event.data.name + '"}');     
+        builder.setCustom('{"id": ' + event.data.id + ', "name": "' + event.data.name +  '"}');
+        
+        $compoundList.hide();
+    }
     
     return $compoundInput;
 }
+
+

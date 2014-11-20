@@ -174,8 +174,27 @@ class Reaction
     
     public function getUrl()
     {
-        $url = "disagregator.asdf.ecs.soton.ac.uk/view.php?type=reaction&id=" . $this->id;
+        $url = "disaggregator.asdf.ecs.soton.ac.uk/view.php?type=reaction&id=" . $this->id;
         return $url;
+    }
+    
+    public function getReactionContributors()
+    {
+        $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
+        $sql = "SELECT * FROM reaction_contributor WHERE ReactionID = :reactionID";        
+        $st = $conn->prepare($sql);
+        $st->bindValue(":reactionID", $this->id, PDO::PARAM_INT);
+        $st->execute();
+        $list = array();
+
+        while ($row = $st->fetch(PDO::FETCH_ASSOC))
+        {
+            $contributor = new ReactionContributor($row);
+            $list[] = $contributor;
+        }
+
+        $conn = null;
+        return $list;
     }
     
     public function getOrcidXml()
@@ -225,6 +244,39 @@ class Reaction
         //url
         $xmlOrcidWork->appendChild($xmlUrl = $xml->createElement("url"));
         $xmlUrl->appendChild($xml->createTextNode($this->getUrl()));
+        
+        //contributors
+        $xmlOrcidWork->appendChild($xmlWorkContributors = $xml->createElement("work-contributors"));
+        
+        $reactionContributors = $this->getReactionContributors();
+        foreach ($reactionContributors as $reactionContributor)
+        {
+            $contributor = $reactionContributor->getContributor();                                                
+            $xmlWorkContributors->appendChild($xmlContributor = $xml->createElement("contributor"));    
+            
+            $xmlContributor->appendChild($xmlCreditName = $xml->createElement("credit-name"));
+            $xmlCreditName->appendChild($xml->createTextNode($contributor->getOrcidName()));          
+            
+            if($contributor->orcid){
+                $xmlContributor->appendChild($xmlContributorOrcid = $xml->createElement("contributor-orcid"));
+                
+                $xmlContributorOrcid->appendChild($xmlUri = $xml->createElement("uri"));
+                $xmlUri->appendChild($xml->createTextNode("http://sandbox.orcid.org/" . $contributor->orcid));
+                
+                $xmlContributorOrcid->appendChild($xmlPath = $xml->createElement("path"));
+                $xmlPath->appendChild($xml->createTextNode($contributor->orcid));
+                
+                $xmlContributorOrcid->appendChild($xmlHost = $xml->createElement("host"));
+                $xmlHost->appendChild($xml->createTextNode("orcid.org"));
+            }                        
+            
+            $xmlContributor->appendChild($xmlContributorAttributes = $xml->createElement("contributor-attributes"));
+            $xmlContributorAttributes->appendChild($xmlContributorRole = $xml->createElement("contributor-role"));
+            $xmlContributorRole->appendChild($xml->createTextNode($reactionContributor->getOrcidRole()));                        
+            
+            $xmlContributorAttributes->appendChild($xmlContributorSequence = $xml->createElement("contributor-sequence"));
+            $xmlContributorSequence->appendChild($xml->createTextNode("additional"));                        
+        }
         
         //language
         $xmlOrcidWork->appendChild($xmlLang = $xml->createElement('language-code'));

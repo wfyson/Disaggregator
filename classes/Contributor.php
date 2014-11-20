@@ -40,7 +40,7 @@ class Contributor
     }
 
     public static function getById($id)
-    {
+    {                
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
         $sql = "SELECT * FROM contributor WHERE ContributorID = :id";
         $st = $conn->prepare($sql);

@@ -9,13 +9,23 @@ $json = array();
 $json['current'] = false;
 if(isset($_GET['contributorid'])){
     $current = Contributor::getById($_GET['contributorid']);
-    $json['current'] = $current->name;
+    $json['current'] = $current->getName();
 }
 
 $contributors = Contributor::getList();
 
-//reutrn the results
-$json['contributors'] = $contributors;
+//remove user form list
+$otherContributors = array();
+foreach($contributors['results'] as $contributor)
+{
+    if ($contributor->userID != $userid)
+    {    
+        $otherContributors[] = $contributor;
+    }
+}
+
+//return the results
+$json['contributors'] = $otherContributors;
 echo json_encode($json);
 
 ?>

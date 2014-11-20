@@ -31,32 +31,30 @@ function showContributorStage($inputDiv, stage, builder)
     $contributorList = $("<div class='custom-list contributor-list'></div>");    
     var url = "././scripts/getContributorList.php";
     if (stage.value[stage.record] !== ""){
-        var contributorInfo = $.parseJSON(stage.value[stage.record]);
+        var contributorInfo = $.parseJSON(stage.value[stage.record]);        
         url = url + "?contributorid=" + contributorInfo.id;
     }
     
     //get a list of available contributors and details on the current contributor
     $.getJSON(url, function(data){    
-        //display current contributor
+        //display current contributor  
         if (data.current){
             $textInput.val(data.current);
         }
         
-        var contributors = data.contributors.results;
+        var contributors = data.contributors;
         for(var i = 0; i < contributors.length; i++){ 
             var contributor = contributors[i];
             var contributorName = contributor.firstName + " " + contributor.familyName;            
             $contributorItem = $("<div class='list-item contributor-item'></div>");            
                        
-            $contributorItem.append(contributorName);    
+            $contributorItem.append(contributorName);                
             //select an item in the list
             $contributorItem.click({id: contributor.id, name: contributorName}, function(event){                                      
-                
+                                
                 var role = $roleInput.val();
                 
-                $contributorInput.val('{"id": ' + event.data.id + ', "name": "' + event.data.name + '", "role": "' + role + '"}');
-                $textInput.val(event.data.name);
-                
+                $contributorInput.val('{"id": ' + event.data.id + ', "name": "' + event.data.name + '", "role": "' + role + '"}');                
                 builder.setCustom('{"id": ' + event.data.id + ', "name": "' + event.data.name + '", "role": "' + role + '"}');
                 
                 $contributorList.hide();
