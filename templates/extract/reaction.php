@@ -24,17 +24,15 @@
         
         //hook up all the checkboxes and table cells to the compound builder here
         $('#extract-content .selector').change(function(){              
-               reactionBuilder.setChecked($(this));
+            reactionBuilder.setChecked($(this));
         });
         
-        $('#extract-content table td').click(function(){
-            $this = $(this);
-            if($this.hasClass("selected")) {
-                $this.removeClass("selected");  
-            }else{
-                $this.addClass("selected");
-                reactionBuilder.setCell($(this).data("id"));
-            }                        
+         $('#extract-content table td .para').click(function(){            
+            reactionBuilder.setCell($(this));
+        });
+        
+        $('#extract-content table td .image').click(function(){            
+            reactionBuilder.setCell($(this));
         });
         
         

@@ -251,11 +251,11 @@ class WordReader extends OpenXmlReader {
                 foreach ($paras as $para) {
                     $wordImage = $this->readParaImage($para);
                     if ($wordImage !== null) {
-                        $this->id--;
+                        //$this->id--;
                         $wordCell->addPara($wordImage);
                     } else {
                         $para = $this->readParaText($para);
-                        $this->id--;
+                        //$this->id--;
                         $wordCell->addPara($para);
                     }
                 }

@@ -27,15 +27,13 @@
                compoundBuilder.setChecked($(this));
         });
         
-        $('#extract-content table td').click(function(){
-            $this = $(this);
-            if($this.hasClass("selected")) {
-                $this.removeClass("selected");  
-            }else{
-                $this.addClass("selected");
-                compoundBuilder.setCell($(this).data("id"));
-            }                        
-        });        
+        $('#extract-content table td .para').click(function(){            
+            compoundBuilder.setCell($(this));
+        });
+        
+        $('#extract-content table td .image').click(function(){            
+            compoundBuilder.setCell($(this));
+        });
     };
 </script>
 

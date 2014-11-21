@@ -351,13 +351,17 @@ body{
     border: thin solid black;    
 }
 
-#extract-content td:hover{    
+#extract-content td .para:hover{    
     cursor: pointer;
     background: #e1e1e8;
 } 
 
 #extract-content td p{
     border: none;
+}
+
+#extract-content .selected p{
+    color: #245269;
 }
 
 #sidebar.extract{    
@@ -471,29 +475,36 @@ body{
     display: inline-block;
     height: 300px;
     vertical-align: top;    
+    overflow-y: auto;
 }
 
-.view-content .keyword{
-    display: inline-block;
+.view-details{
+    margin-bottom: 10px;
 }
 
-.view-details .meta-title{    
-    display:inline-block;
-    margin-right: 5px;
+.view-details h4{
+    margin-bottom: 5px;
 }
 
-.view-details .meta-value{
-    display:inline-block;
+.view-details meta-entry{
+    margin-bottom: 5px;
 }
+
+.contributor-table .btn-xs{
+    margin-left: 5px;
+}
+
 
 /*
     Compound Views
 */
-#compound-content #appdiv{
+#compound-content .spectra h3{
+    margin-top: 10px;
     display: inline-block;
-    width: 300px;
-    margin-right: 10px;
+    vertical-align: middle;
+    
 }
+
 
 /*
     User View

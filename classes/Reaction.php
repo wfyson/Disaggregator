@@ -12,6 +12,7 @@ class Reaction
     public $result = null;
     public $procedure = null;
     public $referenceID = null;
+    public $userID = null;
 
     public function __construct($data = array())
     {
@@ -25,6 +26,8 @@ class Reaction
             $this->procedure = $data['Procedure'];
         if (isset($data['ReferenceID']))
             $this->referenceID = $data['ReferenceID'];
+        if (isset($data['UserID']))
+            $this->userID = $data['UserID']; 
     }
 
     public function storeFormValues($params)
@@ -80,14 +83,15 @@ class Reaction
 
         // Insert the Reaction
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "INSERT INTO reaction ( Transformation, Result, `Procedure`, ReferenceID ) VALUES ( :transformation, :result, :procedure, :referenceID )";
+        $sql = "INSERT INTO reaction ( Transformation, Result, `Procedure`, ReferenceID , UserID) VALUES ( :transformation, :result, :procedure, :referenceID, :userID )";
         $st = $conn->prepare($sql);
         
         $st->bindValue(":transformation", $this->transformation, PDO::PARAM_STR);
 	$st->bindValue(":result", $this->result, PDO::PARAM_INT);
 	$st->bindValue(":procedure", $this->procedure, PDO::PARAM_LOB);  
-        $st->bindValue(":referenceID", $this->procedure, PDO::PARAM_INT);  
-          
+        $st->bindValue(":referenceID", $this->referenceID, PDO::PARAM_INT);  
+        $st->bindValue(":userID", $this->userID, PDO::PARAM_INT);  
+        
         $st->execute();        
         $this->id = $conn->lastInsertId();        
         $conn = null;
@@ -102,12 +106,13 @@ class Reaction
 
         // Update the Reaction
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "UPDATE reaction SET Transformation=:transformation , Result=:result , Procedure=:procedure , ReferenceID=:referenceID WHERE ReferenceID = :id";
+        $sql = "UPDATE reaction SET Transformation=:transformation , Result=:result , Procedure=:procedure , ReferenceID=:referenceID , UserID = :userID WHERE ReactionID = :id";
         $st = $conn->prepare($sql);
         $st->bindValue(":transformation", $this->transforamtion, PDO::PARAM_STR);
 	$st->bindValue(":result", $this->result, PDO::PARAM_INT);
 	$st->bindValue(":procedure", $this->procedure, PDO::PARAM_STR);
         $st->bindValue(":referenceID", $this->referenceID, PDO::PARAM_INT);
+        $st->bindValue(":userID", $this->userID, PDO::PARAM_INT);
         $st->bindValue(":id", $this->id, PDO::PARAM_INT);        
         $st->execute();
         $conn = null;

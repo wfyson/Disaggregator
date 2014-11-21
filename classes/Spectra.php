@@ -126,6 +126,14 @@ class Spectra
         $conn = null;
     }
     
+    public function getJCAMPPath(){
+        return "spectra/" . $this->id . '/jcamp/' . $this->jcampFile;
+    }
+    
+    public function getImagePath(){
+        return "spectra/" . $this->id . '/images/' . $this->image;
+    }
+    
     
 }
 ?>

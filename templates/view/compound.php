@@ -33,7 +33,7 @@ $(document).ready(function() {
 })
 </script>
 
-<div id="compound-view" class="col-md-8">            
+<div id="compound-view" class="col-md-10">            
     <div id="compound-panel" class="view-title">      
         <h3>
             <?php echo $compound->name ?>
@@ -42,23 +42,49 @@ $(document).ready(function() {
 
     <div id="compound-content" class="view-content">
         <div class="main">        
-            <div id="appdiv"></div>
-        
-            <div class="view-details">
+            <div id="appdiv" class="col-md-4"></div>        
+            <div class="view-details col-md-8">
                 <div class="metadata">
-                    <div class="meta-title">
-                        <b>Reference: </b>
+                    <div class="meta-entry">
+                        <h4>Description</h4>
+                        <?php echo $compound->description ?>
                     </div>
-                    <div class="meta-value">
+                    <div class="meta-entry">
+                        <h4>Reference</h4>
                         <a href="<?php $reference = $compound->getReference(); echo $reference->getLink(); ?>"><?php echo $reference->refFile?></a>
+                    </div>   
+                    <div class="meta-entry">
+                        <h4>Contributors</h4>                        
+                        <?php
+                            $contributors = $compound->getCompoundContributors();
+                            include "contributorTable.php"
+                        ?>
                     </div>
-                </div>
-                <div class="view-desc">
-                    <?php echo $compound->description ?>
-                </div>
+                </div>                
             </div>
         </div>
-        
+        <div class="spectra">
+            <h3>Spectra</h3>
+            <a class="add-spectrum btn btn-success btn-xs" href="extract.php?type=spectra&docid=<?php echo $compound->referenceID ?>&compoundid=<?php echo $compound->id ?>"><span class="glyphicon glyphicon-plus"></span> Add Spectrum</a> 
+            <?php $spectra = $compound->getSpectra();
+            foreach($spectra as $spectrum){
+                ?>
+            <div class="compound-spectrum">
+                
+            </div>
+            <?php } ?>            
+        </div>
+        <div class="reactions">
+            <h3>Reactions</h3>
+            <?php $reactions = Reaction::getByResult($compound->id);  
+            foreach($reactions as $reaction){
+                ?>
+            <div class="compound-reaction">
+                <a href="view.php?type=reaction&id=<?php echo $reaction->id ?>"><?php echo $reaction->transformation ?></a>
+            </div>
+            <?php } ?> 
+        </div>
+        <!--
         <div id="tags">
                 <?php $keywords = $compound->getTags();             
                 foreach ($keywords as $keyword){
@@ -67,25 +93,9 @@ $(document).ready(function() {
                         <div class="label label-default"><?php echo $keyword ?></div>
                     </div>                    
                 <?php } ?>
-        </div>
+        </div>-->
     </div>
 </div>
-
-<!-- Sidebar-->
-<!-- here the sidebar describes stuff related to the compound (doc, reactions, blah) -->
-<div id='sidebar' class='extract col-md-3 col-md-offset-7'>     
-    
-    <div class="sidebar-title">
-        <h4>Related Reactions</h4>
-    </div>
-    <?php $reactions = Reaction::getByResult($compound->id);          
-        foreach ($reactions as $reaction){
-        ?>
-        <div class="sidebar-data">
-            <a href="view.php?type=reaction&id=<?php echo $reaction->id ?>"><?php echo $reaction->transformation ?></a>
-        </div>                    
-    <?php } ?>
-</div> 
 
 <?php include "templates/include/footer.php" ?>
 

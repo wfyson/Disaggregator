@@ -4,7 +4,7 @@
 <script>
     window.onload = function(){        
                 
-        var spectraData = {};
+        var spectrumData = {};
         
         var types = [
             "2D NMR 1H-13C Direct correlation",
@@ -34,34 +34,32 @@
         ];
         
         //each stage's value should be an array to make it easier for the cases where multi is true
-        var spectraStages = [
+        var spectrumStages = [
             {name: "Type", type: "select", value: [""], multi: false, record: 0, options: types},
             {name: "Comment", type: "text", value: [""], multi: false, record: 0},
             {name: "JCAMPFile", type: "file", value: [""], multi: false, record: 0},
             {name: "Image", type: "image", value: [""], multi: false, record: 0}];   
         
-        spectraData['type'] = "Spectra";
-        spectraData['title'] = "Spectrum";
-        spectraData['docid'] = <?php echo $_GET['docid'] ?>;
-        spectraData['compoundid'] = <?php echo $_GET['compoundid'] ?>;
-        spectraData['stages'] = spectraStages;
+        spectrumData['type'] = "Spectra";
+        spectrumData['title'] = "Spectrum";
+        spectrumData['docid'] = <?php echo $_GET['docid'] ?>;
+        spectrumData['compoundid'] = <?php echo $_GET['compoundid'] ?>;
+        spectrumData['stages'] = spectrumStages;
         
-        var spectraBuilder = new Builder(spectraData, $('#extract-panel'), $('#progress'));              
-        spectraBuilder.showStage(0);
+        var spectrumBuilder = new Builder(spectrumData, $('#extract-panel'), $('#progress'));              
+        spectrumBuilder.showStage(0);
         
         //hook up all the checkboxes and table cells to the compound builder here
         $('#extract-content .selector').change(function(){              
-               spectraBuilder.setChecked($(this));
+            spectrumBuilder.setChecked($(this));
         });
         
-        $('#extract-content table td').click(function(){
-            $this = $(this);
-            if($this.hasClass("selected")) {
-                $this.removeClass("selected");  
-            }else{
-                $this.addClass("selected");
-                spectraBuilder.setCell($(this).data("id"));
-            }                        
+         $('#extract-content table td .para').click(function(){            
+            spectrumBuilder.setCell($(this));
+        });
+        
+        $('#extract-content table td .image').click(function(){            
+            spectrumBuilder.setCell($(this));
         });
         
         

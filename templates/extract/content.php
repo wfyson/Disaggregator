@@ -28,10 +28,11 @@ function addCheckBox($id){
     echo "<input class='selector' type='checkbox' data-id='" . $id . "'>";
 }
 
-function addPara($para) {
+function addPara($para, $table=false) {
     if ($para->getText() != "") {
         echo '<div id="item-' . $para->getId() . '" class="para">';
-        addCheckBox($para->getId());
+        if (!$table)
+            addCheckBox($para->getId());
         echo '<p class="value">' . $para->getText() . '</p></div>';
     }
 }
@@ -45,9 +46,11 @@ function addHeading($heading, $tocLinks) {
     return $tocLinks;
 }
 
-function addImage($image, $rels) {
+function addImage($image, $rels, $table=false) {
     echo '<div id="item-' . $image->getId() . '"class="image">'; 
-    addCheckBox($image->getId());
+    
+    if (!$table)
+        addCheckBox($image->getId());
     
     $relId = $image->getContent();    
     $source = $rels[$relId];
@@ -63,28 +66,25 @@ function addCaption($caption) {
 
 function addTable($table, $rels) {
     echo '<div class="table">';
-    $html = "<table>";
+    echo "<table>";
     $rows = $table->getContent();
     foreach ($rows as $row) {
-        $html = $html . '<tr>';
+        echo '<tr>';
         $cells = $row->getContent();
         foreach ($cells as $cell) {
-            $html = $html . '<td id="item-' . $cell->getId() . '" data-id="' . $cell->getId() . '">';
+            echo '<td id="item-' . $cell->getId() . '" data-id="' . $cell->getId() . '">';
             $paras = $cell->getContent();
             foreach ($paras as $para) {
                 if ($para->getType() == "text"){
-                    $html = $html . '<p class="value">' . $para->getText() . '</p>';
+                    addPara($para, true);
                 }elseif ($para->getType() == "image"){
-                    $relId = $para->getContent();    
-                    $source = $rels[$relId];
-                    $html = $html . '<img src="' . $source . '">'; 
+                    addImage($para, $rels, true); 
                 }                             
             }
-            $html = $html . '</td>';
+            echo '</td>';
         }
-        $html = $html . '</tr>';
+        echo '</tr>';
     }
-    $html = $html . '</table></div>';
-    echo $html;
+    echo '</table></div>';
 }
 

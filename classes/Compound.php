@@ -201,6 +201,25 @@ class Compound
         return $list;
     }
     
+    public function getSpectra()
+    {
+        $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
+        $sql = "SELECT * FROM spectra WHERE CompoundID = :compoundID";        
+        $st = $conn->prepare($sql);
+        $st->bindValue(":compoundID", $this->id, PDO::PARAM_INT);
+        $st->execute();
+        $list = array();
+
+        while ($row = $st->fetch(PDO::FETCH_ASSOC))
+        {
+            $spectrum = new Spectra($row);
+            $list[] = $spectrum;
+        }
+
+        $conn = null;
+        return $list;
+    }
+    
     public function getReference()
     {
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);

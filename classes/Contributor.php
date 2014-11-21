@@ -140,6 +140,10 @@ class Contributor
     public function getOrcidName(){
         return $this->familyName . ", " . $this->firstName;
     }
+    
+    public function getOrcidLink(){
+        return "http://sandbox.orcid.org/" . $this->orcid;
+    }
 }
 
 ?>

@@ -301,7 +301,8 @@ function Builder(data, $stagingArea, $overviewArea){
                                 $('#complete-modal-options').append($heading).append($spectrumLink);
                             }                            
                             $('#complete-modal').modal({
-                                keyboard: false
+                                keyboard: false,
+                                backdrop: 'static'
                             });
                             
                         });
@@ -376,10 +377,10 @@ function Builder(data, $stagingArea, $overviewArea){
         if($checkbox.is(":checked")){          
             
             //uncheck prevosuly selected box if present
-            $(".selector.selected").removeClass("selected").prop('checked', false);
+            $(".selected").removeClass("selected").prop('checked', false);
             
             $checkbox.addClass("selected");
-            self.stages[self.stage].value[record] = self.getData($checkbox.data("id"));            
+            self.stages[self.stage].value[record] = self.getData('#item-' + $checkbox.data("id"));            
         }else{
             $checkbox.removeClass("selected");
             self.stages[self.stage].value[record] = "";            
@@ -391,23 +392,35 @@ function Builder(data, $stagingArea, $overviewArea){
         var record = self.stages[self.stage].record;
         self.stages[self.stage].value[record] = value;
         self.showStage(self.stage);
-    };
+    };        
     
-    //set stage value from a table cell
-    self.setCell = function(id){
-        console.log("get the cell value...");
+    self.setCell = function($this){
+        var record = self.stages[self.stage].record;                        
+        if($this.hasClass("selected")){
+            //unselect it
+            $this.removeClass("selected");
+            self.stages[self.stage].value[record] = "";   
+        }else{
+            //unselect whatever else may be selected
+            $(".selected").removeClass("selected").prop('checked', false);
+            
+            //select it
+            $this.addClass("selected");
+            self.stages[self.stage].value[record] = self.getData('#' + $this.attr("id"));
+        }
+        self.showStage(self.stage);
     };
     
     //gets the actual value associated with an id from the view of the document
     self.getData = function(id){
-        if ($('#item-' + id).hasClass("para")){
-            return $('#item-' + id + ' .value').text();        
+        if ($(id).hasClass("para")){           
+            return $(id + ' .value').text();        
         }                
-        if ($('#item-' + id).hasClass("image")){
-            return $('#item-' + id + ' img').attr('src');        
+        if ($(id).hasClass("image")){
+            return $(id + ' img').attr('src');        
         }   
-        if ($('#item-' + id).hasClass("heading")){            
-            return $('#item-' + id + ' .value').text();        
+        if ($(id).hasClass("heading")){            
+            return $(id + ' .value').text();        
         }
     };   
     

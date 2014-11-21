@@ -177,7 +177,8 @@
         <?php if(isset($_GET['authorise'])){
             ?>               
                 $('#register-modal').modal({
-                    keyboard: false
+                    keyboard: false,
+                    backdrop: 'static'
                 });
         <?php } ?>
         
