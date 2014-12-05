@@ -157,26 +157,33 @@ function Builder(data, $stagingArea, $overviewArea){
         var input;
         switch (stage.type){
             case "text":                
+                self.setInput(["para", "heading"], ["image"]);
                 input = showTextStage($inputDiv, stage);
                 break;
-            case "tags":                
+            case "tags":     
+                self.setInput(["para", "heading"], ["image"]);
                 input = showTextStage($inputDiv, stage);
                 break;
             case "select":                
+                self.setInput([], ["para", "heading", "image"]);
                 input = showSelectStage($inputDiv, stage);
                 break;
             case "file":
+                self.setInput([], ["para", "heading", "image"]);
                 //passed a callback for when the file has been uploaded
                 input = showFileStage($inputDiv, stage, self.setFile); 
                 break;
             case "image":
                 //passed a callback should a file be uploaded instead of selected
+                self.setInput(["image"], ["para", "heading"]);
                 input = showImageStage($inputDiv, stage);
                 break;
             case "compound":
+                self.setInput([], ["para", "heading", "image"]);
                 input = showCompoundStage($inputDiv, stage, self, self.docid);
                 break;
             case "contributor":
+                self.setInput([], ["para", "heading", "image"]);
                 input = showContributorStage($inputDiv, stage, self);
                 break;
         }
@@ -261,8 +268,7 @@ function Builder(data, $stagingArea, $overviewArea){
                         for(var j = 0; j < stage.value.length; j++){                            
                             //validate the stage's record (this may need to be more precise in future (e.g. check a picture is a picture, etc.)
                             var value = stage.value[j];
-                            
-                            if (value === ""){
+                            if ((value === "") && (!stage.optional)){
                                 invalidData = true;
                                 self.invalidStages[i].push(j);
                             }
@@ -369,14 +375,37 @@ function Builder(data, $stagingArea, $overviewArea){
         $div.append($multiDiv);
         
         return {prevRecordBtn: $prevBtn, nextRecordBtn: $nextBtn};
-    };        
+    };   
+    
+    //set the valid input options
+    self.setInput = function(enabled, disabled){
+        //set appropriate checkbox restrictions
+        $(".selector").each(function(index){
+            var parentClass = $(this).parent().attr('class');            
+            if ($.inArray(parentClass, enabled) > -1){
+                $(this).prop("disabled", false);
+            }else{
+                $(this).prop("disabled", true);
+            }            
+        });  
+        
+        //set appropriate table restrictions
+        $(".table td div").each(function(index){
+            var type = $(this).attr('class');            
+            if ($.inArray(type, enabled) > -1){                
+                $(this).attr("disabled", false);
+            }else{                
+                $(this).attr("disabled", true);
+            }
+        });               
+    }; 
     
     //set stage value from a checkbox
-    self.setChecked = function($checkbox){
+    self.setChecked = function($checkbox){        
         var record = self.stages[self.stage].record;
         if($checkbox.is(":checked")){          
             
-            //uncheck prevosuly selected box if present
+            //uncheck previously selected box if present
             $(".selected").removeClass("selected").prop('checked', false);
             
             $checkbox.addClass("selected");
@@ -388,14 +417,15 @@ function Builder(data, $stagingArea, $overviewArea){
         self.showStage(self.stage);
     };   
     
-    self.setCustom = function(value){
+    self.setCustom = function(value){       
         var record = self.stages[self.stage].record;
         self.stages[self.stage].value[record] = value;
         self.showStage(self.stage);
     };        
     
     self.setCell = function($this){
-        var record = self.stages[self.stage].record;                        
+        if(!($this.attr('disabled'))){
+        var record = self.stages[self.stage].record;         
         if($this.hasClass("selected")){
             //unselect it
             $this.removeClass("selected");
@@ -409,6 +439,7 @@ function Builder(data, $stagingArea, $overviewArea){
             self.stages[self.stage].value[record] = self.getData('#' + $this.attr("id"));
         }
         self.showStage(self.stage);
+    }
     };
     
     //gets the actual value associated with an id from the view of the document

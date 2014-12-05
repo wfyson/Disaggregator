@@ -82,15 +82,17 @@ class Contributor
 
         // Insert the Compound
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "INSERT INTO contributor (FirstName, FamilyName, UserID, Orcid, OrcidCode, OrcidAccessToken) VALUES ( :firstname, :familyname, :userid, :orcid, :orcidcode, :orcidaccesstoken  )";
+        $sql = "INSERT INTO contributor (FirstName, FamilyName, UserID, Orcid, OrcidCode, OrcidAccessToken) VALUES ( :firstname , :familyname , :userid , :orcid , :orcidcode , :orcidaccesstoken  )";
         $st = $conn->prepare($sql);
+                
         $st->bindValue(":firstname", $this->firstName, PDO::PARAM_STR);
         $st->bindValue(":familyname", $this->familyName, PDO::PARAM_STR);        
         $st->bindValue(":userid", $this->userID, PDO::PARAM_INT);
         $st->bindValue(":orcid", $this->orcid, PDO::PARAM_STR);
         $st->bindValue(":orcidcode", $this->orcidCode, PDO::PARAM_STR);
-        $st->bindValue(":orcidacesstoken", $this->orcidAcessToken, PDO::PARAM_STR);
+        $st->bindValue(":orcidaccesstoken", $this->orcidAcessToken, PDO::PARAM_STR);                
         $st->execute();
+        
         $this->id = $conn->lastInsertId();
         $conn = null;
         return $this->id;

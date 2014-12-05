@@ -66,23 +66,36 @@ $(document).ready(function() {
         <div class="spectra">
             <h3>Spectra</h3>
             <a class="add-spectrum btn btn-success btn-xs" href="extract.php?type=spectra&docid=<?php echo $compound->referenceID ?>&compoundid=<?php echo $compound->id ?>"><span class="glyphicon glyphicon-plus"></span> Add Spectrum</a> 
-            <?php $spectra = $compound->getSpectra();
-            foreach($spectra as $spectrum){
-                ?>
-            <div class="compound-spectrum">
+            <div class="compound-spectra">
+                <?php $spectra = $compound->getSpectra();
+                if (count($spectra) > 0){
+                    foreach($spectra as $spectrum){
+                    ?>                                                    
+                    <div class="compound-spectrum">
+                        <img src="<?php echo $spectrum->getImagePath() ?>" title="<?php echo $spectrum->type ?>" alt="<?php echo $spectrum->type ?>">                          
+                    </div>
+              <?php }
+                }else{
+                    ?>
+                    No associated spectra.
+                <?php } ?>
                 
             </div>
-            <?php } ?>            
         </div>
         <div class="reactions">
             <h3>Reactions</h3>
             <?php $reactions = Reaction::getByResult($compound->id);  
-            foreach($reactions as $reaction){
+            if (count($spectra) > 0){
+                foreach($reactions as $reaction){
                 ?>
-            <div class="compound-reaction">
-                <a href="view.php?type=reaction&id=<?php echo $reaction->id ?>"><?php echo $reaction->transformation ?></a>
-            </div>
-            <?php } ?> 
+                    <div class="compound-reaction">
+                        <a href="view.php?type=reaction&id=<?php echo $reaction->id ?>"><?php echo $reaction->transformation ?></a>
+                    </div>
+          <?php }
+            }else{
+                ?>
+                No associated reactions.
+      <?php } ?>            
         </div>
         <!--
         <div id="tags">

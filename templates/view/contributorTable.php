@@ -1,4 +1,4 @@
-<?php if (isset($contributors)) {
+<?php if ((isset($contributors)) && (count($contributors) > 0)) {    
     ?>
     <table class="table contributor-table">
         <thead>
@@ -23,5 +23,9 @@
             <?php } ?>
         </tbody>
     </table>
+<?php }else{
+    ?>
+    No contributors recorded.
+    
 <?php } ?>
 

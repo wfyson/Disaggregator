@@ -35,10 +35,10 @@
         
         //each stage's value should be an array to make it easier for the cases where multi is true
         var spectrumStages = [
-            {name: "Type", type: "select", value: [""], multi: false, record: 0, options: types},
-            {name: "Comment", type: "text", value: [""], multi: false, record: 0},
-            {name: "JCAMPFile", type: "file", value: [""], multi: false, record: 0},
-            {name: "Image", type: "image", value: [""], multi: false, record: 0}];   
+            {name: "Type", type: "select", value: [""], multi: false, record: 0, options: types, optional: false},
+            {name: "Comment", type: "text", value: [""], multi: false, record: 0, optional: false},
+            {name: "JCAMPFile", type: "file", value: [""], multi: false, record: 0, optional: false},
+            {name: "Image", type: "image", value: [""], multi: false, record: 0, optional: false}];   
         
         spectrumData['type'] = "Spectra";
         spectrumData['title'] = "Spectrum";

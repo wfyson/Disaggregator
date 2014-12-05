@@ -22,6 +22,7 @@
                     var molArray = new Array();
                 </script>
                 <?php
+                if(count($results['compounds']) > 0){
                 foreach ($results['compounds'] as $compound) {                    
                     $compoundID = $compound->id;
                     $molPath = $compound->getMolPath();
@@ -73,28 +74,38 @@
                             </div>
                         </div>
                     </li>
-                <?php } ?>
+                <?php }
+               } else {
+                    ?>
+                        <div class="no-results"><h4>No compounds available!</h4></div>
+          <?php } ?>
             </ul>
         </div>
         <div class="tab-pane" id="reactions">
             <ul>            
                 <?php
-                foreach ($results['reactions'] as $reaction) {
+                if (count($results['reactions']) > 0) {
+                    foreach ($results['reactions'] as $reaction) {
+                        ?>
+                        <li>
+                            <div class="entry reaction-entry row">
+                                <div class="reaction-data col-md-9">
+                                    <span><b><?php echo htmlspecialchars($reaction->transformation) ?></b></span>
+                                    <span><b>Result: <?php echo htmlspecialchars(Compound::getById($reaction->result)->name) ?></b></span>
+                                </div>
+                                <!-- buttons -->
+                                <div class="reaction-buttons col-md-3">
+                                    <a class="btn btn-primary btn-xs" href="view.php?type=reaction&id=<?php echo $reaction->id ?>">View</a>     
+                                    <a class="btn btn-primary btn-xs" href="publish.php?type=Reaction&id=<?php echo $reaction->id ?>&platform=orcid">Publish</a>
+                                </div>
+                            </div>                        
+                        </li>
+                    <?php
+                    }
+                } else {
                     ?>
-                    <li>
-                        <div class="entry reaction-entry row">
-                            <div class="reaction-data col-md-9">
-                                <span><b><?php echo htmlspecialchars($reaction->transformation) ?></b></span>
-                                <span><b>Result: <?php echo htmlspecialchars(Compound::getById($reaction->result)->name) ?></b></span>
-                            </div>
-                            <!-- buttons -->
-                            <div class="reaction-buttons col-md-3">
-                                <a class="btn btn-primary btn-xs" href="view.php?type=reaction&id=<?php echo $reaction->id ?>">View</a>     
-                                <a class="btn btn-primary btn-xs" href="publish.php?type=Reaction&id=<?php echo $reaction->id ?>&platform=orcid">Publish</a>
-                            </div>
-                        </div>                        
-                    </li>
-                <?php } ?>
+                        <div class="no-results"><h4>No reactions available!</h4></div>
+          <?php } ?>
             </ul>
         </div>
         <div class="tab-pane" id="documents">
@@ -113,24 +124,30 @@
                     </div>
                 </li>
                 <?php
-                foreach ($results['references'] as $reference) {
-                    ?>
-                    <li>
-                        <div class="entry doc-entry row" data-docid="<?php echo $reference->id ?>">                            
-                            <div class="doc-info col-md-9">
-                                <!--thumbnail -->
-                                <?php $format = $reference->getFormat(); ?>
-                                <img src="img/<?php echo $format ?>_thumb.png"/>                                                                            
-                                <b><?php echo htmlspecialchars($reference->refFile) ?></b>
-                            </div>                           
-                            <!-- buttons -->
-                            <div class="doc-buttons col-md-3">
-                                <a class="btn btn-success btn-sm" href="extract.php?type=compound&docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Compound</a>
-                                <a class="btn btn-warning btn-sm" href="extract.php?type=reaction&docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Reaction</a>
+                if (count($results['references']) > 0) {
+                    foreach ($results['references'] as $reference) {
+                        ?>
+                        <li>
+                            <div class="entry doc-entry row" data-docid="<?php echo $reference->id ?>">                            
+                                <div class="doc-info col-md-9">
+                                    <!--thumbnail -->
+                                    <?php $format = $reference->getFormat(); ?>
+                                    <img src="img/<?php echo $format ?>_thumb.png"/>                                                                            
+                                    <b><?php echo htmlspecialchars($reference->refFile) ?></b>
+                                </div>                           
+                                <!-- buttons -->
+                                <div class="doc-buttons col-md-3">
+                                    <a class="btn btn-success btn-sm" href="extract.php?type=compound&docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Compound</a>
+                                    <a class="btn btn-warning btn-sm" href="extract.php?type=reaction&docid=<?php echo $reference->id ?>"><span class="glyphicon glyphicon-plus"></span> New Reaction</a>
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                <?php } ?>
+                        </li>
+                    <?php
+                    }
+                } else {
+                    ?>
+                    <div class="no-results"><h4>No documents available!</h4></div>
+          <?php } ?>
             </ul>
         </div>
     </div>

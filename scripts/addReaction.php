@@ -21,35 +21,37 @@ $reaction = new Reaction($data);
 $reactionid = $reaction->insert();
 
 //add the contributors
-$contributors = $_POST['Contributors'];
-foreach($contributors as $contributor){
-    $contributorInfo = json_decode($contributor);        
-    $contributorEntry = new ReactionContributor(array("ReactionContributorID" => null,
-        "ReactionID" => $reactionid,
-        "ContributorID" => $contributorInfo->id,
-        "Role" => $contributorInfo->role
+if ($contributors != "") {
+    $contributors = $_POST['Contributors'];
+    foreach ($contributors as $contributor) {
+        $contributorInfo = json_decode($contributor);
+        $contributorEntry = new ReactionContributor(array("ReactionContributorID" => null,
+            "ReactionID" => $reactionid,
+            "ContributorID" => $contributorInfo->id,
+            "Role" => $contributorInfo->role
         ));
-    $contributorEntry->insert();
+        $contributorEntry->insert();
+    }
 }
 
 //and the reaction tags
-$tags = explode(", ", $_POST['Tags'][0]);   
-foreach($tags as $tag){
-    
-    //see if the tag already exists and get its id/insert it if not existing
-    $tagEntry = Tag::getByKeyword($tag);
-    if ($tagEntry){
-        $tagid = $tagEntry->id;
-    }else{
-        $tagEntry = new Tag(array("TagID" => null, "Keyword" => $tag));
-        $tagid = $tagEntry->insert();
+if ($tags != "") {
+    $tags = explode(", ", $_POST['Tags'][0]);
+    foreach ($tags as $tag) {
+
+        //see if the tag already exists and get its id/insert it if not existing
+        $tagEntry = Tag::getByKeyword($tag);
+        if ($tagEntry) {
+            $tagid = $tagEntry->id;
+        } else {
+            $tagEntry = new Tag(array("TagID" => null, "Keyword" => $tag));
+            $tagid = $tagEntry->insert();
+        }
+
+        //make connection between the reaction and the tag
+        $reactionTagData = array("ReactionTagID" => null, "ReactionID" => $reactionid, "TagID" => $tagid);
+        $reactionTag = new ReactionTag($reactionTagData);
+        $reactionTagid = $reactionTag->insert();
     }
-    
-    //make connection between the reaction and the tag
-    $reactionTagData = array("ReactionTagID" => null, "ReactionID" => $reactionid, "TagID" => $tagid);
-    $reactionTag = new ReactionTag($reactionTagData);
-    $reactionTagid = $reactionTag->insert();
 }
-
-
 ?>

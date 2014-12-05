@@ -12,20 +12,25 @@ if(isset($_GET['contributorid'])){
     $json['current'] = $current->getName();
 }
 
-$contributors = Contributor::getList();
+//get related contributors
+$user = User::getById($userid);
+$relatedContributors = $user->getRelatedContributors();
 
-//remove user form list
-$otherContributors = array();
-foreach($contributors['results'] as $contributor)
-{
-    if ($contributor->userID != $userid)
-    {    
-        $otherContributors[] = $contributor;
+//get all contributors
+$otherContributors = Contributor::getList();
+$displayOtherContributors = array();
+//remove related contributors from this list
+foreach($otherContributors[results] as $contributor){
+    if ((!(in_array($contributor, $relatedContributors))) && ($contributor->userID != $userid)){        
+        $displayOtherContributors[] = $contributor;
+        continue;
     }
 }
 
+$json['relatedContributors'] = $relatedContributors;
+$json['otherContributors'] = $displayOtherContributors;
+
 //return the results
-$json['contributors'] = $otherContributors;
 echo json_encode($json);
 
 ?>

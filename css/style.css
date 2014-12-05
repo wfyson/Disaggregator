@@ -56,6 +56,11 @@ body{
 /*
     Overview entries
 */
+.no-results{
+    margin-top: 10px;
+    text-align: center;
+}
+
 .entry{
     width: 100%;
     margin-top: 5px;
@@ -212,6 +217,10 @@ body{
     float: right;
 }
 
+#extract-panel .input .btn{
+    margin-left: 10px;
+}
+
 #extract-panel .input h4{
     display: inline-block; 
     margin-right: 5px;
@@ -349,6 +358,10 @@ body{
 #extract-content td{
     padding: 2px 2px 2px 2px;
     border: thin solid black;    
+}
+
+#extract-content td div[disabled]:hover{
+    cursor: not-allowed;
 }
 
 #extract-content td .para:hover{    
@@ -501,8 +514,15 @@ body{
 #compound-content .spectra h3{
     margin-top: 10px;
     display: inline-block;
-    vertical-align: middle;
-    
+    vertical-align: middle;    
+}
+
+#compound-content .compound-spectrum{    
+    display: inline-block;
+}
+
+#compound-content .compound-spectrum img{    
+    width: 200px;    
 }
 
 
@@ -514,4 +534,11 @@ body{
     width: 80%;
     margin-left: auto;
     margin-right: auto;
+}
+
+/*
+    Contributor Modal
+*/
+#contributor-error{
+    display: none;
 }

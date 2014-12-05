@@ -27,34 +27,37 @@ if (!file_exists($newPath)) {
 rename($oldPath, $newPath . $molFile);
 
 //add the contributors
-$contributors = $_POST['Contributors'];
-foreach($contributors as $contributor){
-    $contributorInfo = json_decode($contributor);        
-    $contributorEntry = new CompoundContributor(array("CompoundContributorID" => null,
-        "CompoundID" => $compoundid,
-        "ContributorID" => $contributorInfo->id,
-        "Role" => $contributorInfo->role
+if ($contributors != "") {
+    $contributors = $_POST['Contributors'];
+    foreach ($contributors as $contributor) {
+        $contributorInfo = json_decode($contributor);
+        $contributorEntry = new CompoundContributor(array("CompoundContributorID" => null,
+            "CompoundID" => $compoundid,
+            "ContributorID" => $contributorInfo->id,
+            "Role" => $contributorInfo->role
         ));
-    $contributorEntry->insert();
+        $contributorEntry->insert();
+    }
 }
 
-
 //and now add the tags
-$tags = explode(", ", $_POST['Tags'][0]);      
-foreach($tags as $tag){
-    //see if the tag already exists and get its id/insert it if not existing
-    $tagEntry = Tag::getByKeyword($tag);
-    if ($tagEntry){
-        $tagid = $tagEntry->id;
-    }else{
-        $tagEntry = new Tag(array("TagID" => null, "Keyword" => $tag));
-        $tagid = $tagEntry->insert();
+if ($tags != "") {
+    $tags = explode(", ", $_POST['Tags'][0]);
+    foreach ($tags as $tag) {
+        //see if the tag already exists and get its id/insert it if not existing
+        $tagEntry = Tag::getByKeyword($tag);
+        if ($tagEntry) {
+            $tagid = $tagEntry->id;
+        } else {
+            $tagEntry = new Tag(array("TagID" => null, "Keyword" => $tag));
+            $tagid = $tagEntry->insert();
+        }
+
+        //make connection between the compound and the tag
+        $compoundTagData = array("CompoundTagID" => null, "CompoundID" => $compoundid, "TagID" => $tagid);
+        $compoundTag = new CompoundTag($compoundTagData);
+        $compoundTagid = $compoundTag->insert();
     }
-    
-    //make connection between the compound and the tag
-    $compoundTagData = array("CompoundTagID" => null, "CompoundID" => $compoundid, "TagID" => $tagid);
-    $compoundTag = new CompoundTag($compoundTagData);
-    $compoundTagid = $compoundTag->insert();
 }
 
 echo $compoundid;

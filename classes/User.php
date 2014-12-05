@@ -139,6 +139,25 @@ class User
         $conn = null;
         if ($row)
             return new Contributor($row);
+    }  
+    
+    public function getRelatedContributors()
+    {
+        $relatedContributors = array();
+        
+        //get user's compounds
+        $compounds = Compound::getByUser($this->id);
+        
+        //for each compound get the contributors
+        foreach($compounds[results] as $compound){
+            $contributors = $compound->getCompoundContributors();
+            foreach($contributors as $contributor){
+                if(!(in_array($contributor->id, $relatedContributors))){
+                    $relatedContributors[] = Contributor::getById($contributor->contributorID);
+                }
+            }
+        }
+        return $relatedContributors;        
     }   
 }
 ?>
