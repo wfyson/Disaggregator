@@ -35,30 +35,43 @@
     <body>
         
         <div id="header">
-        <?php 
-        //provide a link to homepage
-        $page = basename($_SERVER['PHP_SELF']);
-        if ($page != "index.php"){
-            ?>
-            <span class="homepage"><a class="btn btn-default" href="index.php">Return to Homepage</a></span>
-            <?php
-        }       
+            <nav class="navbar navbar-inverse" role="navigation">
+                <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-9">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Disaggregator</a>
+                </div>
+<?php     
         
-        $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
-        ChromePhp::log($username);
-        if ($username) {
-            //only provide log out and profile links if a user is logged in
-            ?>
-            <span class="login-status">
-            <span>Logged in as <b><?php echo $username; ?></b></span>
-            <a class="btn btn-default" href="view.php?type=user"><span class="glyphicon glyphicon-user"></span> Profile</a>
-            <form action="index.php?action=logout" method="post" style="width: 50%;">                
-                <input type="hidden" name="logout" value="true" />                   
-                <input class="btn btn-default" type="submit" name="logout" value="Logout" />                                  
-            </form>
-            </span>
+        $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";        
+        if ($username) { ?>
+            <ul class="nav navbar-nav navbar-right">
+                <?php
+                $page = basename($_SERVER['PHP_SELF']);
+                if ($page != "index.php"){
+                    ?>
+                <li>
+                    <a href="index.php"><span class="glyphicon glyphicon-home"></span> Homepage</a>
+                </li>
+                    <?php
+                }
+                ?>
+                
+                <li>
+                    <a href="view.php?type=user"><span class="glyphicon glyphicon-user"></span> Edit Profile</a>
+                </li>
+                <li>
+                    <a href="index.php?action=logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+                </li>
+            </ul>                        
     <?php
         } 
-    ?>    
+        ?>  </div>  
+            </nav>
         </div>
         <div id="container" class="row">
