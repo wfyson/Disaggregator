@@ -315,9 +315,14 @@ body{
     background: #e1e1e8;
 }
 
-#extract-content{
-    height: 700px; 
+#extract-view #view-tabs
+{
     margin-top: 120px;
+}
+
+#extract-content{
+    height: 675px;
+    margin-top: 20px; 
     padding-right: 20px;
     overflow-y: auto;
     overflow-x: hidden;
@@ -381,6 +386,34 @@ body{
 
 #extract-content .selected p{
     color: #245269;
+}
+
+#extract-content .view-image{
+    width: 250px;
+    height: 250px;
+    border: 1px solid #e1e1e8;
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+#extract-content .view-image:hover{   
+    border: 1px solid #808080;
+    cursor: pointer;
+}
+
+#extract-content .view-image.disabled:hover{    
+    border: 1px solid #e1e1e8;
+    cursor: not-allowed;    
+}
+
+#extract-content .view-image img{
+    max-height: 100%; 
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%)
 }
 
 #sidebar.extract{    

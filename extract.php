@@ -19,7 +19,13 @@ switch($reference->getFormat()){
         //can this whole process be changed to something more static??? (I think it probably can)        
         $reader = new WordReader($reference);
         $results = $reader->readWord();
-    break;        
+    break;     
+    case "pdf":        
+        require ("libraries/pdfparser/vendor/autoload.php");        
+        require ("libraries/base85.class.php");
+        $reader = new PDFReader($reference);
+        $results = $reader->readPDF();
+        break;
 }
 
 //get the artefact we are after

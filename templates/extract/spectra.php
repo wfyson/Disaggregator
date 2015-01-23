@@ -46,24 +46,10 @@
         spectrumData['compoundid'] = <?php echo $_GET['compoundid'] ?>;
         spectrumData['stages'] = spectrumStages;
         
-        var spectrumBuilder = new Builder(spectrumData, $('#extract-panel'), $('#progress'));              
-        spectrumBuilder.showStage(0);
+        var builder = new Builder(spectrumData, $('#extract-panel'), $('#progress'));              
+        builder.showStage(0);
         
-        //hook up all the checkboxes and table cells to the compound builder here
-        $('#extract-content .selector').change(function(){              
-            spectrumBuilder.setChecked($(this));
-        });
-        
-         $('#extract-content table td .para').click(function(){            
-            spectrumBuilder.setCell($(this));
-        });
-        
-        $('#extract-content table td .image').click(function(){            
-            spectrumBuilder.setCell($(this));
-        });
-        
-        
-        
+        <?php include "controls.php" ?>
     };
 </script>
 

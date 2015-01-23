@@ -23,23 +23,7 @@
         var builder = new Builder(compoundData, $('#extract-panel'), $('#progress'));              
         builder.showStage(0);
         
-        //hook up all the checkboxes and table cells to the compound builder here
-        $('#extract-content .selector').change(function(){              
-               builder.setChecked($(this));
-        });
-        
-        $('#extract-content table td .para').click(function(){            
-            builder.setCell($(this));
-        });
-        
-        $('#extract-content table td .image').click(function(){            
-            builder.setCell($(this));
-        });
-                
-        //contributor functionality
-        $('#new-contributor').click(function(){                        
-            newContributor(builder);
-        }); 
+        <?php include "controls.php" ?>
     };
 </script>
 

@@ -4,6 +4,7 @@ $tocLinks = array();
 $rels = $results['rels'];
 $root = $results['text'];
 $content = $root->getParaArray();
+
 foreach ($content as $entry) {     
     switch ($entry->getType()) {
         case "text":            
@@ -29,8 +30,8 @@ function addCheckBox($id){
 }
 
 function addPara($para, $table=false) {
-    if ($para->getText() != "") {
-        echo '<div id="item-' . $para->getId() . '" class="para">';
+    if (strlen(trim($para->getText())) != 0){
+        echo '<div id="item-' . $para->getId() . '" class="para" type="para">';
         if (!$table)
             addCheckBox($para->getId());
         echo '<p class="value">' . $para->getText() . '</p></div>';
@@ -38,7 +39,7 @@ function addPara($para, $table=false) {
 }
 
 function addHeading($heading, $tocLinks) {
-    echo '<div id="item-' . $heading->getId() . '"class="heading">';
+    echo '<div id="item-' . $heading->getId() . '"class="heading" type="heading">';
     addCheckBox($heading->getId());
     $htmlHeading = $heading->getLevel() + 1;
     $tocLinks[$heading->getId()] = array("text" => $heading->getTitle()->getText(), "level" => $heading->getLevel());
@@ -47,7 +48,7 @@ function addHeading($heading, $tocLinks) {
 }
 
 function addImage($image, $rels, $table=false) {
-    echo '<div id="item-' . $image->getId() . '"class="image">'; 
+    echo '<div id="item-' . $image->getId() . '"class="image" type="image">'; 
     
     if (!$table)
         addCheckBox($image->getId());
@@ -59,7 +60,7 @@ function addImage($image, $rels, $table=false) {
 }
 
 function addCaption($caption) {
-   echo '<div id="item-' . $caption->getId() . '"class="caption">'; 
+   echo '<div id="item-' . $caption->getId() . '"class="caption" type="caption">'; 
    addCheckBox($caption->getId());
    echo '<p><b>' . $caption->getContent() . '</b></p></div>';     
 }

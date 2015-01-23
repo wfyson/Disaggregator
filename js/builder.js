@@ -381,11 +381,13 @@ function Builder(data, $stagingArea, $overviewArea){
     self.setInput = function(enabled, disabled){
         //set appropriate checkbox restrictions
         $(".selector").each(function(index){
-            var parentClass = $(this).parent().attr('class');            
+            var parentClass = $(this).parent().attr('type');             
             if ($.inArray(parentClass, enabled) > -1){
                 $(this).prop("disabled", false);
+                $(this).removeClass("disabled");
             }else{
                 $(this).prop("disabled", true);
+                $(this).addClass("disabled");
             }            
         });  
         
@@ -440,6 +442,12 @@ function Builder(data, $stagingArea, $overviewArea){
         }
         self.showStage(self.stage);
     }
+    };
+    
+    self.setImage = function($this){        
+        var record = self.stages[self.stage].record;
+        self.stages[self.stage].value[record] = $this.find('img').attr('src');
+        self.showStage(self.stage);
     };
     
     //gets the actual value associated with an id from the view of the document

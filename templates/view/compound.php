@@ -85,7 +85,7 @@ $(document).ready(function() {
         <div class="reactions">
             <h3>Reactions</h3>
             <?php $reactions = Reaction::getByResult($compound->id);  
-            if (count($spectra) > 0){
+            if (count($reactions) > 0){
                 foreach($reactions as $reaction){
                 ?>
                     <div class="compound-reaction">

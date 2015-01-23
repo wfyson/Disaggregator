@@ -34,6 +34,7 @@ require( CLASS_PATH . "/CompoundContributor.php");
 require( CLASS_PATH . "/ReactionContributor.php");
 
 require( CLASS_PATH . "/OpenXmlReader.php");
+require( CLASS_PATH . "/PDFReader.php");
 
 include "debug/ChromePhp.php";
 
