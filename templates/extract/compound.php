@@ -1,6 +1,4 @@
 <?php include "pageSetup.php" ?>
-<?php include "completeModal.php" ?>
-<?php include "contributorModal.php" ?>
 
 <script>
     window.onload = function(){        

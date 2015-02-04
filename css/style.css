@@ -581,3 +581,47 @@ body{
 #contributor-error{
     display: none;
 }
+
+/*
+    Higjlight selector
+*/
+
+#highlight-select{
+    display: none;
+    position: absolute;
+    
+    z-index: 100;        
+}
+
+#highlight-text{
+    padding: 4px;
+    
+    background: #eeeeee;
+    border-left-color: #449d44;
+    border-left-width: 5px;
+    border-left-style: solid;
+    border-radius: 3px;
+    border-top: 1px solid #e1e1e8;
+    border-right: 1px solid #e1e1e8;
+    border-bottom: 1px solid #e1e1e8;
+    
+    max-height: 350px;
+    max-width: 500px;
+    overflow-y: auto;
+    
+    display: inline-block;
+    vertical-align: top;
+}
+
+#highlight-input{
+    display: inline-block;
+    vertical-align: top;
+    background-image: url('../img/tick.png');
+    
+    width: 40px;
+    height: 40px;
+}
+
+#highlight-input.disabled{
+    background-image: url('../img/disabled.png');    
+}

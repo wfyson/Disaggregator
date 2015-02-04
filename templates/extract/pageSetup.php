@@ -1,6 +1,6 @@
 <?php include "templates/include/header.php" ?>
 
-<div id="extract-view" class="col-md-8">            
+<div id="extract-view" class="col-md-8 <?php echo $type; ?>">            
     <div id="extract-panel">      
     </div>
     <ul class="nav nav-tabs" id="view-tabs">
@@ -35,3 +35,7 @@
         </div>
     </div>  
 </div>
+
+<?php include "completeModal.php" ?>
+<?php include "contributorModal.php" ?>
+<?php include "highlightSelect.php" ?>

@@ -427,21 +427,29 @@ function Builder(data, $stagingArea, $overviewArea){
     
     self.setCell = function($this){
         if(!($this.attr('disabled'))){
-        var record = self.stages[self.stage].record;         
-        if($this.hasClass("selected")){
-            //unselect it
-            $this.removeClass("selected");
-            self.stages[self.stage].value[record] = "";   
-        }else{
-            //unselect whatever else may be selected
-            $(".selected").removeClass("selected").prop('checked', false);
+            var record = self.stages[self.stage].record;         
+            if($this.hasClass("selected")){
+                //unselect it
+                $this.removeClass("selected");
+                self.stages[self.stage].value[record] = "";   
+            }else{
+                //unselect whatever else may be selected
+                $(".selected").removeClass("selected").prop('checked', false);
             
-            //select it
-            $this.addClass("selected");
-            self.stages[self.stage].value[record] = self.getData('#' + $this.attr("id"));
+                //select it
+                $this.addClass("selected");
+                self.stages[self.stage].value[record] = self.getData('#' + $this.attr("id"));
+            }
+            self.showStage(self.stage);
         }
-        self.showStage(self.stage);
-    }
+    };
+    
+    self.setSelection = function($this){
+        if(!($this.hasClass('disabled'))){
+            var record = self.stages[self.stage].record;
+            self.stages[self.stage].value[record] = $('#highlight-text').text();
+            self.showStage(self.stage);
+        }
     };
     
     self.setImage = function($this){        
