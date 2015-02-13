@@ -625,3 +625,18 @@ body{
 #highlight-input.disabled{
     background-image: url('../img/disabled.png');    
 }
+
+/*
+ * Imports
+ */
+.import-overview table td{
+    min-width: 200px;
+}
+
+.import-overview table td:nth-child(2){
+    width: 600px;
+}
+
+.import-overview td img{
+    max-width: 200px;
+}
