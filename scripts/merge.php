@@ -36,7 +36,7 @@ fclose($dst);
 
 //if we are uploading a document then we can add this to the database
 if ($_REQUEST['dir'] == "uploads"){
-    $data = array("ReferenceID" => null, "RefFile" => $_REQUEST['name'], "UploaderID" => $userid);
+    $data = array("ReferenceID" => null, "RefFile" => $_REQUEST['name'], "UploaderID" => $userid, "Source" => "upload");
     $reference = new Reference($data);
     $reference->insert();
 }

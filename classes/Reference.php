@@ -9,6 +9,7 @@ class Reference {
     public $id = null;
     public $refFile = null;
     public $uploaderID = null;
+    public $source = null;
 
     /*
      * Standard database-esque stuff
@@ -21,6 +22,8 @@ class Reference {
             $this->refFile = $data['RefFile'];
         if (isset($data['UploaderID']))
             $this->uploaderID = $data['UploaderID'];
+        if (isset($data['Source']))
+            $this->source = $data['Source'];
     }
 
     public function storeFormValues($params) {
@@ -67,10 +70,11 @@ class Reference {
         
         // Insert the Reference
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "INSERT INTO reference ( RefFile, UploaderID ) VALUES ( :refFile,:uploaderID )";
+        $sql = "INSERT INTO reference ( RefFile, UploaderID, Source ) VALUES ( :refFile,:uploaderID,:source )";
         $st = $conn->prepare($sql);
         $st->bindValue(":refFile", $this->refFile, PDO::PARAM_STR);
         $st->bindValue(":uploaderID", $this->uploaderID, PDO::PARAM_INT);
+        $st->bindValue(":source", $this->source, PDO::PARAM_STR);
         $st->execute();
         $this->id = $conn->lastInsertId();
         $conn = null;
@@ -83,10 +87,11 @@ class Reference {
 
         // Update the Article
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
-        $sql = "UPDATE reference SET RefFile=:refFile UploaderID=:uploaderID WHERE ReferenceID = :id";
+        $sql = "UPDATE reference SET RefFile=:refFile UploaderID=:uploaderID Source=:source WHERE ReferenceID = :id";
         $st = $conn->prepare($sql);
         $st->bindValue(":refFile", $this->refFile, PDO::PARAM_STR);
         $st->bindValue(":uploaderID", $this->uploaderID, PDO::PARAM_INT);
+        $st->bindValue(":source", $this->source, PDO::PARAM_STR);
         $st->bindValue(":id", $this->id, PDO::PARAM_INT);
         $st->execute();
         $conn = null;

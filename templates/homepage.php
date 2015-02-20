@@ -116,7 +116,7 @@
                             <input id='files' type="file" style='position:absolute;z-index:2;top:55px;left:25px;width:125px;filter: alpha(opacity=0);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";opacity:0;background-color:transparent;color:transparent;' name="doc_source" size="40">
                             <span class="glyphicon glyphicon-plus"></span> Upload Document
                         </a>
-                        <a class='btn btn-primary' href='import.php'>                                                    
+                        <a class='btn btn-primary' href='import/'>                                                    
                             <span class="glyphicon glyphicon-import"></span> Import
                         </a>
                     </div>

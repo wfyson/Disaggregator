@@ -637,6 +637,26 @@ body{
     width: 600px;
 }
 
+.import-overview table td:nth-child(3) button{
+    float: right;
+}
+
 .import-overview td img{
     max-width: 200px;
+}
+
+.list-documents img{
+    max-height: 50px;
+}
+
+.list-documents .btn-import{
+    width: 100px;
+}
+
+.list-documents .btn-import .loader{
+    display: none;
+}
+
+.list-documents .btn-success.disabled{
+    opacity: 1;
 }

@@ -12,6 +12,7 @@ define("DB_PASS", "password");
 
 define( "CLASS_PATH", "classes" );
 define( "TEMPLATE_PATH", "templates" );
+define( "IMPORT_PATH", "import/importers");
 
 //OAuth
 define('ORCID_OAUTH_CLIENT_ID', '0000-0003-0387-8057');
@@ -35,6 +36,8 @@ require( CLASS_PATH . "/ReactionContributor.php");
 
 require( CLASS_PATH . "/OpenXmlReader.php");
 require( CLASS_PATH . "/PDFReader.php");
+
+require( IMPORT_PATH . "/eprints.php");
 
 include "debug/ChromePhp.php";
 

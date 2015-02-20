@@ -1,6 +1,6 @@
 <?php
 
-    require("config.php");
+    require("../config.php");
 
     session_start();
 
@@ -14,7 +14,7 @@
     if($contributor->orcid){
         //we can import stuff based on this orcid
         $results['pageTitle'] = "Disaggregator - Import Documents";
-        require( TEMPLATE_PATH . "/import/import.php" );
+        require( "import.php" );
     }else{        
         //can't proceed without an orcid...
     }     
