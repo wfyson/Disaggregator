@@ -20,6 +20,9 @@
 
         <!-- Bootstrap -->
         <script src="/js/libs/bootstrap.min.js"></script>
+        
+        <!-- Hilitor (highlighter from http://www.the-art-of-web.com/javascript/search-highlight/) -->
+        <script src="/js/libs/hilitor.js"></script>
 
         <!-- My Stuff -->
         <script src="/js/filehandler.js"></script>

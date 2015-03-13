@@ -21,6 +21,7 @@
     <ul class="nav nav-tabs" id="sidebar-tabs">
         <li class="active"><a id='progress-tab' href="#progress" data-toggle="tab">Progress</a></li>
         <li><a href="#navigation" data-toggle="tab">Navigation</a></li>
+        <li><a href="#suggestions" data-toggle="tab">Suggestions</a></li>
     </ul>
 
     <div class='tab-content'>
@@ -32,6 +33,13 @@
                     ?>
             <a href="#<?php echo $link; ?>" class="heading-<?php echo $heading["level"]; ?>"><?php echo $heading["text"]; ?></a> 
                 <?php } ?>           
+        </div>
+        <div class="tab-pane" id="suggestions">
+            <h3>Suggestions</h3>
+            <p>Powered by <a href="https://bitbucket.org/wwmm/oscar4/wiki/Home" target="_blank">OSCAR4</a></p>
+            <div class="content">
+                <img src="/img/suggestion-loader.gif"/>
+            </div>
         </div>
     </div>  
 </div>

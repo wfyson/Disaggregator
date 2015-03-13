@@ -39,6 +39,8 @@ abstract class OpenXmlReader {
 
 class WordReader extends OpenXmlReader {
 
+    private $fullText;
+    
     public function readWord() {
         $this->zip = zip_open($this->path);
         $zipEntry = zip_read($this->zip);
@@ -71,6 +73,7 @@ class WordReader extends OpenXmlReader {
         $results['images'] = $this->imageLinks;
         $results['text'] = $this->text;
         $results['rels'] = $this->rels;
+        $results['fullText'] = $this->fullText;
 
         return $results;
     }
@@ -273,6 +276,9 @@ class WordReader extends OpenXmlReader {
             $text = $text . $wt[0];
         }
         $this->id++;
+               
+        $this->fullText = $this->fullText . " " . $text;
+        
         $result = new WordText($this->id, $text);
         return $result;
     }
@@ -345,7 +351,7 @@ class WordImage implements WordReadable {
     }
 
     public function getContent() {
-//return a link ideally...
+        //return a link ideally...
         return $this->relID;
     }
 

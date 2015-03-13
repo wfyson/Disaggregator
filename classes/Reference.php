@@ -120,6 +120,10 @@ class Reference {
         return $exploded[1];        
     }
     
+    public function getFulltext(){
+        return "uploads/" . $this->uploaderID . '/' . str_replace('.', '_', $this->refFile) . "/fulltext.txt";
+    }
+    
     public function getLink(){
         return "uploads/" . $this->uploaderID . '/' . str_replace('.', '_', $this->refFile) . "/" . $this->refFile;
     }

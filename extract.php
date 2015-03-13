@@ -12,7 +12,7 @@ $username = isset($_SESSION['username']) ? $_SESSION['username'] : "";
 //TODO - check the the current user is allowed to read the document
 
 //read the content source
-//read the document and output to results array
+//read the document and output to results array - this should all be done by the reference class no doubt!!!
 $reference = Reference::getById($docid);
 switch($reference->getFormat()){
     case "docx":        
@@ -26,6 +26,12 @@ switch($reference->getFormat()){
         $reader = new PDFReader($reference);
         $results = $reader->readPDF();
         break;
+}
+
+//write the full text file if not already present
+$fullTextPath = $reference->getFulltext();
+if(!(file_exists($fullTextPath))){    
+    file_put_contents($fullTextPath, $results['fullText']);
 }
 
 //get the artefact we are after

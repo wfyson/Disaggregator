@@ -3,6 +3,7 @@
 $tocLinks = array();
 $rels = $results['rels'];
 $root = $results['text'];
+
 $content = $root->getParaArray();
 
 foreach ($content as $entry) {     

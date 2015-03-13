@@ -37,19 +37,6 @@
                 </form>
             </td>
         </tr>
-        <tr>
-            <td>
-                <img src="/img/logos/orcid.png"/>
-            </td>
-            <td>
-                <p class="lead">
-                    Import documents from your profile on the ORCID website.
-                </p> 
-            </td>
-            <td>
-                <button class="btn btn-default" type="button">Import!</button>                                
-            </td>
-        </tr>
     </table>
 
     

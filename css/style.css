@@ -448,6 +448,11 @@ body{
     padding-right: 15px;
 }
 
+.tab-content #suggestions{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
 #sidebar.extract .stage-overview{
     width: 100%;
     margin-left:auto;
@@ -659,4 +664,8 @@ body{
 
 .list-documents .btn-success.disabled{
     opacity: 1;
+}
+
+.highlight.current{
+    background-color:red !important;
 }

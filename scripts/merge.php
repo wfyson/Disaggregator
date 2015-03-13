@@ -38,6 +38,6 @@ fclose($dst);
 if ($_REQUEST['dir'] == "uploads"){
     $data = array("ReferenceID" => null, "RefFile" => $_REQUEST['name'], "UploaderID" => $userid, "Source" => "upload");
     $reference = new Reference($data);
-    $reference->insert();
+    $reference->insert();        
 }
 ?>
