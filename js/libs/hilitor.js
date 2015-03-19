@@ -37,24 +37,16 @@ function Hilitor(id, tag)
 
   this.setRegex = function(input)
   {
-      console.log(input);
     input = input.replace(/^[^\w]+|[^\w]+$/g, "");//.replace(/[^\w'-]+/g, "|");
-    console.log(input);
+ 
+    //need to escape the brackets...      
+    input = input.replace(/[[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
     
-    /*
-     *need to escape the brackets... 
-     * 
-     */
-    
-    
-    //input = input.replace(/[^\w'-]+/g, "|");
-    //console.log(input);
-    //var re = "(" + input + ")";
     var re = input;
+    
     //if(!this.openLeft) re = "\\b" + re;
     //if(!this.openRight) re = re + "\\b";
     matchRegex = new RegExp(re, "i");
-    console.log(matchRegex);
   };
 
   //this.getRegex = function()

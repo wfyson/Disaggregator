@@ -71,43 +71,49 @@
             var output = data.output;
             for(var s in output) 
             {  
-                var $suggestionEntry = $('<p>');
-                var $suggestion = $('<span class="label label-default">');                
+                var $suggestionEntry = $('<p type="para">');
+                var $suggestion = $('<span class="label label-default selector">');                
                 $suggestion.append(s);
                     
                 var $countIndicator = $('<span class="indicator">');                
                 
                 $suggestion.click(function(e){
                     $this = $(this);
-                                                            
-                    //highlight the text
-                    var myHilitor = new Hilitor("content");                    
-                    maxCount = myHilitor.apply($this.text());     
+                    if(!$this.hasClass("disabled")){
+                                     
+                        //set selection
+                        builder.setCustom($this.text());
                     
-                    //if we have a new selection, make a note of it                   
-                    if($this.text() != selected)
-                    {
-                        selected = $this.text();   
-                        count = 0;                                                
-                    }else
-                    {
-                        //same item again, so just update the current count
-                        count++;
-                        if(count == maxCount)
-                            count = 0;
-                    }
+                        //highlight the text
+                        var myHilitor = new Hilitor("content");                    
+                        maxCount = myHilitor.apply($this.text());     
                     
-                    //show the number of results
-                    $('.indicator').empty();
-                    $indicator = $this.next();                    
-                    $indicator.append((count +1) + " of " + maxCount);
+                        //if we have a new selection, make a note of it                   
+                        if($this.text() != selected)
+                        {
+                            selected = $this.text();   
+                            count = 0;                                                
+                        }
+                        else
+                        {
+                            //same item again, so just update the current count
+                            count++;
+                            if(count == maxCount)
+                                count = 0;
+                        }
+                    
+                        //show the number of results
+                        $('.indicator').empty();
+                        $indicator = $this.next();                    
+                        $indicator.append((count +1) + " of " + maxCount);
                                         
-                    //scroll the content div                                   
-                    var offset = ($(".highlight:eq(" + count + ")").offset().top + $('#extract-content').scrollTop())  - $('#extract-content').offset().top;                                        
-                    $(".highlight:eq(" + count + ")").addClass("current");
-                    $('#extract-content').animate({
-                        scrollTop: offset
-                    });                                        
+                        //scroll the content div                                   
+                        var offset = ($(".highlight:eq(" + count + ")").offset().top + $('#extract-content').scrollTop())  - $('#extract-content').offset().top;                                        
+                        $(".highlight:eq(" + count + ")").addClass("current");
+                        $('#extract-content').animate({
+                            scrollTop: offset
+                        });
+                    }
                 });
                 
                 $suggestionEntry.append($suggestion).append($countIndicator);
