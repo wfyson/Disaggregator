@@ -4,6 +4,7 @@ class PDFReader {
 
     protected $path;
     protected $imageLinks = array();
+    protected $fullText;
 
     public function __construct($reference) {
         $userid = $_SESSION['userid'];
@@ -33,6 +34,7 @@ class PDFReader {
             $paragraphs = explode("\n", $text);            
             foreach($paragraphs as $para)
             {
+                $this->fullText = $this->fullText . " " . $para;
                 $textContent = new WordText($id++, $para);    
                 $root->addPara($textContent);
                 $count++;
@@ -71,6 +73,7 @@ class PDFReader {
         $results['text'] = $root;
         $results['images'] = $imagePaths;
         $results['fails'] = $noFails;
+        $results['fullText'] = $this->fullText;
         
         return $results;
     }

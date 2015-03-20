@@ -22,7 +22,12 @@ public class OscarFile
 			List<ResolvedNamedEntity> entities = oscar.findAndResolveNamedEntities(lines.get(0));
 			for (ResolvedNamedEntity ne : entities)
 			{
-				System.out.println(ne.getSurface());	
+				//System.out.println(ne.getSurface());	
+				ChemicalStructure stdInchi = ne.getFirstChemicalStructure(FormatType.STD_INCHI);
+				if(stdInchi != null)
+				{
+					System.out.println(ne.getSurface());
+				}
 			}
 		} catch (IOException e){
 			e.printStackTrace();

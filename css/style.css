@@ -676,3 +676,8 @@ body{
 #suggestions .selector.disabled{
     cursor: not-allowed;
 }
+
+#suggestions .indicator{
+    margin-left: 2px;
+    vertical-align: middle;
+}

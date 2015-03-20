@@ -30,6 +30,7 @@ switch($reference->getFormat()){
 
 //write the full text file if not already present
 $fullTextPath = $reference->getFulltext();
+error_log("the full text path is...........$fullTextPath");
 if(!(file_exists($fullTextPath))){    
     file_put_contents($fullTextPath, $results['fullText']);
 }
