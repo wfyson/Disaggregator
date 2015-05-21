@@ -1,6 +1,0 @@
-<node type="testType" id="testId" value="testValue">
-	<regexp parsegroup="42">
-		testRegex
-	</regexp>
-	<unique />
-</node>

@@ -69,12 +69,7 @@ class ReactionContributor {
         // Does the ReactionTag object already have an ID?    
         if (!is_null($this->id))
             trigger_error("ReactionContributor::insert(): Attempt to insert a ReactionContributor object that already has its ID property set (to $this->id).", E_USER_ERROR);
-        
-        ChromePhp::log("Inserting into reaction contributor");
-        ChromePhp::log($this->reactionID);
-        ChromePhp::log($this->contributorID);
-        ChromePhp::log($this->role);
-        
+                       
         // Insert the Tag
         $conn = new PDO(DB_DSN, DB_USER, DB_PASS);
         $sql = "INSERT INTO reaction_contributor ( ReactionID, ContributorID, Role, Comment ) VALUES ( :reactionID, :contributorID, :role, :comment )";

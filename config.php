@@ -39,8 +39,6 @@ require( CLASS_PATH . "/PDFReader.php");
 
 require( IMPORT_PATH . "/eprints.php");
 
-include "debug/ChromePhp.php";
-
 function handleException( $exception ) {
   echo "Sorry, a problem occurred. Please try later.";
   error_log( $exception->getMessage() );

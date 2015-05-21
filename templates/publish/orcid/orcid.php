@@ -62,12 +62,10 @@ class HttpPost {
           public function send() {              
               
                 $info = curl_getinfo($this->ch);                
-                ChromePhp::log($info);                
-              
+                              
                 $this->httpResponse = curl_exec( $this->ch );
                 
                 $result = curl_getinfo($this->ch, CURLINFO_HEADER_OUT);
-                ChromePhp::log($result);   
           }
 
           public function getHttpResponse() {

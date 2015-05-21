@@ -145,7 +145,6 @@ class WordReader extends OpenXmlReader {
             }
             $i++;
         }
-        ChromePhp::log("DONE!!!");
         return $root;
     }
 

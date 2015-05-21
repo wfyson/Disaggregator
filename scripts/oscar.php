@@ -12,7 +12,7 @@ $json = array();
 $path = "../" . $reference->getFulltext();
 
 //need to escape the shell or some such thing I strongly suspect
-exec('java -cp ../java:../java/* OscarFile "' . $path . '"', $output);
+exec('java -cp ../java/oscar:../java/oscar/* OscarFile "' . $path . '"', $output);
 
 $output = array_count_values($output);
 

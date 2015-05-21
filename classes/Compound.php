@@ -328,9 +328,7 @@ class Compound
         $xmlOrcidWorks->appendChild($xmlOrcidWork);
 
         $resultString = $xml->saveXml();
-        
-        ChromePhp::log($resultString);
-        
+                        
         return $resultString;
     }                            
 }

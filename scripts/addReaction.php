@@ -11,8 +11,6 @@ $procedure = $_POST['Procedure'][0];
 $result = $_POST['Result'][0];
 $referenceID = $_POST['docid'];
 
-ChromePhp::log("reference id... $referenceID");
-
 $compoundid = json_decode($result)->id;
 
 //for one-to-one relationships get the first value and create a new reaction
